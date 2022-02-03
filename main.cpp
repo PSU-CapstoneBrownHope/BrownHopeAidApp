@@ -2,7 +2,7 @@
 using namespace std;
 
 int main(){
-  cout << "Capstone Team Brown Hope:" << endl;
+  cout << "Capstone Team Brown Hope:" << enl;
   
   return 0;
 }
