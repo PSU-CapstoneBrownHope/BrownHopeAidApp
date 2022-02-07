@@ -1,30 +1,22 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Discord PR Notify
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  #push:
-   # branches: [ main ]
-  #pull_request:
-   # branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   sendNotification:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    
     steps:
       - name: Discord Notification
         env: 
           DISCORD_WEBHOOK: https://discord.com/api/webhooks/939296836240429116/m7GgUOoMyP8II1sKr9Vt1BFwJ2RUhNgzbZ-7hsoSKGzsJMMY69IR8UY35hGXKMhWtcVH
+          DISCORD_USERNAME: GitHub
+          mackfoggia: Mozzia
         uses: Ilshidur/action-discord@0.3.2
         with:
-          args: 'Test notification text'
+          args: 'Pull request #{{ EVENT_PAYLOAD.pull_request.number }}: {{ EVENT_PAYLOAD.pull_request.title }} - requested by {{ EVENT_PAYLOAD.pull_request.user.login }} - {{ EVENT_PAYLOAD.pull_request.html_url }}'
