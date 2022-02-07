@@ -16,18 +16,15 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  sendNotification:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Discord Notification
+        env: 
+          DISCORD_WEBHOOK: https://discord.com/api/webhooks/939296836240429116/m7GgUOoMyP8II1sKr9Vt1BFwJ2RUhNgzbZ-7hsoSKGzsJMMY69IR8UY35hGXKMhWtcVH
+        uses: Ilshidur/action-discord@0.3.2
+        with:
+          args: 'Test notification text'
