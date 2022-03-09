@@ -10,5 +10,5 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/*.ts"]
+  "include": ["src/*.ts", "src/__test__/server.spec.ts"]
 }
