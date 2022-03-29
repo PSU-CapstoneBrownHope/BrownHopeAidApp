@@ -1,3 +1,5 @@
+import React from 'react';
+import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -6,7 +8,7 @@ function App() {
       <header className="App-header">
         <nav>
           <figure> 
-            <img src="./bh_full-color_stacked_black.png" class="navlogo" alt="bh_logo"/>
+            <img src="./bh_full-color_stacked_black.png" className="navlogo" alt="bh_logo"/>
           </figure>
           <ul>
             <li><a href="#">HOME</a></li>
