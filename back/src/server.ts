@@ -1,10 +1,21 @@
-const express = require('express')
+import routes from './index';
+import express from 'express';
+const port = 3000;
 const app = express();
+
+
 
 app.get('/', (req, res) => {
   res.sendStatus(200)
 })
 
+app.use(routes)
+const server = app.listen(port,() => {
 
+  console.log("application live on port " + port);
 
-module.exports = app
+});
+
+export default server;
+
+//module.exports = server;
