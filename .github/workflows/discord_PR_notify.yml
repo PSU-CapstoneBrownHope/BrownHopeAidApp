@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Discord Notification
         env: 
-          DISCORD_WEBHOOK: https://discord.com/api/webhooks/939296836240429116/m7GgUOoMyP8II1sKr9Vt1BFwJ2RUhNgzbZ-7hsoSKGzsJMMY69IR8UY35hGXKMhWtcVH
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_USERNAME: GitHub
           mackfoggia: Mozzia
         uses: Ilshidur/action-discord@0.3.2
