@@ -9,7 +9,6 @@
 
 .App-header {
   background-color: white;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -77,4 +76,6 @@ h1{
   font-weight: 200;
   font-size: calc(44px + 2vmin);
   letter-spacing: 0.2em;
+  font-family: bebas-neue;
+  color: #146467;
 }
