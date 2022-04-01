@@ -39,7 +39,7 @@ describe('post endpoint for airtable route', () => {
         .send({
             application_id: '42'
         })
-        expect(res.statusCode).toEqual(201)
+        expect(res.statusCode).toEqual(404)
       
 
     })
