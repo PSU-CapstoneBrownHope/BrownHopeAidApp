@@ -1,7 +1,14 @@
-import React from 'react';
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Profile from "./Profile"
-//import "./App.css"
+
+/* Leaving here to remind me how to require css in tsx files
+if (process.env.BROWSER) {
+  require("./styles/App.css")
+}
+************************************************************
+        ^ DELETE AFTER DEVELOPMENT IS COMPLETE ^
+************************************************************
+*/
 
 /*  App contains the nav header and the routes for new pages
 
@@ -10,18 +17,12 @@ import Profile from "./Profile"
       - import new page so App has access
       - create new Route in Routes
       - create new li in ul if you want to add the page to nav
-
-    ---- side note -----
-    CSS file is included in index because while "npm start" works
-    as expected, the tests fail because they cannot parse it correctly.
-    Need to either find a fix or App.css will contain all the css.
-    Uncomment the line and run npm test to see behavior.
 */
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <header className="appHeader">
         <nav>
           <figure>
             <img src="./bh_full-color_stacked_black.png" className="navlogo" alt="bh_logo" />
@@ -43,7 +44,17 @@ function App() {
 function Home() {
   return (
     <>
-      <h1>BROWN HOPE AID APP</h1>
+      <h1 id="landingHeader">BROWN HOPE AID APP</h1>
+      <form className="buttonWrapper" method="get" action="/login">
+        <button type="submit" className="fullscreenButton" id="toLoginSignUp">
+          Login/Sign up
+        </button>
+      </form>
+      <form className="buttonWrapper" method="get" action="/application-status">
+        <button type="submit" className="fullscreenButton" id="checkAppStatus">
+          Check Application status
+        </button>
+      </form>
     </>
   );
 }
