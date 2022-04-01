@@ -1,12 +1,21 @@
 import React from 'react';
 import { Routes, Route, Link } from "react-router-dom";
-import './App.css';
+import Profile from "./Profile"
+//import "./App.css"
 
 /*  App contains the nav header and the routes for new pages
 
     To add a new page:
+      - create new .tsx file in src
+      - import new page so App has access
       - create new Route in Routes
       - create new li in ul if you want to add the page to nav
+
+    ---- side note -----
+    CSS file is included in index because while "npm start" works
+    as expected, the tests fail because they cannot parse it correctly.
+    Need to either find a fix or App.css will contain all the css.
+    Uncomment the line and run npm test to see behavior.
 */
 
 function App() {
@@ -31,20 +40,10 @@ function App() {
   );
 }
 
-// I intend for this to be the page that 
 function Home() {
   return (
     <>
       <h1>BROWN HOPE AID APP</h1>
-    </>
-  );
-}
-
-
-function Profile() {
-  return (
-    <>
-      <h1>Profile page</h1>
     </>
   );
 }
