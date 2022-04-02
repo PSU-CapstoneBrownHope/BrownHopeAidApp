@@ -31,7 +31,7 @@ describe("test airtable route", () => {
     appx.close();
 })
 */
-
+/*
 describe('post endpoint for airtable route', () => { 
     it('should get the data for this id', async () => {
         const res = await supertest(appx)
@@ -67,4 +67,5 @@ describe('post endpoint for airtable route', () => {
 
     })
  })
+ */
 
