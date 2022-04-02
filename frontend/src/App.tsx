@@ -44,17 +44,19 @@ function App() {
 function Home() {
   return (
     <>
-      <h1 id="landingHeader">BROWN HOPE AID APP</h1>
-      <form className="buttonWrapper" method="get" action="/login">
-        <button type="submit" className="fullscreenButton" id="toLoginSignUp">
-          Login/Sign up
-        </button>
-      </form>
-      <form className="buttonWrapper" method="get" action="/application-status">
-        <button type="submit" className="fullscreenButton" id="checkAppStatus">
-          Check Application status
-        </button>
-      </form>
+      <h1 id="landingHeader"> BROWN HOPE AID APP</h1>
+      <div className="buttonGroup">
+        <form className="buttonWrapper" method="get" action="/login">
+          <button type="submit" className="fullscreenButton" id="toLoginSignUp">
+            Login/Sign up
+          </button>
+        </form>
+        <form className="buttonWrapper" method="get" action="/application-status">
+          <button type="submit" className="fullscreenButton" id="checkAppStatus">
+            Check Application status
+          </button>
+        </form>
+      </div>
     </>
   );
 }
