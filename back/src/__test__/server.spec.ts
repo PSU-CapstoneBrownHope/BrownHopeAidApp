@@ -39,7 +39,30 @@ describe('post endpoint for airtable route', () => {
         .send({
             application_id: '42'
         })
-        expect(res.statusCode).toEqual(404)
+        expect((res)=>{
+            res.body.data[0].application_id == 42
+        })
+      
+
+    })
+ })
+
+
+ describe('login route', () => { 
+    it('should pass by failing', async () => {
+        const res = await supertest(appx)
+        .post('/api/airtable/login')
+        .send({
+            username: 'user',
+            password: 'password'
+        })
+        expect(res.statusCode).toEqual(200)
+        expect((res) => {
+            res.body.data[0].username == 'user';
+            res.body.data[0].password == 'password'
+
+
+        })
       
 
     })
