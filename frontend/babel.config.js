@@ -1,4 +1,3 @@
-const { getByLabelText } = require("@testing-library/react");
 
 module.exports = {
   presets: [

@@ -6,8 +6,11 @@ import * as ReactDOMClient from 'react-dom/client'
 
 const container = document.getElementById('root');
 
-const root = ReactDOMClient.createRoot(container);
+if (container) {
 
-root.render(<BrowserRouter><App/></BrowserRouter>);
+  const root = ReactDOMClient.createRoot(container);
+
+  root.render(<BrowserRouter><App /></BrowserRouter>);
+}
 
 reportWebVitals();

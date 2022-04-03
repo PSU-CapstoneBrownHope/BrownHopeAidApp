@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import Profile from "./Profile"
+import Profile from "./components/Profile"
+import { LoginForm } from "./components/LoginForm"
 
 /* Leaving here to remind me how to require css in tsx files
 if (process.env.BROWSER) {
@@ -36,6 +37,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="login" element={<LoginForm />} />
       </Routes>
     </div>
   );
