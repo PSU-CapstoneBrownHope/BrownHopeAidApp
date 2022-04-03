@@ -1,0 +1,81 @@
+.App {
+  text-align: center;
+}
+
+@font-face {
+  font-family: bebas-neue;
+  src: url("./BebasNeue-Regular.ttf") format('woff2');
+}
+
+.App-header {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: baseline;
+  font-size: calc(10px + 2vmin);
+  color: #146467;
+  font-family: bebas-neue;
+  font-weight: 400;
+  font-style: normal
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+
+nav{
+  display: flex;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 12.5vh;
+}
+
+ul{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin:0%;
+  width: 80%;
+  padding:0%;
+}
+
+li{
+  display: flex;
+  width: 20vw;
+  height: 100%;
+  align-items: center;
+}
+
+a{
+  vertical-align: middle;
+  margin:auto;
+  color: #146467;
+  text-decoration: none;
+  width:70%;
+  padding: 10px
+}
+
+figure{
+  display: flex;
+  align-items: center;
+  justify-self: baseline;
+  height: 100%;
+  margin: 0%;
+  margin-left: 10px
+}
+
+.navlogo{
+  height: 60%
+}
+
+h1{
+  font-weight: 200;
+  font-size: calc(44px + 2vmin);
+  letter-spacing: 0.2em;
+  font-family: bebas-neue;
+  color: #146467;
+}
