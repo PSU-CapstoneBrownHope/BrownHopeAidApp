@@ -17,21 +17,6 @@ describe("test airtable route", () => {
     appx.close();
 })
 
-/*describe("test airtable route", () => {
-    test('checks for 200 status code at airtable route', async (done) => {
-       supertest(appx).post('/api/airtable')
-        .send({application_id: '42'})
-        .set('Accept','application/json')
-        .expect(200)
-        .end((err)=>{
-            if(err) return done(err)
-            return done
-        })
-    })
-    appx.close();
-})
-*/
-/*
 describe('post endpoint for airtable route', () => { 
     it('should get the data for this id', async () => {
         const res = await supertest(appx)
@@ -67,5 +52,3 @@ describe('post endpoint for airtable route', () => {
 
     })
  })
- */
-
