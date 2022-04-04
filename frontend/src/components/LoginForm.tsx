@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
 
 export const LoginForm = (): JSX.Element => {
-  const [email, setEmail] = useState("");
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [signUpState, setSignUpState] = useState(false);
