@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from "./styles/Buttons.module.css"
+import styles from "../styles/Buttons.module.css"
 
 export const LandingPage = (): JSX.Element => {
   return (
