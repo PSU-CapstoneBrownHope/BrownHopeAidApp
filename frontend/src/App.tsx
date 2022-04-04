@@ -2,14 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Profile from "./components/Profile"
 import { LoginForm } from "./components/LoginForm"
 
-/* Leaving here to remind me how to require css in tsx files
-if (process.env.BROWSER) {
-  require("./styles/App.css")
-}
-************************************************************
-        ^ DELETE AFTER DEVELOPMENT IS COMPLETE ^
-************************************************************
-*/
+import styles from "./styles/Buttons.module.css"
 
 /*  App contains the nav header and the routes for new pages
 
@@ -47,14 +40,14 @@ function Home() {
   return (
     <>
       <h1 id="landingHeader"> BROWN HOPE AID APP</h1>
-      <div className="buttonGroup">
-        <form className="buttonWrapper" method="get" action="/login">
-          <button type="submit" className="fullscreenButton" id="toLoginSignUp">
+      <div className={styles["buttonGroup"]}>
+        <form className={styles["buttonWrapper"]} method="get" action="/login">
+          <button type="submit" className={styles["fullscreenButton"] + " " + styles["transparentButton"]} id="toLoginSignUp">
             Login/Sign up
           </button>
         </form>
-        <form className="buttonWrapper" method="get" action="/application-status">
-          <button type="submit" className="fullscreenButton" id="checkAppStatus">
+        <form className={styles["buttonWrapper"]} method="get" action="/application-status">
+          <button type="submit" className={styles["fullscreenButton"] + " " + styles["transparentButton"]} id="checkAppStatus">
             Check Application status
           </button>
         </form>

@@ -2,6 +2,7 @@ import React, { useState, SyntheticEvent } from "react";
 import axios from "axios";
 import { routes } from "../util/config";
 import { useNavigate } from "react-router-dom";
+import styles from "../styles/Buttons.module.css"
 
 export const LoginForm = (): JSX.Element => {
   const [email, setEmail] = useState("");
@@ -10,7 +11,7 @@ export const LoginForm = (): JSX.Element => {
   const [verifyPassword, setVerifyPassword] = useState("");
   const [signUpState, setSignUpState] = useState(false);
 
-  
+
 
   const navigate = useNavigate();
   const handleClick = () => navigate("/reset/verify-user");
@@ -92,22 +93,33 @@ export const LoginForm = (): JSX.Element => {
   return (
     <>
       <h1>Login to your account</h1>
-      <form id="loginForm" onSubmit={handleLoginSubmit}>
-        <input
-          name="email"
-          id="email"
-          placeholder='email'
-          onChange={(e) => setUserName(e.target.value)}
-          required
-        />
-        <input
-          name="password"
-          id="password"
-          placeholder='password'
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button className="fullscreenButton" type="submit">Login</button>
+      <form id="loginForm" className={styles["buttonGroup"]} onSubmit={handleLoginSubmit}>
+        <div className={styles["buttonWrapper"]}>
+          <input
+            name="email"
+            id="email"
+            placeholder='email'
+            onChange={(e) => setUserName(e.target.value)}
+            className={styles['textField']}
+            required
+          />
+        </div>
+        <div className={styles["buttonWrapper"]}>
+          <input
+            name="password"
+            id="password"
+            placeholder='password'
+            onChange={(e) => setPassword(e.target.value)}
+            className={styles['textField']}
+            required
+          />
+        </div>
+        <div className={styles["buttonWrapper"]}>
+          <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Login</button>
+        </div>
+      </form>
+      <form className={styles["buttonWrapper"]} method="get" action="/sign-up">
+        <button className={styles['fullscreenButton'] + " btn btn-secondary"}>Create Account</button>
       </form>
     </>
   );
