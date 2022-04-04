@@ -8,7 +8,6 @@ export const LoginForm = (): JSX.Element => {
   const [email, setEmail] = useState("");
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [verifyPassword, setVerifyPassword] = useState("");
   const [signUpState, setSignUpState] = useState(false);
 
 
@@ -18,13 +17,7 @@ export const LoginForm = (): JSX.Element => {
 
   function validateForm() {
     return username.length > 0 && password.length > 0 && !signUpState;
-  }
-
-  function validateSignUp() {
-    return (
-      password === verifyPassword && email.length > 0 && username.length > 0
-    );
-  }
+  }  
 
   function handleLoginSubmit(event: SyntheticEvent) {
     event.preventDefault();
@@ -58,37 +51,6 @@ export const LoginForm = (): JSX.Element => {
     sendLoginRequest();
   }
 
-  function handleSignupSubmit(event: SyntheticEvent) {
-    const newSignupRequest = {
-      username: username,
-      email: email,
-      password: password,
-    };
-
-    const sendSignupRequest = async () => {
-      try {
-        const resp = await axios.post(routes.signup, newSignupRequest);
-        console.log(resp.data);
-        if (resp.data === "Success") {
-          alert("Account Creation Successful! Redirecting to login")
-          navigate("/");
-          setSignUpState(false);
-          setUserName("");
-          setPassword("");
-        } else if (resp.data === "Email Already Exists") {
-          alert("Sorry, user already exists")
-        }
-        else if (resp.data === "Emailed") {
-          alert("This email already exists in our system. To claim your account, please follow the link emailed to you.")
-        }
-      } catch (err) {
-        alert("Sign up failed");
-        // Handle Error Here
-        console.error(err);
-      }
-    };
-    sendSignupRequest();
-  }
 
   return (
     <>
@@ -96,9 +58,9 @@ export const LoginForm = (): JSX.Element => {
       <form id="loginForm" className={styles["buttonGroup"]} onSubmit={handleLoginSubmit}>
         <div className={styles["buttonWrapper"]}>
           <input
-            name="email"
-            id="email"
-            placeholder='email'
+            name="username"
+            id="username"
+            placeholder='username'
             onChange={(e) => setUserName(e.target.value)}
             className={styles['textField']}
             required
@@ -119,7 +81,7 @@ export const LoginForm = (): JSX.Element => {
         </div>
       </form>
       <form className={styles["buttonWrapper"]} method="get" action="/sign-up">
-        <button className={styles['fullscreenButton'] + " btn btn-secondary"}>Create Account</button>
+        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Create Account</button>
       </form>
     </>
   );

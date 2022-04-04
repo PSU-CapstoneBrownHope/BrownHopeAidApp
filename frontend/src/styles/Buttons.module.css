@@ -16,7 +16,7 @@
   font-size: calc(16px + 1vmin);
   width: 70vw;
   max-width: 575px;
-  border-radius: calc(5px + 1vmin);
+  border-radius: 3px;
   padding: 10px;
 }
 
@@ -46,3 +46,4 @@
   background-color: #146467;
   border-color: white
 }
+

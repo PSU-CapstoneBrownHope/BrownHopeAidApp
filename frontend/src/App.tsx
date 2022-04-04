@@ -1,8 +1,11 @@
+import React from 'react';
 import { Routes, Route } from "react-router-dom";
 import Profile from "./components/Profile"
 import { LoginForm } from "./components/LoginForm"
+import { SignUp } from "./components/SignUp"
+import { Nav } from "./components/Nav"
+import { LandingPage } from "./components/LandingPage"
 
-import styles from "./styles/Buttons.module.css"
 
 /*  App contains the nav header and the routes for new pages
 
@@ -16,43 +19,14 @@ import styles from "./styles/Buttons.module.css"
 function App() {
   return (
     <div className="App">
-      <header className="appHeader">
-        <nav>
-          <figure>
-            <img src="./bh_full-color_stacked_black.png" className="navlogo" alt="bh_logo" />
-          </figure>
-          <ul>
-            <li><a href="/">HOME</a></li>
-            <li><a href="profile">PROFILE</a></li>
-          </ul>
-        </nav>
-      </header>
+      <Nav/>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="profile" element={<Profile />} />
         <Route path="login" element={<LoginForm />} />
+        <Route path="sign-up" element={<SignUp />} />
       </Routes>
     </div>
-  );
-}
-
-function Home() {
-  return (
-    <>
-      <h1 id="landingHeader"> BROWN HOPE AID APP</h1>
-      <div className={styles["buttonGroup"]}>
-        <form className={styles["buttonWrapper"]} method="get" action="/login">
-          <button type="submit" className={styles["fullscreenButton"] + " " + styles["transparentButton"]} id="toLoginSignUp">
-            Login/Sign up
-          </button>
-        </form>
-        <form className={styles["buttonWrapper"]} method="get" action="/application-status">
-          <button type="submit" className={styles["fullscreenButton"] + " " + styles["transparentButton"]} id="checkAppStatus">
-            Check Application status
-          </button>
-        </form>
-      </div>
-    </>
   );
 }
 
