@@ -24,6 +24,9 @@ jobs:
           npm test
 
       - name: Run backend tests
+        env:
+          AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
+          BASE_ID: ${{ secrets.BASE_ID }}
         run: |
           cd ./back
           npm install

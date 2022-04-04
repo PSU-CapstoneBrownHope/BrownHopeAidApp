@@ -1,7 +1,10 @@
-const router = require('./server')
+
+import { Router } from 'express'
+import airtableRouter from './routes/airtable'
+
 const port = 3000
+const routes = Router();
 
-router.listen(port, () => {
-    console.log("application live on : " + port)
+routes.use('/api/airtable', airtableRouter);
 
-})
+export default routes;
