@@ -1,0 +1,49 @@
+.fullscreenButton{
+  font-weight: 200;
+  letter-spacing: 0.1em;
+  font-family: bebas-neue;
+  font-size: calc(18px + 1vmin);
+  text-align: center;
+  width: 70vw;
+  max-width: 575px;
+  height: 40%;
+  padding: 10px;
+  border-radius: calc(5px + 1vmin);
+  cursor: pointer;
+}
+
+.textField{
+  font-size: calc(16px + 1vmin);
+  width: 70vw;
+  max-width: 575px;
+  border-radius: 3px;
+  padding: 10px;
+}
+
+.buttonGroup{
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  justify-items: baseline;
+  align-items: center;
+}
+
+.buttonWrapper{
+  display: flex;
+  padding-top: 10px;
+  width:fit-content;
+  margin:auto
+}
+
+.transparentButton{
+  font-family: bebas-neue;
+  color: #146467;
+  background-color: transparent;
+}
+
+.transparentButton:hover{
+  color: white;
+  background-color: #146467;
+  border-color: white
+}
+

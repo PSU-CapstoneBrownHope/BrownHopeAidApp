@@ -10,12 +10,18 @@
     "@types/node": "^16.11.26",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.13",
+    "axios": "^0.26.1",
+    "dotenv": "^16.0.0",
+    "dotenv-webpack": "^7.1.0",
+    "formik": "^2.2.9",
     "react": "18.0.0",
     "react-dom": "^18.0.0",
+    "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
+    "react-test-renderer": "^18.0.0",
     "typescript": "^4.6.3",
     "web-vitals": "^2.1.4",
-    "react-router-dom": "^6.2.2"
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -24,8 +30,16 @@
     "test:watch": "jest --watch",
     "eject": "react-scripts eject"
   },
-  "jest":{
-    "testEnvironment": "jsdom"
+  "jest": {
+    "testEnvironment": "jsdom",
+    "moduleNameMapper": {
+      "\\.(css|jpg|png)$": "<rootDir>/src/__mocks__/style-mock.js"
+    }
+  },
+  "node": {
+    "fs": "empty",
+    "os": "empty",
+    "path": "empty"
   },
   "eslintConfig": {
     "extends": [
@@ -44,5 +58,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-test-renderer": "^17.0.1",
+    "typings-for-css-modules-loader": "^1.7.0"
   }
 }
