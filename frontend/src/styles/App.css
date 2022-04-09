@@ -61,6 +61,10 @@ a{
   width: 100%;
 }
 
+a:hover{
+  text-decoration: none;
+}
+
 figure{
   display: flex;
   align-items: center;
