@@ -12,6 +12,8 @@
 body{
   height: 100vh;
   background: linear-gradient(to top, #e6ac19da, white 30%);
+  margin: auto;
+  max-width: 1400px;
 }
 
 .appHeader {
