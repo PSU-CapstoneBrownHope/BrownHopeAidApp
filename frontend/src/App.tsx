@@ -5,6 +5,7 @@ import { LoginForm } from "./components/LoginForm"
 import { SignUp } from "./components/SignUp"
 import { Nav } from "./components/Nav"
 import { LandingPage } from "./components/LandingPage"
+import { ApplicationStatus } from './components/ApplicationStatus';
 
 
 /*  App contains the nav header and the routes for new pages
@@ -22,6 +23,7 @@ function App() {
       <Nav/>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="application-status" element={<ApplicationStatus />} />
         <Route path="profile" element={<Profile />} />
         <Route path="login" element={<LoginForm />} />
         <Route path="sign-up" element={<SignUp />} />
