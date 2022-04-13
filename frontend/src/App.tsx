@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
-import Profile from "./components/Profile"
+import { Profile } from "./components/Profile"
 import { LoginForm } from "./components/LoginForm"
 import { SignUp } from "./components/SignUp"
 import { Nav } from "./components/Nav"
