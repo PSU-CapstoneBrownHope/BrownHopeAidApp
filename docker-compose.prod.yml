@@ -8,14 +8,14 @@ services:
       context: back
       target: prod
     ports:
-      - "8080:8080"
+      - "5000:5000"
     env_file: ./back/.env
 
   # front-end build
   front-prod:
     restart: always
     build: 
-      context: front
+      context: frontend
       target: prod
     ports:
       - "3000:3000"

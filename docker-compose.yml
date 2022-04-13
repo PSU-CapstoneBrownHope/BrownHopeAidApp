@@ -9,16 +9,16 @@ services:
     volumes:
       - ./back:/root
     ports:
-      - "8080:8080"
+      - "5000:5000"
     env_file: ./back/.env
 
   # front-end build
   front:
     build: 
-      context: front
+      context: frontend
       target: dev
     volumes:
-      - ./front:/root
+      - ./frontend:/root
     ports:
       - "3000:3000"
 
