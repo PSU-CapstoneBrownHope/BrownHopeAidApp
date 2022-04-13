@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\back",
+    "\\back\\src",
+    "\\back\\src\\routes",
+    "\\frontend",
+    "\\frontend\\public",
+    "\\frontend\\src",
+    "\\frontend\\src\\components",
+    "\\frontend\\src\\styles",
+    "\\frontend\\src\\util"
+  ],
+  "SelectedNode": "\\frontend\\src\\styles\\Buttons.module.css",
+  "PreviewInSolutionExplorer": false
+}
