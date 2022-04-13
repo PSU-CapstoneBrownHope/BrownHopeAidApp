@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\back",
+    "\\back\\src",
+    "\\back\\src\\routes",
+    "\\back\\src\\__test__",
+    "\\frontend",
+    "\\frontend\\src",
+    "\\frontend\\src\\components",
+    "\\frontend\\src\\__mocks__",
+    "\\frontend\\src\\__tests__"
+  ],
+  "PreviewInSolutionExplorer": false
+}
