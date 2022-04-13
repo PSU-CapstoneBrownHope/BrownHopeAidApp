@@ -1,10 +1,10 @@
-FROM node:17.0.23-alpine as dev
+FROM node:14-alpine as dev
 WORKDIR /root/
 CMD echo "getting latest npm modules" \
     && npm install \
     && echo "installation complete, starting" \
     && npm start
-FROM node:17.0.23-alpine as build
+FROM node:14-alpine as build
 WORKDIR /root
 COPY ./package.json ./package.json
 RUN npm install
