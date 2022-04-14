@@ -1,7 +1,7 @@
 import React, { useState, SyntheticEvent } from "react";
 import axios from "axios";
 import { routes } from "../util/config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
 import { env } from "process";
 
@@ -87,12 +87,12 @@ export const LoginForm = (): JSX.Element => {
           <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Login</button>
         </div>
       </form>
-      <form className={styles["buttonWrapper"]} method="get" action="/sign-up">
+      <Link to="/sign-up" className={styles['buttonWrapper']}>
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Create Account</button>
-      </form>
-      <form className={styles["buttonWrapper"]} method="get" action="/">
+      </Link>
+      <Link to="/" className={styles['buttonWrapper']}>
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Back to Home</button>
-      </form>
+      </Link>
     </>
   );
 };

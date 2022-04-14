@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { routes } from '../util/config';
 import { accountFields } from "../util/util";
 import style from "../styles/AccountInfo.module.css"
 import buttons from "../styles/Buttons.module.css"
+import { isTemplateSpan } from 'typescript';
 
 
 export const Profile = () => {
@@ -22,6 +23,7 @@ export const Profile = () => {
             if (inputElement) inputElement.focus();
         }
     });
+
 
     //
     const updateField = (e: React.BaseSyntheticEvent, index: number): void => {
@@ -82,65 +84,55 @@ export const Profile = () => {
         sendInfoRequest();
 
     }
-return (
-<div>
-    <h1>Account Information</h1>
+
+    const AccountFieldsInfo = () => {
+        let items: any = [];
+        if (info[1].value === "") {
+            getExistingAccountInfo()
+        }
+        info.forEach((item: any, index: any) => {
+            items.push(
+                <label key={index} htmlFor={item.name} className={style['userInfo']}>{item.label}
+                    <div id={item.name} className="received">
+                        {item.value}
+                    </div>
+                </label>)
+        });
+        return <>{items}</>
+    }
+
+    const AccountFieldsInputs = () => {
+        if (!form) return <div></div>
+        function createMenuOptions(options: string[]) {
+            let menu: any = [];
+            options.forEach((item: any, index: any) => {
+                menu.push(<menuitem key={item}>{item}</menuitem>)
+            })
+            return menu;
+        }
+
+        let items: any = [];
+        form.forEach((item: any, index: any) => {
+            if (item.name === "userName") {
+                items.push()
+            }
+        })
+    }
+
+    // get account info
+    useEffect(() => {
+        AccountFieldsInfo()
+    }, [])
+
+    return (
         <div>
-            <div className = {style['userInfo']}>User Name
-
-                <div className="received">
-
-                </div>
-            </div>
-
-            <div className = {style['userInfo']}>First Name
-
-                <div className="received">
-
-                </div>
-          </div>
-
-
-            <div className={style['userInfo']}>Last Name
-
-            <div className="received">
-
-            </div>
-        </div>
-
-        <div className={style['userInfo']}>Address
-
-            <div className="received">
-
-                </div>
-
-        </div>
-            <div className={style['userInfo']}>Phone Number
-
-                <div className="received">
-
-                </div>
-            </div>
-            <div className={style['userInfo']}>Prefer Contact Method
-
-             <div className="received">
-
-             </div>
-        </div>
-
-
-            <div className={style['userInfo']}>Payment Method
-
-            <div className="received">
-
-            </div>
-            </div>
-            <form className={buttons["buttonWrapper"]} method="get" action="edit-account-information">
+            <h1>Account Information</h1>
+            {<AccountFieldsInfo></AccountFieldsInfo>}
+            <Link to="/" className={buttons['buttonWrapper']}>
                 <button className={buttons['fullscreenButton'] + " btn btn-outline-secondary"}>Edit Account Information</button>
-        </form>
+            </Link>
 
         </div>
-</div>
-);
+    );
 }
 
