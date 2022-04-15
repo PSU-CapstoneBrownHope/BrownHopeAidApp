@@ -29,10 +29,8 @@ export const Profile = () => {
   function populateForm() {
     const formCopy: any = [...form];
     form.forEach((item: any, index: any) => {
-      switch (item.value, item.type) {
-        case null:
-        case '':
-          formCopy[index].value = '' 
+      if (item.value === null) {
+        formCopy[index].value = '' 
       }
     })
   }
