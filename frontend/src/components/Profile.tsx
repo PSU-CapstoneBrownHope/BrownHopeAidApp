@@ -25,6 +25,35 @@ export const Profile = () => {
   });
 
 
+  function populateForm(){
+    const formCopy: any = [...form];    
+    form.forEach((item: any, index: any) => {
+      if (item.value === null) {
+        if (item.type === 'select') {
+          if (item.name === 'paymentMethod') {
+            formCopy[index].value = "online"
+          }
+          else {
+            formCopy[index].value = "Email"
+          }
+        } else if (item.type === 'tel') {
+          formCopy[index].value = '555-555-5555'
+        } else {
+          formCopy[index].value = ''
+        }
+      }
+    })
+  }
+
+  function editCheck() {
+    if ((form[0].value === null || form[0].value === "" ) && editing === false) {
+      alert("You are not signed in")
+    } else {
+      setEditing(!editing)
+    }
+  }
+
+
   //
   const updateField = (e: React.BaseSyntheticEvent, index: number): void => {
     const elementValue = (e.target as HTMLInputElement).value;
@@ -107,7 +136,7 @@ export const Profile = () => {
     info.forEach((item: any, index: any) => {
       items.push(
         <div key={index}>
-          <label  htmlFor={item.name} className={style['userInfo']}>{item.label}
+          <label htmlFor={item.name} className={style['userInfo']}>{item.label}
             <div id={item.name} className="received">
               {item.value}
             </div>
@@ -119,19 +148,10 @@ export const Profile = () => {
   }
 
   const AccountFieldsInputs = () => {
-    if (!form)
-      alert("Failed to find account information to edit")
-    function createMenuOptions(options: string[]) {
-      let menu: any = [];
-      options.forEach((item: any, index: any) => {
-        menu.push(<menuitem key={item}>{item}</menuitem>)
-      })
-      return menu;
-    }
-
+    populateForm()
     let items: any = [];
     form.forEach((item: any, index: any) => {
-      if (item.type === 'select' && item.value !== null && item.value !== '') {
+      if (item.type === 'select') {
         if (item.name === 'contactMethod') {
           items.push(
             <div key={index}>
@@ -143,15 +163,17 @@ export const Profile = () => {
                   name={item.name}
                   onChange={handleContactChange}
                 >
-                  {createMenuOptions(item.options)}
+                  <option value='Email'>Email</option>
+                  <option value='Text'>Text</option>
+                  <option value='Phone call'>Phone call</option>
                 </select>
               </label>
             </div>
           )
-        } else if (item.value !== null && item.value !== '') {
+        } else {
           items.push(
             <div key={index}>
-              <label  htmlFor={item.name} className={style['userInfo']}>{item.label}
+              <label htmlFor={item.name} className={style['userInfo']}>{item.label}
                 <select
                   id={item.name}
                   className=""
@@ -159,16 +181,17 @@ export const Profile = () => {
                   value={contactMethod}
                   onChange={handlePaymentChange}
                 >
-                  {createMenuOptions(item.options)}
+                  <option value='online'>Online</option>
+                  <option value='check'>Check</option>
                 </select>
               </label>
             </div>
           )
         }
-      } else if (item.value !== null && item.value !== '') {
+      } else {
         items.push(
           <div key={index}>
-            <label  htmlFor={item.name} className={style['userInfo']}>{item.label}
+            <label htmlFor={item.name} className={style['userInfo']}>{item.label}
               <input
                 type="textbox"
                 id={item.name}
@@ -191,20 +214,15 @@ export const Profile = () => {
     return <>{items}</>
   }
 
-  // get account info
-  useEffect(() => {
-    AccountFieldsInfo()
-  }, [])
-
   return (
     <div>
       <h1>Account Information</h1>
       {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
       <div className={buttons['buttonWrapper']}>
         <button
-          className={ buttons['fullscreenButton'] + " btn btn-outline-success"}
-          onClick={() => setEditing(!editing)}
-          hidden={editing ? true: false}
+          className={buttons['fullscreenButton'] + " btn btn-outline-success"}
+          onClick={() => editCheck()}
+          hidden={editing ? true : false}
         >
           Edit Account Information
         </button>
@@ -212,7 +230,7 @@ export const Profile = () => {
       <div className={buttons['buttonWrapper']}>
         <button
           className={buttons['fullscreenButton'] + " btn btn-success"}
-          hidden={editing ? false: true}
+          hidden={editing ? false : true}
           onClick={postAccountUpdate}
         >
           Save
