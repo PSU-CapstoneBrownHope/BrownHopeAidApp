@@ -3,6 +3,7 @@ import axios from "axios";
 import { routes } from "../util/config";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
+import { env } from "process";
 
 export const LoginForm = (): JSX.Element => {
   const [username, setUserName] = useState("");
@@ -51,15 +52,19 @@ export const LoginForm = (): JSX.Element => {
   }
 
 
+
   return (
     <>
       <h1>Login to your account</h1>
       <form id="loginForm" className={styles["buttonGroup"]} onSubmit={handleLoginSubmit}>
         <div className={styles["buttonWrapper"]}>
           <input
+            role='textbox'
+            aria-label= 'username'
             name="username"
             id="username"
-            placeholder='username'
+            placeholder='Username'
+            value={username}
             onChange={(e) => setUserName(e.target.value)}
             className={styles['textField']}
             required
@@ -67,9 +72,12 @@ export const LoginForm = (): JSX.Element => {
         </div>
         <div className={styles["buttonWrapper"]}>
           <input
+            aria-label= 'password'
+            role='textbox'
             name="password"
             id="password"
-            placeholder='password'
+            value={password}
+            placeholder='Password'
             onChange={(e) => setPassword(e.target.value)}
             className={styles['textField']}
             required
@@ -81,6 +89,9 @@ export const LoginForm = (): JSX.Element => {
       </form>
       <form className={styles["buttonWrapper"]} method="get" action="/sign-up">
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Create Account</button>
+      </form>
+      <form className={styles["buttonWrapper"]} method="get" action="/">
+        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Back to Home</button>
       </form>
     </>
   );

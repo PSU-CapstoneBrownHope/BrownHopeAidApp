@@ -12,6 +12,8 @@
 body{
   height: 100vh;
   background: linear-gradient(to top, #e6ac19da, white 30%);
+  margin: auto;
+  max-width: 1400px;
 }
 
 .appHeader {
@@ -50,7 +52,7 @@ li{
   width: calc(10vw + 2vmin);
   min-width: fit-content;
   align-items: center;
-  padding-right: calc(20px + 1vmin);
+  padding-right:20px
 }
 
 a{
@@ -61,24 +63,28 @@ a{
   width: 100%;
 }
 
+a:hover{
+  text-decoration: none;
+}
+
 figure{
   display: flex;
   align-items: center;
   justify-self: baseline;
   width: 100%;
   margin: 0%;
-  margin-left: 10px
+  padding-left: 20px
 }
 
 .navlogo{
-  height: calc(20px + 10vmin);
+  height: calc(30px + 5vmin);
 }
 
 h1{
-  margin-top: 10px;
+  margin-top: 20px;
   text-align:center;
   font-weight: 200;
-  font-size: calc(44px + 2vmin);
+  font-size: calc(40px + 1vmin);
   letter-spacing: 0.2em;
   font-family: bebas-neue;
   color: #146467;
