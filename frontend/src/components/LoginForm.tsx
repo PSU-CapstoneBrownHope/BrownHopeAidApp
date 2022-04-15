@@ -37,8 +37,9 @@ export const LoginForm = (): JSX.Element => {
         const resp = await axios.post(routes.login, newLoginRequest, { withCredentials: true });
         console.log(resp.data);
         if (resp.data === "Success") {
+          console.log(resp)
           setUsername(); // added for testing navbar
-          navigate("/landing");
+          navigate("/profile");
         } else if (resp.data === "Failed") {
           alert("Sorry, wrong username or password. Please try again!")
         }
@@ -83,9 +84,7 @@ export const LoginForm = (): JSX.Element => {
             required
           />
         </div>
-        <div className={styles["buttonWrapper"]}>
           <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Login</button>
-        </div>
       </form>
       <Link to="/sign-up" className={styles['buttonWrapper']}>
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Create Account</button>

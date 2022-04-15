@@ -5,7 +5,6 @@ import { routes } from '../util/config';
 import { accountFields } from "../util/util";
 import style from "../styles/AccountInfo.module.css"
 import buttons from "../styles/Buttons.module.css"
-import { isTemplateSpan } from 'typescript';
 
 
 export const Profile = () => {
@@ -18,6 +17,8 @@ export const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (info[0].value === "" || info[0].value === null)
+      navigate("/login")
     if (currentId) {
       const inputElement = document.getElementById(currentId);
       if (inputElement) inputElement.focus();
@@ -25,32 +26,31 @@ export const Profile = () => {
   });
 
 
-  function populateForm(){
-    const formCopy: any = [...form];    
+  function populateForm() {
+    const formCopy: any = [...form];
     form.forEach((item: any, index: any) => {
-      if (item.value === null) {
-        if (item.type === 'select') {
-          if (item.name === 'paymentMethod') {
-            formCopy[index].value = "online"
-          }
-          else {
-            formCopy[index].value = "Email"
-          }
-        } else if (item.type === 'tel') {
-          formCopy[index].value = '555-555-5555'
-        } else {
-          formCopy[index].value = ''
-        }
+      switch (item.value, item.type) {
+        case null:
+        case '':
+          formCopy[index].value = '' 
       }
     })
   }
 
-  function editCheck() {
-    if ((form[0].value === null || form[0].value === "" ) && editing === false) {
+  function editCheck(cancelChanges: boolean) {
+    // reload window to throw out changes made
+    if (cancelChanges === true)
+      window.location.reload();
+    if ((form[0].value === null || form[0].value === "") && editing === false) {
       alert("You are not signed in")
     } else {
       setEditing(!editing)
     }
+  }
+
+  function logout() {
+    window.sessionStorage.clear();
+    window.location.reload()
   }
 
 
@@ -136,8 +136,15 @@ export const Profile = () => {
     info.forEach((item: any, index: any) => {
       items.push(
         <div key={index}>
-          <label htmlFor={item.name} className={style['userInfo']}>{item.label}
-            <div id={item.name} className="received">
+          <label
+            htmlFor={item.name}
+            className={style['userInfoLabel']}
+          >
+            {item.label}
+            <div
+              id={item.name}
+              className={style['userInfo']}
+            >
               {item.value}
             </div>
           </label>
@@ -155,11 +162,15 @@ export const Profile = () => {
         if (item.name === 'contactMethod') {
           items.push(
             <div key={index}>
-              <label key={index} htmlFor={item.name} className={style['userInfo']}>{item.label}
+              <label
+                htmlFor={item.name}
+                className={style['userInfoLabel']}
+              >
+                {item.label}
                 <select
                   id={item.name}
-                  className=""
                   value={contactMethod}
+                  className={style['userInfo']}
                   name={item.name}
                   onChange={handleContactChange}
                 >
@@ -173,10 +184,14 @@ export const Profile = () => {
         } else {
           items.push(
             <div key={index}>
-              <label htmlFor={item.name} className={style['userInfo']}>{item.label}
+              <label
+                htmlFor={item.name}
+                className={style['userInfoLabel']}
+              >
+                {item.label}
                 <select
                   id={item.name}
-                  className=""
+                  className={style['userInfo']}
                   name={item.name}
                   value={contactMethod}
                   onChange={handlePaymentChange}
@@ -191,11 +206,15 @@ export const Profile = () => {
       } else {
         items.push(
           <div key={index}>
-            <label htmlFor={item.name} className={style['userInfo']}>{item.label}
+            <label
+              htmlFor={item.name}
+              className={style['userInfoLabel']}
+            >
+              {item.label}
               <input
-                type="textbox"
+                type={item.type}
                 id={item.name}
-                className="received"
+                className={style['userInfo']}
                 value={form[index].value}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   updateField(e, index);
@@ -207,10 +226,6 @@ export const Profile = () => {
         )
       }
     })
-    if (items.length === 0)
-      items.push(
-        <div key="failure">Failed to find user information to edit</div>
-      )
     return <>{items}</>
   }
 
@@ -221,7 +236,7 @@ export const Profile = () => {
       <div className={buttons['buttonWrapper']}>
         <button
           className={buttons['fullscreenButton'] + " btn btn-outline-success"}
-          onClick={() => editCheck()}
+          onClick={() => editCheck(false)}
           hidden={editing ? true : false}
         >
           Edit Account Information
@@ -234,6 +249,24 @@ export const Profile = () => {
           onClick={postAccountUpdate}
         >
           Save
+        </button>
+      </div>
+      <div className={buttons['buttonWrapper']}>
+        <button
+          className={buttons['fullscreenButton'] + " btn btn-danger"}
+          hidden={editing ? false : true}
+          onClick={() => editCheck(true)}
+        >
+          Cancel changes
+        </button>
+      </div>
+      <div className={buttons['buttonWrapper']}>
+        <button
+          className={buttons['fullscreenButton'] + " btn btn-outline-danger"}
+          hidden={editing ? true : false}
+          onClick={() => logout()}
+        >
+          Logout
         </button>
       </div>
     </div>
