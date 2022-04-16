@@ -17,13 +17,31 @@ export const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (info[0].value === "" || info[0].value === null)
-      navigate("/login")
+    loginCheck() 
     if (currentId) {
       const inputElement = document.getElementById(currentId);
       if (inputElement) inputElement.focus();
     }
   });
+
+  // navigate to login if user is not logged in 
+  function loginCheck() {
+    const sessionUser = window.sessionStorage.getItem("username")
+    const isLoggedIn = async () => {
+      try {
+        if (sessionUser) {
+          const resp = await axios.get(routes.isLoggedIn, { withCredentials: true })
+          if (resp.data === "False") 
+            navigate("/login")
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    } 
+    isLoggedIn()
+  }
+
+
 
 
   function populateForm() {
@@ -49,6 +67,15 @@ export const Profile = () => {
   }
 
   function logout() {
+    const sendLogoutRequest = async () => {
+      try {
+        const resp = await axios.post(routes.signout, { withCredentials: true });
+        console.log(resp.data)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    sendLogoutRequest()
     window.sessionStorage.clear();
     window.location.reload()
   }
@@ -251,6 +278,7 @@ export const Profile = () => {
           Save
         </button>
       </div>
+
       <div className={buttons['buttonWrapper']}>
         <button
           className={buttons['fullscreenButton'] + " btn btn-danger"}
@@ -260,6 +288,17 @@ export const Profile = () => {
           Cancel changes
         </button>
       </div>
+
+      <Link to="/change-password" className={buttons['buttonWrapper']}>
+        <button
+          className={buttons['fullscreenButton'] + " btn btn-danger"}
+          hidden={editing ? true : false}
+        >
+          Change Password
+        </button>
+      </Link>
+
+
       <div className={buttons['buttonWrapper']}>
         <button
           className={buttons['fullscreenButton'] + " btn btn-outline-danger"}

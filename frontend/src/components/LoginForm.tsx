@@ -1,4 +1,4 @@
-import React, { useState, SyntheticEvent } from "react";
+import React, { useState, SyntheticEvent, useEffect } from "react";
 import axios from "axios";
 import { routes } from "../util/config";
 import { useNavigate, Link} from "react-router-dom";
@@ -10,6 +10,27 @@ export const LoginForm = (): JSX.Element => {
   const [password, setPassword] = useState("");
   const [signUpState, setSignUpState] = useState(false);
 
+
+
+  useEffect(() => {
+    loginCheck() 
+  })
+
+  function loginCheck() {
+    const sessionUser = window.sessionStorage.getItem("username")
+    const isLoggedIn = async () => {
+      try {
+        if (sessionUser) {
+          const resp = await axios.get(routes.isLoggedIn, { withCredentials: true })
+          if (resp.data === sessionUser) 
+            navigate("/profile")
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    } 
+    isLoggedIn()
+  }
 
 
   const navigate = useNavigate();
@@ -74,7 +95,7 @@ export const LoginForm = (): JSX.Element => {
         <div className={styles["buttonWrapper"]}>
           <input
             aria-label= 'password'
-            role='textbox'
+            role='password'
             name="password"
             id="password"
             value={password}
