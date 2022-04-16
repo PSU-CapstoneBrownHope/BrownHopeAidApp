@@ -57,8 +57,9 @@ export const Profile = () => {
     // reload window to throw out changes made
     if (cancelChanges === true)
       window.location.reload();
-    if ((form[0].value === null || form[0].value === "") && editing === false) {
-      alert("You are not signed in")
+    if (process.env.BROWSER){
+      if ((form[0].value === null || form[0].value === "") && editing === false) 
+        alert("You are not signed in")
     } else {
       setEditing(!editing)
     }
