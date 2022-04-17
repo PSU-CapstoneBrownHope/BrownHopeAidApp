@@ -49,13 +49,13 @@ export const accountFields: IAccountFields[] = [
     type: "email",
     value: ""
   },
-  {
+  /*{
     name: "contactMethod",
     label: "Contact Method",
     type: "select",
     options: ["Email", "Text", "Phone call"],
     value: ""
-  },
+  },*/
   {
     name: "paymentMethod",
     label: "Payment Method",
