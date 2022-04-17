@@ -59,6 +59,7 @@
     ]
   },
   "devDependencies": {
+    "@types/testing-library__react": "^10.2.0",
     "typings-for-css-modules-loader": "^1.7.0"
   }
 }
