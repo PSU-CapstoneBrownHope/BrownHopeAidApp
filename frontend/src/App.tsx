@@ -5,8 +5,8 @@ import { LoginForm } from "./components/LoginForm"
 import { SignUp } from "./components/SignUp"
 import { Nav } from "./components/Nav"
 import { LandingPage } from "./components/LandingPage"
+import { Redirect } from "./components/Redirect"
 import { ApplicationStatus } from './components/ApplicationStatus';
-import { Redirect } from './components/Redirect';
 
 
 /*  App contains the nav header and the routes for new pages
