@@ -31,16 +31,16 @@ export const accountFields: IAccountFields[] = [
     value: ""
   },
   {
-    name: "address",
-    label: "Address",
-    type: "text",
-    value: ""
-  },
-  {
     name: "phoneNumber",
     label: "Phone Number",
     type: "tel",
     pattern: "[0-9]{3}-[0-9]{3}-[0-9]{4}]",
+    value: ""
+  },
+  {
+    name: "address",
+    label: "Address",
+    type: "text",
     value: ""
   },
   {
@@ -49,13 +49,13 @@ export const accountFields: IAccountFields[] = [
     type: "email",
     value: ""
   },
-  /*{
+  {
     name: "contactMethod",
     label: "Contact Method",
     type: "select",
     options: ["Email", "Text", "Phone call"],
     value: ""
-  },*/
+  },
   {
     name: "paymentMethod",
     label: "Payment Method",

@@ -130,7 +130,7 @@ export const Profile = () => {
 
     const sendInfoRequest = async () => {
       try {
-        const resp = await axios.post(routes.getAccountInfo, newLoginRequest);
+        const resp = await axios.post(routes.getAccountInfo, newLoginRequest, {withCredentials: true});
         console.log(resp.data);
         if (resp.data === "No such user exists") {
           alert("No such user exists");
@@ -163,19 +163,16 @@ export const Profile = () => {
     }
     info.forEach((item: any, index: any) => {
       items.push(
-        <div key={index}>
-          <label
-            htmlFor={item.name}
-            className={style['userInfoLabel']}
-          >
-            {item.label}
-            <div
-              id={item.name}
-              className={style['userInfo']}
-            >
-              {item.value}
-            </div>
-          </label>
+        <div key={index}
+          className={style['userInfo']}
+          id={item.name}
+        >
+          <div>
+            {item.label}:
+          </div>
+          <div className={style["fieldData"]}>
+            {item.value}
+          </div>
         </div>
       )
     });
@@ -258,9 +255,9 @@ export const Profile = () => {
   }
 
   return (
-    <div>
+    <div className={style["userInfoWrapper"]}>
       <h1>Account Information</h1>
-      {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
+        {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
       <div className={buttons['buttonWrapper']}>
         <button
           className={buttons['fullscreenButton'] + " btn btn-outline-success"}
