@@ -289,17 +289,16 @@ export const Profile = () => {
 
       <Link to="/change-password" className={buttons['buttonWrapper']}>
         <button
-          className={buttons['fullscreenButton'] + " btn btn-danger"}
+          className={buttons['fullscreenButton'] + " btn btn-secondary"}
           hidden={editing ? true : false}
         >
           Change Password
         </button>
       </Link>
 
-
       <div className={buttons['buttonWrapper']}>
         <button
-          className={buttons['fullscreenButton'] + " btn btn-outline-danger"}
+          className={buttons['fullscreenButton'] + " btn btn-danger"}
           hidden={editing ? true : false}
           onClick={() => logout()}
         >
