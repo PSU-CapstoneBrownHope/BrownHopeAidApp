@@ -29,9 +29,7 @@ test('Editting elements present', async() => {
     expect(screen.getByText("Address")).toBeInTheDocument
     expect(screen.getByText("Phone Number")).toBeInTheDocument
     expect(screen.getByText("Email Address")).toBeInTheDocument
-    expect(screen.getByText("Contact Method")).toBeInTheDocument
     expect(screen.getByText("Payment Method")).toBeInTheDocument
-   
     expect(screen.getByText("Edit Account Information")).toBeInTheDocument
     expect(screen.getByText("Save")).toBeInTheDocument
     expect(screen.getByText("Cancel Changes")).toBeInTheDocument
@@ -39,7 +37,6 @@ test('Editting elements present', async() => {
     expect(screen.getByText("Logout")).toBeInTheDocument
 
     
-
 
   /**
    * To check a button has disappeared, get a variable pointing to it when 
@@ -54,7 +51,34 @@ test('Editting elements present', async() => {
 
   const editBtn = screen.getByRole("button", { name: "Edit Account Information" });
   //test after press edit button
-  fireEvent.click(editBtn);
+    fireEvent.click(editBtn);
+
+    const username = screen.getByRole("textbox", { name: "User Name" });
+    fireEvent.change(username, { target: { value: "foo" } });
+    expect(username.value).toBe("foo")
+
+    const first = screen.getByRole("textbox", { name: "First Name" });
+    fireEvent.change(username, { target: { value: "foo" } });
+    expect(username.value).toBe("foo")
+
+    const last = screen.getByRole("textbox", { name: "Last Name" });
+    fireEvent.change(username, { target: { value: "foo" } });
+    expect(username.value).toBe("foo")
+
+    const phone = screen.getByRole("textbox", { name: "Phone Number" });
+    fireEvent.change(username, { target: { value: "foo" } });
+    expect(username.value).toBe("foo")
+
+    const address = screen.getByRole("textbox", { name: "Address" });
+    fireEvent.change(username, { target: { value: "foo" } });
+    expect(username.value).toBe("foo")
+
+    const email = screen.getByRole("textbox", { name: "Email Address" });
+    fireEvent.change(username, { target: { value: "foo" } });
+    expect(username.value).toBe("foo")
+
+
+
 
   const saveBtn = screen.getByRole("button", { name: "Save" })
   expect(saveBtn).toBeVisible

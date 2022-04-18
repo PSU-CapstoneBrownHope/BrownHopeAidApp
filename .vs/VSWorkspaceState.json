@@ -11,6 +11,6 @@
     "\\frontend\\src\\__mocks__",
     "\\frontend\\src\\__tests__"
   ],
-  "SelectedNode": "\\frontend\\src\\__tests__\\Profile.test.tsx",
+  "SelectedNode": "\\frontend\\src\\util\\util.ts",
   "PreviewInSolutionExplorer": false
 }
