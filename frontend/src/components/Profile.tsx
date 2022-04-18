@@ -3,7 +3,6 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { routes } from '../util/config';
 import { accountFields } from "../util/util";
-// says this is an error but it clearly isn't cause it works
 import style from "../styles/AccountInfo.module.css"
 import buttons from "../styles/Buttons.module.css"
 
@@ -30,11 +29,10 @@ export const Profile = () => {
     const sessionUser = window.sessionStorage.getItem("username")
     const isLoggedIn = async () => {
       try {
-        if (sessionUser === null || sessionUser==="") {
-          navigate("/login")
-          //const resp = await axios.get(routes.isLoggedIn, { withCredentials: true })
-          //if (resp.data === "False") 
-            //navigate("/login")
+        if (sessionUser) {
+          const resp = await axios.get(routes.isLoggedIn, { withCredentials: true })
+          if (resp.data === "False") 
+            navigate("/login")
         }
       } catch (err) {
         console.error(err)
@@ -283,7 +281,7 @@ export const Profile = () => {
           hidden={editing ? false : true}
           onClick={() => editCheck(true)}
         >
-          Cancel changes
+          Cancel Changes
         </button>
       </div>
 
