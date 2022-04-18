@@ -16,13 +16,23 @@ export const Profile = () => {
   const [currentId, setCurrentId] = useState("");
   const navigate = useNavigate();
 
+  // constantly runs
   useEffect(() => {
-    loginCheck() 
     if (currentId) {
       const inputElement = document.getElementById(currentId);
       if (inputElement) inputElement.focus();
     }
   });
+
+  // runs only once because of the empty array
+  useEffect(() => {
+    const sessionUser = window.sessionStorage.getItem("username")
+    form[0].value = sessionUser;
+    info[0].value = sessionUser;
+    loginCheck()
+    getExistingAccountInfo()
+  }, [])
+
 
   // navigate to login if user is not logged in 
   function loginCheck() {
@@ -33,33 +43,24 @@ export const Profile = () => {
           navigate("/login")
           //const resp = await axios.get(routes.isLoggedIn, { withCredentials: true })
           //if (resp.data === "False") 
-            //navigate("/login")
+          //navigate("/login")
         }
       } catch (err) {
         console.error(err)
       }
-    } 
+    }
     isLoggedIn()
   }
 
 
 
 
-  function populateForm() {
-    const formCopy: any = [...form];
-    form.forEach((item: any, index: any) => {
-      if (item.value === null) {
-        formCopy[index].value = '' 
-      }
-    })
-  }
-
   function editCheck(cancelChanges: boolean) {
     // reload window to throw out changes made
     if (cancelChanges === true)
       window.location.reload();
-    if (process.env.BROWSER){
-      if ((form[0].value === null || form[0].value === "") && editing === false) 
+    if (process.env.BROWSER) {
+      if ((form[0].value === null || form[0].value === "") && editing === false)
         alert("You are not signed in")
     } else {
       setEditing(!editing)
@@ -80,10 +81,24 @@ export const Profile = () => {
     window.location.reload()
   }
 
+  // https://tomduffytech.com/how-to-format-phone-number-in-javascript/
+  function formatPhoneNumber(value: String) {
+    if (!value) return value;
+    const phoneNumber = value.replace(/[^\d]/g, '');
+    const phoneNumberLength = phoneNumber.length;
+    if (phoneNumberLength < 4) return phoneNumber;
+    if (phoneNumberLength < 7) {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+    }
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice( 3, 6)}-${phoneNumber.slice(6, 10)}`;
+  }
+
 
   //
   const updateField = (e: React.BaseSyntheticEvent, index: number): void => {
-    const elementValue = (e.target as HTMLInputElement).value;
+    let elementValue = (e.target as HTMLInputElement).value;
+    if (index === 3)
+      elementValue = formatPhoneNumber(elementValue)
     const elementId = (e.target as HTMLInputElement).id;
     const formCopy: any = [...form];
     formCopy[index].value = elementValue;
@@ -129,8 +144,8 @@ export const Profile = () => {
 
     const sendInfoRequest = async () => {
       try {
-        const resp = await axios.post(routes.getAccountInfo, newLoginRequest, {withCredentials: true});
-        console.log(resp.data);
+        const resp = await axios.post(routes.getAccountInfo, newLoginRequest, { withCredentials: true });
+        console.log(JSON.stringify(resp.data));
         if (resp.data === "No such user exists") {
           alert("No such user exists");
         }
@@ -179,7 +194,6 @@ export const Profile = () => {
   }
 
   const AccountFieldsInputs = () => {
-    populateForm()
     let items: any = [];
     form.forEach((item: any, index: any) => {
       if (item.type === 'select') {
@@ -256,7 +270,7 @@ export const Profile = () => {
   return (
     <div className={style["userInfoWrapper"]}>
       <h1>Account Information</h1>
-        {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
+      {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
       <div className={buttons['buttonWrapper']}>
         <button
           className={buttons['fullscreenButton'] + " btn btn-outline-success"}

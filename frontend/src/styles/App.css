@@ -2,7 +2,6 @@
 
 .App {
   text-align: center;
-  height: 100%;
 }
 
 @font-face {
@@ -12,8 +11,7 @@
 
 body{
   min-height:100vh;
-  max-height:fit-content;
-  background: linear-gradient(to top, #e6ac19da, white 30%);
+  background: linear-gradient(to top, #e6ac19da, white 30vh);
   margin: auto;
   max-width: 1400px;
   overflow: auto;
@@ -93,6 +91,10 @@ h1{
   font-family: bebas-neue;
   color: #146467;
   margin-left: 1.5vmin;
+}
+
+.footer{
+  height:30vh;
 }
 
 

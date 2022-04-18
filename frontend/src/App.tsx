@@ -7,6 +7,7 @@ import { Nav } from "./components/Nav"
 import { LandingPage } from "./components/LandingPage"
 import { Redirect } from "./components/Redirect"
 import { ApplicationStatus } from './components/ApplicationStatus';
+import { Footer } from './components/Footer';
 
 
 /*  App contains the nav header and the routes for new pages
@@ -30,6 +31,7 @@ function App() {
         <Route path="sign-up" element={<SignUp />} />
         <Route path=":id" element={<Redirect/>}/>
       </Routes>
+      <Footer/>
     </div>
   );
 }

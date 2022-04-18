@@ -13,7 +13,7 @@ function getUsername() {
 
 export const accountFields: IAccountFields[] = [ 
   {
-    name: "username",
+    name: "userName",
     label: "User Name",
     type: "text",
     value: getUsername()
