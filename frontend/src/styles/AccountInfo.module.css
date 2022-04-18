@@ -11,7 +11,8 @@
 }
 
 .userInfoLabel{
-  justify-self: left;
+  text-align: left;
+  font-size: calc(12px + 1vmin);
 }
 
 .fieldData{
