@@ -29,10 +29,11 @@ export const Profile = () => {
     const sessionUser = window.sessionStorage.getItem("username")
     const isLoggedIn = async () => {
       try {
-        if (sessionUser) {
-          const resp = await axios.get(routes.isLoggedIn, { withCredentials: true })
-          if (resp.data === "False") 
-            navigate("/login")
+        if (!sessionUser) {
+          navigate("/login")
+          //const resp = await axios.get(routes.isLoggedIn, { withCredentials: true })
+          //if (resp.data === "False") 
+            //navigate("/login")
         }
       } catch (err) {
         console.error(err)
