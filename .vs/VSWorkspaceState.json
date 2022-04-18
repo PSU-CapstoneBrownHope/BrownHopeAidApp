@@ -3,15 +3,14 @@
     "",
     "\\back",
     "\\back\\src",
-    "\\back\\src\\routes",
     "\\back\\src\\__test__",
     "\\frontend",
-    "\\frontend\\public",
     "\\frontend\\src",
     "\\frontend\\src\\components",
+    "\\frontend\\src\\util",
     "\\frontend\\src\\__mocks__",
     "\\frontend\\src\\__tests__"
   ],
-  "SelectedNode": "\\frontend\\src\\styles\\Buttons.module.css",
+  "SelectedNode": "\\frontend\\src\\__tests__\\Profile.test.tsx",
   "PreviewInSolutionExplorer": false
 }

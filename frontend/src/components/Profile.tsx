@@ -284,7 +284,7 @@ export const Profile = () => {
           hidden={editing ? false : true}
           onClick={() => editCheck(true)}
         >
-          Cancel changes
+          Cancel Changes
         </button>
       </div>
 
