@@ -26,11 +26,13 @@ export const Profile = () => {
 
   // runs only once because of the empty array
   useEffect(() => {
-    const sessionUser = window.sessionStorage.getItem("username")
-    form[0].value = sessionUser;
-    info[0].value = sessionUser;
-    loginCheck()
-    getExistingAccountInfo()
+    if (process.env.BROWSER) {
+      const sessionUser = window.sessionStorage.getItem("username")
+      form[0].value = sessionUser;
+      info[0].value = sessionUser;
+      loginCheck()
+      getExistingAccountInfo()
+    }
   }, [])
 
 
@@ -196,6 +198,8 @@ export const Profile = () => {
   const AccountFieldsInputs = () => {
     let items: any = [];
     form.forEach((item: any, index: any) => {
+      if (form[index].value === undefined || form[index].value === null)
+        form[index].value = "";
       if (item.type === 'select') {
         if (item.name === 'contactMethod') {
           items.push(

@@ -18,7 +18,8 @@ afterEach(() => {
   document.body.removeChild(container); 
 });
 
-test('Editting elements present', async() => {
+test('Editting elements present', async () => {
+  window.sessionStorage.setItem("username", "mack")
   act(() => {
     ReactDOMClient.createRoot(container).render(<BrowserRouter><Profile /></BrowserRouter>);
   });
