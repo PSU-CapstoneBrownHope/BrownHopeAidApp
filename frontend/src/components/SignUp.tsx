@@ -59,7 +59,7 @@ export const SignUp = (): JSX.Element => {
   }
 
   return (
-    <>
+    <div className="currentPage">
       <h1>Create Your Account</h1>
       <form id="signUp" className={styles["buttonGroup"]} onSubmit={handleSignupSubmit}>
         <div className={styles["buttonWrapper"]}>
@@ -109,6 +109,6 @@ export const SignUp = (): JSX.Element => {
       <Link to="/login" className={styles['buttonWrapper']}>
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Back to Login</button>
       </Link>
-    </>
+    </div>
   );
 }

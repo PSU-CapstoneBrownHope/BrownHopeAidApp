@@ -33,7 +33,7 @@ export const ApplicationStatus = (): JSX.Element => {
   }
 
   return (
-    <>
+    <div className="currentPage">
       <h1>check the status of your application</h1>
       <form id="applicationStatusForm" className={styles['buttonGroup']} onSubmit={checkApplicationStatus}>
         <div className={styles["buttonWrapper"]}>
@@ -83,6 +83,6 @@ export const ApplicationStatus = (): JSX.Element => {
           Back to home
         </button>
       </Link>
-    </>
+    </div>
   );
 }

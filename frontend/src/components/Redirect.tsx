@@ -18,7 +18,7 @@ export const Redirect = (): JSX.Element => {
   const volunteerURL = "https://www.brownhope.org/volunteer"
 
   return (
-    <div>
+    <div className="currentPage">
       <h1>Success!</h1>
       <p>Thank you for submitting the { applicationName}!</p>
       <p>If you would like to track the status of your application:</p>

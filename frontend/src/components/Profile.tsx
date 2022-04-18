@@ -268,7 +268,7 @@ export const Profile = () => {
   }
 
   return (
-    <div className={style["userInfoWrapper"]}>
+    <div className="currentPage">
       <h1>Account Information</h1>
       {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
       <div className={buttons['buttonWrapper']}>

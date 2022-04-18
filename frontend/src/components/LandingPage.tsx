@@ -5,7 +5,7 @@ import styles from "../styles/Buttons.module.css"
 
 export const LandingPage = (): JSX.Element => {
   return (
-    <>
+    <div className="currentPage">
       <h1 id="landingHeader"> BROWN HOPE AID APP</h1>
       <div className={styles["buttonGroup"]}>
           <Link to="/login" className={styles['buttonWrapper']}>
@@ -19,6 +19,6 @@ export const LandingPage = (): JSX.Element => {
             </button>
           </Link>
       </div>
-    </>
+    </div>
   );
 }
