@@ -1,23 +1,24 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import styles from "../styles/Buttons.module.css"
 
 export const LandingPage = (): JSX.Element => {
   return (
-    <>
+    <div className="currentPage">
       <h1 id="landingHeader"> BROWN HOPE AID APP</h1>
       <div className={styles["buttonGroup"]}>
-        <form className={styles["buttonWrapper"]} method="get" action="/login">
+          <Link to="/login" className={styles['buttonWrapper']}>
           <button type="submit" className={styles["fullscreenButton"] + " " + styles["transparentButton"]} id="toLoginSignUp">
             Login/Sign up
           </button>
-        </form>
-        <form className={styles["buttonWrapper"]} method="get" action="/application-status">
+          </Link>
+          <Link to="/application-status" className={styles['buttonWrapper']}>
           <button type="submit" className={styles["fullscreenButton"] + " " + styles["transparentButton"]} id="checkAppStatus">
             Check Application status
-          </button>
-        </form>
+            </button>
+          </Link>
       </div>
-    </>
+    </div>
   );
 }

@@ -10,10 +10,11 @@
 }
 
 body{
-  height: 100vh;
-  background: linear-gradient(to top, #e6ac19da, white 30%);
+  background: linear-gradient(to top, #e6ac19da, white 30vh);
+  height: 99vh;
   margin: auto;
   max-width: 1400px;
+  margin-bottom: 10px;
 }
 
 .appHeader {
@@ -25,7 +26,8 @@ body{
   color: #146467;
   font-family: bebas-neue;
   font-weight: 400;
-  font-style: normal
+  font-style: normal;
+  background-color: transparent;
 }
 
 nav{
@@ -89,6 +91,18 @@ h1{
   font-family: bebas-neue;
   color: #146467;
   margin-left: 1.5vmin;
+}
+
+.footer{
+  height:20vh;
+}
+
+.currentPage{
+  overflow: auto;
+  height: 65vh;
+  width: fit-content;
+  margin:auto;
+  padding: 10px;
 }
 
 

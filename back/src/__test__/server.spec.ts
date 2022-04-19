@@ -32,9 +32,9 @@ describe('get info route', () => {
             userName: 'user'
         
         })
-        expect(res.statusCode).toEqual(500)
+        expect(res.statusCode).toEqual(401)
         expect((res) => {
-            res.body.data[0].userName = 'user';
+            res.body.data.userName = 'user';
          
 
         })

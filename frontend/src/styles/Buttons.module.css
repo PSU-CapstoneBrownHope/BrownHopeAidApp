@@ -10,6 +10,7 @@
   padding: 10px;
   border-radius: calc(5px + 1vmin);
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .textField{
@@ -18,6 +19,7 @@
   max-width: 575px;
   border-radius: 3px;
   padding: 10px;
+  margin-top: 10px;
 }
 
 .buttonGroup{
@@ -30,7 +32,6 @@
 
 .buttonWrapper{
   display: flex;
-  padding-top: 10px;
   width:fit-content;
   margin:auto
 }
@@ -46,4 +47,3 @@
   background-color: #146467;
   border-color: white
 }
-

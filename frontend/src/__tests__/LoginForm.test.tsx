@@ -36,7 +36,8 @@ test('enter username and password', async() => {
   fireEvent.change(username, { target: { value: "foo" } });
   // weird error with value, exists but doesn't think it does
   expect(username.value).toBe("foo") 
-  const password = screen.getByRole("textbox", { name: "password" });
+  
+  const password = screen.getByRole("password", { name: "password" });
   fireEvent.change(password, { target: { value: "bar" } });
   expect(password.value).toBe("bar") 
 });

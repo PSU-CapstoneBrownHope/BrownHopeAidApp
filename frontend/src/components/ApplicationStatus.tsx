@@ -2,7 +2,7 @@ import React, { useState, SyntheticEvent } from "react";
 import styles from "../styles/Buttons.module.css"
 import axios from "axios";
 import { routes } from "../util/config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 
 export const ApplicationStatus = (): JSX.Element => {
@@ -21,7 +21,7 @@ export const ApplicationStatus = (): JSX.Element => {
     };
     const sendApplicationStatusRequest = async () => {
       try {
-        const resp = await axios.post(routes.getAllApplications, newApplicationStatusRequest, { withCredentials: true });
+        const resp = await axios.post(routes.application_status, newApplicationStatusRequest, { withCredentials: true });
         console.log(resp.data);
 
       } catch (err) {
@@ -33,7 +33,7 @@ export const ApplicationStatus = (): JSX.Element => {
   }
 
   return (
-    <>
+    <div className="currentPage">
       <h1>check the status of your application</h1>
       <form id="applicationStatusForm" className={styles['buttonGroup']} onSubmit={checkApplicationStatus}>
         <div className={styles["buttonWrapper"]}>
@@ -78,9 +78,11 @@ export const ApplicationStatus = (): JSX.Element => {
             <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Check Application Status</button>
           </div>
       </form>
-      <form className={styles["buttonWrapper"]} method="get" action="/">
-        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Back to home</button>
-      </form>
-    </>
+      <Link to="/" className={styles['buttonWrapper']}>
+        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>
+          Back to home
+        </button>
+      </Link>
+    </div>
   );
 }

@@ -4,8 +4,8 @@ import dotenv from "dotenv"
  * above line is causing errors, needs to be resolved to use .env
  */
 //const server = process.env.EXTERNAL_IP;
-//const server = "localhost:5000";
-const server = '34.82.220.171';
+const server = "localhost:5000";
+//const server = '34.82.220.171';
 export const routes = {
   login: `http://${server}/api/airtable/login/`,
   signup: `http://${server}/api/airtable/signup/`,
@@ -17,6 +17,6 @@ export const routes = {
   updatePassword: `http://${server}/api/airtable/update_password/`,
   verifyUser: `http://${server}/api/reset/forgot`,
   resetPassword: `http://${server}/api/reset/:token`,
-  getAllApplications: `http://${server}/api/airtable/allApplications`,
+  application_status: `http://${server}/api/airtable/application_status`,
 };
 
