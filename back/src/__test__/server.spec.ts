@@ -29,14 +29,12 @@ describe('get info route', () => {
         const res = await supertest(appx)
         .post('/api/airtable/getInfo')
         .send({
-            userName: 'user'
+            userName: undefined
         
         })
-        expect(res.statusCode).toEqual(500)
+        expect(res.statusCode).toEqual(200)
         expect((res) => {
-            res.body.data.userName = 'user';
-         
-
+            res.body.data.userName = undefined;
         })
       
     })
