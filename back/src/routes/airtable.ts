@@ -105,7 +105,7 @@ airtableRouter.post('/signout', function(req, res, next) {
 
 
 airtableRouter.post("/getInfo", function (req, res) {
-  if(req.body.userName == undefined){
+  if(req.body[0].userName == undefined){
     res.end();
     return;
   }
