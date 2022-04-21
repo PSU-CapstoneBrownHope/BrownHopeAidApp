@@ -97,12 +97,18 @@ h1{
   height:20vh;
 }
 
+.currentPage::-webkit-scrollbar{
+  display: none;
+}
+
 .currentPage{
   overflow: auto;
   height: 65vh;
   width: fit-content;
   margin:auto;
   padding: 10px;
+  -ms-overflow-style: none; 
+  scrollbar-width: none;  
 }
 
 

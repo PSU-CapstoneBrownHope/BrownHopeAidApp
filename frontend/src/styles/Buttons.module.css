@@ -6,7 +6,6 @@
   text-align: center;
   width: 70vw;
   max-width: 575px;
-  height: 40%;
   padding: 10px;
   border-radius: calc(5px + 1vmin);
   cursor: pointer;
@@ -31,8 +30,11 @@
 }
 
 .buttonWrapper{
+  font-size: calc(12px + 1vmin);
   display: flex;
+  flex-flow:column;
   width:fit-content;
+  text-align: left;
   margin:auto
 }
 

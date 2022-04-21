@@ -15,15 +15,15 @@ export const LoginForm = (): JSX.Element => {
 
   useEffect(() => {
     loginCheck() 
-  })
+  },[])
 
   function loginCheck() {
-    const sessionUser = window.sessionStorage.getItem("username")
+    const sessionUser = sessionStorage.getItem("username")
     const isLoggedIn = async () => {
       try {
         if (sessionUser) {
           const resp = await axios.get(routes.isLoggedIn, { withCredentials: true })
-          if (resp.data === sessionUser) 
+          if (resp.data[0].fields.Username === sessionUser) 
             navigate("/profile")
         }
       } catch (err) {
@@ -97,6 +97,7 @@ export const LoginForm = (): JSX.Element => {
           <input
             aria-label= 'password'
             role='password'
+            type="password"
             name="password"
             id="password"
             value={password}

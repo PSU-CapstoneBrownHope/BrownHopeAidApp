@@ -24,37 +24,6 @@ export const Profile = () => {
     }
   });
 
-  // runs only once because of the empty array
-  useEffect(() => {
-    if (process.env.BROWSER) {
-      const sessionUser = window.sessionStorage.getItem("username")
-      form[0].value = sessionUser;
-      info[0].value = sessionUser;
-      loginCheck()
-      getExistingAccountInfo()
-    }
-  }, [])
-
-
-  // navigate to login if user is not logged in 
-  function loginCheck() {
-    const sessionUser = window.sessionStorage.getItem("username")
-    const isLoggedIn = async () => {
-      try {
-        if (!sessionUser) {
-          navigate("/login")
-          //const resp = await axios.get(routes.isLoggedIn, { withCredentials: true })
-          //if (resp.data === "False") 
-          //navigate("/login")
-        }
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    isLoggedIn()
-  }
-
-
 
 
   function editCheck(cancelChanges: boolean) {
@@ -140,6 +109,7 @@ export const Profile = () => {
   }
 
   function getExistingAccountInfo() {
+    accountFields[0].value = sessionStorage.getItem("username") 
     const newLoginRequest = {
       userName: accountFields[0].value,
     };
@@ -147,9 +117,8 @@ export const Profile = () => {
     const sendInfoRequest = async () => {
       try {
         const resp = await axios.post(routes.getAccountInfo, newLoginRequest, { withCredentials: true });
-        console.log(JSON.stringify(resp.data));
-        if (resp.data === "No such user exists") {
-          alert("No such user exists");
+        if (resp.data === "") {
+          navigate("/login")
         }
         else {
           const formCopy: any = [...form];
@@ -212,7 +181,7 @@ export const Profile = () => {
                 <select
                   id={item.name}
                   value={contactMethod}
-                  className={style['userInfo']}
+                  className={style['userInfo'] + " " +  style['textField']}
                   name={item.name}
                   onChange={handleContactChange}
                 >
@@ -233,7 +202,7 @@ export const Profile = () => {
                 {item.label}
                 <select
                   id={item.name}
-                  className={style['userInfo']}
+                  className={style['userInfo'] + " "+ style['textField']}
                   name={item.name}
                   value={contactMethod}
                   onChange={handlePaymentChange}
@@ -256,7 +225,7 @@ export const Profile = () => {
               <input
                 type={item.type}
                 id={item.name}
-                className={style['userInfo']}
+                className={style['userInfo']+ " " + style['textField']}
                 value={form[index].value}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   updateField(e, index);
@@ -304,7 +273,7 @@ export const Profile = () => {
         </button>
       </div>
 
-      <Link to="/change-password" className={buttons['buttonWrapper']}>
+      <Link to="/update-password" className={buttons['buttonWrapper']}>
         <button
           className={buttons['fullscreenButton'] + " btn btn-secondary"}
           hidden={editing ? true : false}

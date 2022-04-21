@@ -86,6 +86,7 @@ export const SignUp = (): JSX.Element => {
           <input
             name="password"
             id="password"
+            type="password"
             placeholder='password'
             onChange={(e) => setPassword(e.target.value)}
             className={styles['textField']}
@@ -97,6 +98,7 @@ export const SignUp = (): JSX.Element => {
             name="verifyPassword"
             id="verifyPassword"
             placeholder='confirm password'
+            type="password"
             onChange={(e) => setVerifyPassword(e.target.value)}
             className={styles['textField']}
             required

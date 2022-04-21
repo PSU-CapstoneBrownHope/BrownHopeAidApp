@@ -1,5 +1,14 @@
 import React from 'react';
-export const Nav = (): JSX.Element =>  {
+export const Nav = (): JSX.Element => {
+  
+  function getUsername() {
+    const username = sessionStorage.getItem('username');
+    if (username === "" || username === null)
+      return "PROFILE";
+    else 
+      return username
+  }
+
   return (
       <header className="appHeader">
       <nav aria-label="nav">
@@ -8,7 +17,7 @@ export const Nav = (): JSX.Element =>  {
         </figure>
         <ul>
           <li><a aria-label="Home" href="/">HOME</a></li>
-          <li><a aria-label="Profile" href="profile">PROFILE</a></li>
+          <li><a aria-label="Profile" href="profile"> {getUsername()} </a></li>
         </ul>
       </nav>
       </header>
