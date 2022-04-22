@@ -29,6 +29,7 @@ function App() {
         <Route path="application-status" element={<ApplicationStatus />} />
         <Route path="profile" element={<Profile />} />
         <Route path="login" element={<LoginForm />} />
+        <Route path="sign-up/:id" element={<SignUp />} />
         <Route path="sign-up" element={<SignUp />} />
         <Route path="update-password" element={<UpdatePassword/>} />
         <Route path=":id" element={<Redirect/>}/>

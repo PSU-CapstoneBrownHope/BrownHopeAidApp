@@ -1,7 +1,4 @@
-import React, { useState, SyntheticEvent, useEffect } from "react";
 import styles from "../styles/Buttons.module.css"
-import axios from "axios";
-import { routes } from "../util/config";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 export const Redirect = (): JSX.Element => {
@@ -16,6 +13,8 @@ export const Redirect = (): JSX.Element => {
   const contactEmail = ""
   const contactURL = "https://www.brownhope.org/contact"
   const volunteerURL = "https://www.brownhope.org/volunteer"
+
+  const navigate = useNavigate()
 
   return (
     <div className="currentPage">

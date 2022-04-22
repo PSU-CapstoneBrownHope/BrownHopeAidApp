@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 export const Nav = (): JSX.Element => {
-  
+ 
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    getUsername()
+  })
+
   function getUsername() {
-    const username = sessionStorage.getItem('username');
-    if (username === "" || username === null)
-      return "PROFILE";
+    const ssUsername = sessionStorage.getItem('username');
+    if (ssUsername === "" || ssUsername === null)
+      setUsername("PROFILE");
     else 
-      return username
+      setUsername(ssUsername);
   }
 
   return (
@@ -17,7 +23,7 @@ export const Nav = (): JSX.Element => {
         </figure>
         <ul>
           <li><a aria-label="Home" href="/">HOME</a></li>
-          <li><a aria-label="Profile" href="profile"> {getUsername()} </a></li>
+          <li><a aria-label="Profile" href="profile"> {username} </a></li>
         </ul>
       </nav>
       </header>

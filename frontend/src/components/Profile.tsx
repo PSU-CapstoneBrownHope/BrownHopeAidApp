@@ -164,6 +164,21 @@ export const Profile = () => {
     return <>{items}</>
   }
 
+  const createOptions = (options: any) => {
+    let items: any = []
+    options.forEach((item: any, index: any) => {
+      items.push(
+        <option
+          key={item}
+          value={item}
+        >
+          {item}
+        </option>    
+      )
+    });
+    return <>{items}</>
+  }
+
   const AccountFieldsInputs = () => {
     let items: any = [];
     form.forEach((item: any, index: any) => {
@@ -172,8 +187,8 @@ export const Profile = () => {
       if (item.type === 'select') {
         if (item.name === 'contactMethod') {
           items.push(
-            <div key={index}>
               <label
+                key={index}
                 htmlFor={item.name}
                 className={style['userInfoLabel']}
               >
@@ -184,18 +199,15 @@ export const Profile = () => {
                   className={style['userInfo'] + " " +  style['textField']}
                   name={item.name}
                   onChange={handleContactChange}
-                >
-                  <option value='Email'>Email</option>
-                  <option value='Text'>Text</option>
-                  <option value='Phone call'>Phone call</option>
+              >
+                {createOptions(item.options)}
                 </select>
               </label>
-            </div>
           )
         } else {
           items.push(
-            <div key={index}>
               <label
+                key={index}
                 htmlFor={item.name}
                 className={style['userInfoLabel']}
               >
@@ -204,20 +216,18 @@ export const Profile = () => {
                   id={item.name}
                   className={style['userInfo'] + " "+ style['textField']}
                   name={item.name}
-                  value={contactMethod}
+                  value={paymentMethod}
                   onChange={handlePaymentChange}
                 >
-                  <option value='online'>Online</option>
-                  <option value='check'>Check</option>
+                  {createOptions(item.options)}
                 </select>
               </label>
-            </div>
           )
         }
       } else {
         items.push(
-          <div key={index}>
             <label
+              key={index}
               htmlFor={item.name}
               className={style['userInfoLabel']}
             >
@@ -233,7 +243,6 @@ export const Profile = () => {
               >
               </input>
             </label>
-          </div>
         )
       }
     })

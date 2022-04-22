@@ -21,11 +21,14 @@ export const LoginForm = (): JSX.Element => {
     const sessionUser = sessionStorage.getItem("username")
     const isLoggedIn = async () => {
       try {
-        if (sessionUser) {
-          const resp = await axios.get(routes.isLoggedIn, { withCredentials: true })
-          if (resp.data[0].fields.Username === sessionUser) 
-            navigate("/profile")
-        }
+        if (sessionUser !== "" && sessionUser !== null) {
+          const resp = await axios.get(routes.isLoggedIn,
+            {withCredentials: true })
+          console.log(JSON.stringify(resp))
+          navigate("/profile")
+          //if (resp.data === sessionUser) 
+            //navigate("/profile")
+        }  
       } catch (err) {
         console.error(err)
       }
@@ -80,7 +83,8 @@ export const LoginForm = (): JSX.Element => {
     <div className="currentPage">
       <h1>Login to your account</h1>
       <form id="loginForm" className={styles["buttonGroup"]} onSubmit={handleLoginSubmit}>
-        <div className={styles["buttonWrapper"]}>
+        <label htmlFor="username" className={styles["buttonWrapper"]}>
+          Username:
           <input
             role='textbox'
             aria-label= 'username'
@@ -92,8 +96,9 @@ export const LoginForm = (): JSX.Element => {
             className={styles['textField']}
             required
           />
-        </div>
-        <div className={styles["buttonWrapper"]}>
+        </label>
+        <label htmlFor="password" className={styles["buttonWrapper"]}>
+          Password:
           <input
             aria-label= 'password'
             role='password'
@@ -106,7 +111,7 @@ export const LoginForm = (): JSX.Element => {
             className={styles['textField']}
             required
           />
-        </div>
+        </label>
           <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Login</button>
       </form>
       <Link to="/sign-up" className={styles['buttonWrapper']}>

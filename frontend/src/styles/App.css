@@ -105,6 +105,7 @@ h1{
   overflow: auto;
   height: 65vh;
   width: fit-content;
+  max-width: 1100px;
   margin:auto;
   padding: 10px;
   -ms-overflow-style: none; 
