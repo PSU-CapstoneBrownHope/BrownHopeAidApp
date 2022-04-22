@@ -6,10 +6,10 @@
   text-align: center;
   width: 70vw;
   max-width: 575px;
-  height: 40%;
   padding: 10px;
   border-radius: calc(5px + 1vmin);
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .textField{
@@ -18,6 +18,7 @@
   max-width: 575px;
   border-radius: 3px;
   padding: 10px;
+  margin-top: 10px;
 }
 
 .buttonGroup{
@@ -29,9 +30,11 @@
 }
 
 .buttonWrapper{
+  font-size: calc(12px + 1vmin);
   display: flex;
-  padding-top: 10px;
+  flex-flow:column;
   width:fit-content;
+  text-align: left;
   margin:auto
 }
 
@@ -46,4 +49,3 @@
   background-color: #146467;
   border-color: white
 }
-

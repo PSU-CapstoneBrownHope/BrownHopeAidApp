@@ -1,0 +1,21 @@
+.userInfo{
+  display: flex;
+  flex-direction: row;
+  width: 70vw;
+  max-width: 575px;
+  margin: auto;
+  text-align:left;
+  justify-content: space-between;
+  font-size: calc(16px + 1vmin);
+  padding: 5px;
+}
+
+.userInfoLabel{
+  text-align: left;
+  font-size: calc(12px + 1vmin);
+}
+
+.fieldData{
+  width:50%;
+  text-align: left;
+}

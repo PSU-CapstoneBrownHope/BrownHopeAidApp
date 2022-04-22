@@ -1,11 +1,14 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
-import Profile from "./components/Profile"
+import { Profile } from "./components/Profile"
 import { LoginForm } from "./components/LoginForm"
 import { SignUp } from "./components/SignUp"
 import { Nav } from "./components/Nav"
 import { LandingPage } from "./components/LandingPage"
+import { Redirect } from "./components/Redirect"
 import { ApplicationStatus } from './components/ApplicationStatus';
+import { Footer } from './components/Footer';
+import { UpdatePassword } from './components/UpdatePassword';
 
 
 /*  App contains the nav header and the routes for new pages
@@ -26,8 +29,12 @@ function App() {
         <Route path="application-status" element={<ApplicationStatus />} />
         <Route path="profile" element={<Profile />} />
         <Route path="login" element={<LoginForm />} />
+        <Route path="sign-up/:id" element={<SignUp />} />
         <Route path="sign-up" element={<SignUp />} />
+        <Route path="update-password" element={<UpdatePassword/>} />
+        <Route path=":id" element={<Redirect/>}/>
       </Routes>
+      <Footer/>
     </div>
   );
 }

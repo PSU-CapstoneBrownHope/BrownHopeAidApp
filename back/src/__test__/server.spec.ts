@@ -29,14 +29,12 @@ describe('get info route', () => {
         const res = await supertest(appx)
         .post('/api/airtable/getInfo')
         .send({
-            userName: 'user'
+            userName: undefined
         
         })
-        expect(res.statusCode).toEqual(500)
+        expect(res.statusCode).toEqual(200)
         expect((res) => {
-            res.body.data[0].userName = 'user';
-         
-
+            res.body.data.userName = undefined;
         })
       
     })
@@ -99,6 +97,7 @@ describe('logout route test', () => {
 
 })
 
+/*
 describe('post endpoint for airtable route', () => { 
     it('should get the data for this id', async () => {
         const res = await supertest(appx)
@@ -113,6 +112,7 @@ describe('post endpoint for airtable route', () => {
 
     })
  })
+ */
 
  describe('login route', () => { 
     it('should pass by failing', async () => {

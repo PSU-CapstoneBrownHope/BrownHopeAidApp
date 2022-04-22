@@ -1,7 +1,8 @@
-import React, { useState, SyntheticEvent } from "react";
+import React, { useState, SyntheticEvent, useEffect } from "react";
 import axios from "axios";
 import { routes } from "../util/config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
+// says this is an error but it clearly isn't cause it works
 import styles from "../styles/Buttons.module.css"
 import { env } from "process";
 
@@ -10,6 +11,30 @@ export const LoginForm = (): JSX.Element => {
   const [password, setPassword] = useState("");
   const [signUpState, setSignUpState] = useState(false);
 
+
+
+  useEffect(() => {
+    loginCheck() 
+  },[])
+
+  function loginCheck() {
+    const sessionUser = sessionStorage.getItem("username")
+    const isLoggedIn = async () => {
+      try {
+        if (sessionUser !== "" && sessionUser !== null) {
+          const resp = await axios.get(routes.isLoggedIn,
+            {withCredentials: true })
+          console.log(JSON.stringify(resp))
+          navigate("/profile")
+          //if (resp.data === sessionUser) 
+            //navigate("/profile")
+        }  
+      } catch (err) {
+        console.error(err)
+      }
+    } 
+    isLoggedIn()
+  }
 
 
   const navigate = useNavigate();
@@ -37,8 +62,9 @@ export const LoginForm = (): JSX.Element => {
         const resp = await axios.post(routes.login, newLoginRequest, { withCredentials: true });
         console.log(resp.data);
         if (resp.data === "Success") {
+          console.log(resp)
           setUsername(); // added for testing navbar
-          navigate("/landing");
+          navigate("/profile");
         } else if (resp.data === "Failed") {
           alert("Sorry, wrong username or password. Please try again!")
         }
@@ -54,10 +80,11 @@ export const LoginForm = (): JSX.Element => {
 
 
   return (
-    <>
+    <div className="currentPage">
       <h1>Login to your account</h1>
       <form id="loginForm" className={styles["buttonGroup"]} onSubmit={handleLoginSubmit}>
-        <div className={styles["buttonWrapper"]}>
+        <label htmlFor="username" className={styles["buttonWrapper"]}>
+          Username:
           <input
             role='textbox'
             aria-label= 'username'
@@ -69,11 +96,13 @@ export const LoginForm = (): JSX.Element => {
             className={styles['textField']}
             required
           />
-        </div>
-        <div className={styles["buttonWrapper"]}>
+        </label>
+        <label htmlFor="password" className={styles["buttonWrapper"]}>
+          Password:
           <input
             aria-label= 'password'
-            role='textbox'
+            role='password'
+            type="password"
             name="password"
             id="password"
             value={password}
@@ -82,17 +111,15 @@ export const LoginForm = (): JSX.Element => {
             className={styles['textField']}
             required
           />
-        </div>
-        <div className={styles["buttonWrapper"]}>
+        </label>
           <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Login</button>
-        </div>
       </form>
-      <form className={styles["buttonWrapper"]} method="get" action="/sign-up">
+      <Link to="/sign-up" className={styles['buttonWrapper']}>
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Create Account</button>
-      </form>
-      <form className={styles["buttonWrapper"]} method="get" action="/">
+      </Link>
+      <Link to="/" className={styles['buttonWrapper']}>
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Back to Home</button>
-      </form>
-    </>
+      </Link>
+    </div>
   );
 };
