@@ -141,6 +141,8 @@ airtableRouter.post('/signup', function(req, res, next) {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
+  const appid = req.body.id;
+  console.log("signup route hit with " + appid);
   async.waterfall ([
     // hash the new user password
     function(done) {
@@ -235,7 +237,8 @@ airtableRouter.post('/signup', function(req, res, next) {
         base('User Data').create([
           {
             fields: {
-              "Email Address" : email
+              "Email Address" : email,
+              "FR Record ID": appid
             }
           }
         ], function(err, record_new) {
