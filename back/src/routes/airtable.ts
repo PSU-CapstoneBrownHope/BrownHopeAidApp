@@ -23,6 +23,7 @@ airtableRouter.post('/login', function(req, res, next) {
     passport.authenticate('local', function(error, user, info) {
       if(error) {
           console.log("Error: " + error);
+          
       } else if (!user) {
           // invalid username or password
           console.log(info.message);
@@ -42,11 +43,17 @@ airtableRouter.post('/application_status', (req, res, next) => {
       status: "",
       description: "",
     };
+  
+
+    if(req.body.firstName == undefined || req.body.firstName == "" || req.body.lastName == undefined || req.body.lastName == ""){
+      res.send(404);
+      return;
+    }
     base('2021 Form Responses').select({
       fields: ["Applicant First Name", "Applicant Last Name", "PWA Status", "PWA Status Description"],
       filterByFormula: `AND({Applicant First Name} = '${req.body.firstName}', {Applicant Last Name} = '${req.body.lastName}')`
     }).firstPage(function(err, records) {
-      if(err) { console.error(err); return; }
+      if(err) { console.error(err); }
       if(records.length > 1) { 
         console.error("More than one record return from application status check"); 
         res.sendStatus(404);
@@ -57,6 +64,8 @@ airtableRouter.post('/application_status', (req, res, next) => {
       res.write(JSON.stringify(fields));
       res.end();
     });
+    
+  
 });
 
 airtableRouter.get("/isLoggedIn", function (req, res, next) {
@@ -476,7 +485,7 @@ airtableRouter.post("/update", function (req, res) {
             console.error(err);
             return;
           }
-          console.log("were not fucked yet")
+          
 
         });
 

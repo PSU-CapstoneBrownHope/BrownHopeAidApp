@@ -40,6 +40,8 @@ describe('get info route', () => {
     })
  })
 
+ 
+
 
 describe('update password', ()=>{
 
@@ -97,35 +99,32 @@ describe('logout route test', () => {
 
 })
 
-/*
-describe('post endpoint for airtable route', () => { 
-    it('should get the data for this id', async () => {
+describe('app status route', () => { 
+    it('should pass by failingx', async () => {
         const res = await supertest(appx)
         .post('/api/airtable/application_status')
         .send({
-            application_id: '42'
+            firstName: 'user',
+            
         })
-        expect((res)=>{
-            res.body.data[0].application_id == 42
-        })
+        expect(res.statusCode).toEqual(404)
+        
       
-
     })
  })
- */
+
+ 
 
  describe('login route', () => { 
-    it('should pass by failing', async () => {
+    it('checks login route', async () => {
         const res = await supertest(appx)
         .post('/api/airtable/login')
         .send({
-            username: 'user',
-            password: 'password'
+            user: 'user'
         })
         expect(res.statusCode).toEqual(200)
         expect((res) => {
-            res.body.data[0].username == 'user';
-            res.body.data[0].password == 'password'
+            res.body.data[0].user == 'user'
 
         })
       
