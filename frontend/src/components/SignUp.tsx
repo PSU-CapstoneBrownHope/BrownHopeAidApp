@@ -46,7 +46,7 @@ export const SignUp = (): JSX.Element => {
       username: username,
       email: email,
       password: password,
-      //id: id,
+      id: id,
     };
 
     const sendSignupRequest = async () => {

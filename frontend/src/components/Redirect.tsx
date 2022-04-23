@@ -13,6 +13,7 @@ export const Redirect = (): JSX.Element => {
   const contactEmail = ""
   const contactURL = "https://www.brownhope.org/contact"
   const volunteerURL = "https://www.brownhope.org/volunteer"
+  const redirectURL = "/sign-up/" + id;
 
   const navigate = useNavigate()
 
@@ -21,7 +22,7 @@ export const Redirect = (): JSX.Element => {
       <h1>Success!</h1>
       <p>Thank you for submitting the { applicationName}!</p>
       <p>If you would like to track the status of your application:</p>
-      <Link to="/sign-up">
+      <Link to={redirectURL}>
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>
           Create an Account
         </button>
