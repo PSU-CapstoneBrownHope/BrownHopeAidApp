@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from "../styles/Buttons.module.css"
 import { useParams, useNavigate, Link } from "react-router-dom";
 
