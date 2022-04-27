@@ -1,0 +1,23 @@
+/*
+ These are intended to be used on text boxes and their names refer to the 
+ level of priority to have to the user see it
+*/
+
+p{
+  margin: auto;
+  width: 100%;
+  padding-top: 15px;
+  font-weight: 400;
+}
+
+.high {
+  font-size: calc(18px + 1vmin);
+}
+
+.medium {
+  font-size: calc(14px + 1vmin);
+}
+
+.low {
+  font-size: calc(12px + 1vmin);
+}
