@@ -69,7 +69,7 @@ airtableRouter.get("/isLoggedIn", function (req, res, next) {
 
 airtableRouter.post('/signout', function (req, res, next) {
   req.logout()
-  res.end()
+  res.send("Success");
 });
 
 
@@ -86,8 +86,7 @@ airtableRouter.post("/getInfo", function (req, res) {
     return
   }
   
-  // combs user field for username information to compare to name on the request
-  const userName = JSON.stringify(req.user).match(/(?<="Username":")([A-Za-z0-9])+/)[0]
+  const userName = req.user[0].fields.Username
   if (userName === null || userName !== req.body.userName) {
     res.end();
     return;
@@ -412,7 +411,7 @@ airtableRouter.post("/update", function (req, res) {
     res.end();
     return
   }
-  const userName = JSON.stringify(req.user).match(/(?<="Username":")([A-Za-z0-9])+/)[0]
+  const userName = req.user[0].fields.Username
   console.log("userName: " + userName);
   if (userName !== req.body[0].value || userName === null) {
     res.end();
@@ -440,7 +439,6 @@ airtableRouter.post("/update", function (req, res) {
       (acc, field) => ({ [field.name]: field.value, ...acc }),
       {}
     );
-    userName = JSON.stringify(req.user).match(/(?<="Username":")([A-Za-z0-9])+/)[0]
     console.log("what is first: " + firstName)
     console.log('what is last: ' + lastName)
 

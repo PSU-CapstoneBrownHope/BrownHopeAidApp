@@ -30,7 +30,6 @@ test('Editting elements present', async () => {
     expect(screen.getByText("Address:")).toBeInTheDocument
     expect(screen.getByText("Phone Number:")).toBeInTheDocument
     expect(screen.getByText("Email Address:")).toBeInTheDocument
-    expect(screen.getByText("Payment Method:")).toBeInTheDocument
     expect(screen.getByText("Edit Account Information")).toBeInTheDocument
     expect(screen.getByText("Save")).toBeInTheDocument
     expect(screen.getByText("Cancel Changes")).toBeInTheDocument
