@@ -79,9 +79,7 @@ airtableRouter.post("/getInfo", function (req, res) {
     return;
   }
   try {
-    
     const userName = req.body.userName;
-  
     const fields = {
       firstName: "",
       lastName: "",
@@ -91,7 +89,6 @@ airtableRouter.post("/getInfo", function (req, res) {
       contactMethod: "",
       paymentMethod: "",
     };
-    console.log("what is the req.body: " + JSON.stringify(req.body))
     base("Authentication")
       .select({ filterByFormula: `{Username} = "${userName}"` })
       .firstPage((err, records) => {
@@ -99,35 +96,66 @@ airtableRouter.post("/getInfo", function (req, res) {
         if (records.length != 1)
           res.status(401).send({ error: "No such user exists" });
         const recordID = records[0].fields["User Data Record ID"];
-        console.log("record Id " + recordID);
-        console.log("what is it though: " + records)
         base('User Data')
         .find(recordID, (err, record) => {
-          console.log("what is the name " + JSON.stringify(fields));
-          console.log("done with that");
-
-          console.log('what is the record id: ' + JSON.stringify(record))
-          if(record.fields['Full Name'] != " "){
-            console.log("this is running?")
-            var fullName = record.fields["Full Name"]
-            fields.firstName = fullName.split(" ")[0]
-            fields.lastName = fullName.split(" ")[1]
+          if(record.fields['FR Record ID'] != undefined && (record.fields['First Name'] == undefined || record.fields['Last Name'] == undefined)){
+            base('2021 Form Responses').select({
+              fields: [
+                "Applicant First Name",
+                "Applicant Last Name",
+                "Applicant Phone",
+                "Applicant Mailing Address",
+                "Applicant Email",
+                "Preferred Contact Method"
+              ],
+              filterByFormula: `{BRF 2021 Application Record ID} = "${record.fields['FR Record ID']}"`
+            }).firstPage((err, records1) => {
+              if(err) { console.error(err); return; }
+              if(records1.length < 1) { 
+                res.sendStatus(404);
+                return; 
+              }
+              base('User Data').update([
+                {
+                  "id": recordID,
+                  "fields": {
+                    "First Name": records1[0].fields['Applicant First Name'],
+                    "Last Name": records1[0].fields['Applicant Last Name'],
+                    "Phone Number": records1[0].fields['Applicant Phone'],
+                    "Mailing Address": records1[0].fields['Applicant Mailing Address'],
+                    "Email Address": records1[0].fields['Applicant Email'],
+                    "Preferred Contact Method": records1[0].fields['Preferred Contact Method']
+                  }
+                }
+              ], function(err, records1) {
+                if(err) {
+                  console.error(err);
+                  return;
+                }
+              });
+              fields.firstName = records1[0].fields['Applicant First Name'];
+              fields.lastName = records1[0].fields['Applicant Last Name'];
+              fields.phoneNumber = records1[0].fields['Applicant Phone'];
+              fields.address = records1[0].fields['Applicant Mailing Address'];
+              fields.emailAddress = records1[0].fields['Applicant Email'];
+              fields.contactMethod = records1[0].fields['Preferred Contact Method'];
+              res.write(JSON.stringify(fields));
+            });
+          } else if(record.fields['FR Record ID'] != undefined && record.fields['First Name'] != undefined){
+            fields.firstName = record.fields["First Name"]
+            fields.lastName = record.fields["Last Name"]
             fields.phoneNumber = record.fields["Phone Number"];
             fields.address = record.fields["Mailing Address"];
             fields.emailAddress = record.fields["Email Address"];
             fields.contactMethod = record.fields["Preferred Contact Method"];
-            //fields.paymentMethod = records[0].fields["Funding Preference"];
-            console.log("fields: " + JSON.stringify(fields))
             res.write(JSON.stringify(fields));
-            
-          }else {
-            res.write(JSON.stringify(null));
+          } else {
+            res.sendStatus(404);
+            return;
           }
           res.end();
-            
         });
-        
-    });
+      });
   } catch (err) {
     console.error(err);
     res.end();
