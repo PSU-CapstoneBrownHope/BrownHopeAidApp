@@ -12,7 +12,6 @@ export const Profile = () => {
   const [form, setForm] = useState(accountFields);
   const [info, setInfo] = useState(accountFields);
   const [contactMethod, setContact] = useState('');
-  const [paymentMethod, setPayment] = useState('');
   const [currentId, setCurrentId] = useState("");
   const navigate = useNavigate();
 
@@ -61,7 +60,7 @@ export const Profile = () => {
     if (phoneNumberLength < 7) {
       return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
     }
-    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice( 3, 6)}-${phoneNumber.slice(6, 10)}`;
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   }
 
 
@@ -86,14 +85,6 @@ export const Profile = () => {
     setForm(formCopy);
   };
 
-  const handlePaymentChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setPayment(event.target.value as string)
-    const paymentMethod = event.target.value as string;
-    const formCopy: any = [...form];
-    formCopy[7].value = paymentMethod;
-    setForm(formCopy);
-  };
-
   function postAccountUpdate() {
     const sendUpdateRequest = async () => {
       try {
@@ -109,7 +100,7 @@ export const Profile = () => {
   }
 
   function getExistingAccountInfo() {
-    accountFields[0].value = sessionStorage.getItem("username") 
+    accountFields[0].value = sessionStorage.getItem("username")
     const newLoginRequest = {
       userName: accountFields[0].value,
     };
@@ -128,9 +119,7 @@ export const Profile = () => {
           formCopy[4].value = resp.data.address;
           formCopy[5].value = resp.data.emailAddress;
           formCopy[6].value = resp.data.contactMethod;
-          formCopy[7].value = resp.data.paymentMethod;
           setContact(resp.data.contactMethod);
-          setPayment(resp.data.paymentMethod);
           setInfo(formCopy);
         }
       } catch (err) {
@@ -173,7 +162,7 @@ export const Profile = () => {
           value={item}
         >
           {item}
-        </option>    
+        </option>
       )
     });
     return <>{items}</>
@@ -182,50 +171,30 @@ export const Profile = () => {
   const AccountFieldsInputs = () => {
     let items: any = [];
     form.forEach((item: any, index: any) => {
-      if (form[index].value === undefined || form[index].value === null)
-        form[index].value = "";
-      if (item.type === 'select') {
-        if (item.name === 'contactMethod') {
+      if (index !== 0) {
+        if (form[index].value === undefined || form[index].value === null)
+          form[index].value = "";
+        if (item.type === 'select') {
           items.push(
-              <label
-                key={index}
-                htmlFor={item.name}
-                className={style['userInfoLabel']}
-              >
-                {item.label}
-                <select
-                  id={item.name}
-                  value={contactMethod}
-                  className={style['userInfo'] + " " +  style['textField']}
-                  name={item.name}
-                  onChange={handleContactChange}
+            <label
+              key={index}
+              htmlFor={item.name}
+              className={style['userInfoLabel']}
+            >
+              {item.label}
+              <select
+                id={item.name}
+                value={contactMethod}
+                className={style['userInfo'] + " " + style['textField']}
+                name={item.name}
+                onChange={handleContactChange}
               >
                 {createOptions(item.options)}
-                </select>
-              </label>
+              </select>
+            </label>
           )
         } else {
           items.push(
-              <label
-                key={index}
-                htmlFor={item.name}
-                className={style['userInfoLabel']}
-              >
-                {item.label}
-                <select
-                  id={item.name}
-                  className={style['userInfo'] + " "+ style['textField']}
-                  name={item.name}
-                  value={paymentMethod}
-                  onChange={handlePaymentChange}
-                >
-                  {createOptions(item.options)}
-                </select>
-              </label>
-          )
-        }
-      } else {
-        items.push(
             <label
               key={index}
               htmlFor={item.name}
@@ -235,7 +204,7 @@ export const Profile = () => {
               <input
                 type={item.type}
                 id={item.name}
-                className={style['userInfo']+ " " + style['textField']}
+                className={style['userInfo'] + " " + style['textField']}
                 value={form[index].value}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   updateField(e, index);
@@ -243,7 +212,8 @@ export const Profile = () => {
               >
               </input>
             </label>
-        )
+          )
+        }
       }
     })
     return <>{items}</>
