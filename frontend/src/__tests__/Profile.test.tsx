@@ -52,29 +52,25 @@ test('Editting elements present', async () => {
   //test after press edit button
     fireEvent.click(editBtn);
 
-    const username = screen.getByRole("textbox", { name: "User Name" });
-    fireEvent.change(username, { target: { value: "foo" } });
-    expect(username.value).toBe("foo")
-
     const first = screen.getByRole("textbox", { name: "First Name" });
-    fireEvent.change(username, { target: { value: "foo" } });
-    expect(username.value).toBe("foo")
+    fireEvent.change(first, { target: { value: "foo" } });
+    expect(first.value).toBe("foo")
 
     const last = screen.getByRole("textbox", { name: "Last Name" });
-    fireEvent.change(username, { target: { value: "foo" } });
-    expect(username.value).toBe("foo")
+    fireEvent.change(last, { target: { value: "foo" } });
+    expect(last.value).toBe("foo")
 
     const phone = screen.getByRole("textbox", { name: "Phone Number" });
-    fireEvent.change(username, { target: { value: "foo" } });
-    expect(username.value).toBe("foo")
+    fireEvent.change(phone, { target: { value: "foo" } });
+    expect(phone.value).toBe("foo")
 
     const address = screen.getByRole("textbox", { name: "Address" });
-    fireEvent.change(username, { target: { value: "foo" } });
-    expect(username.value).toBe("foo")
+    fireEvent.change(address, { target: { value: "foo" } });
+    expect(address.value).toBe("foo")
 
     const email = screen.getByRole("textbox", { name: "Email Address" });
-    fireEvent.change(username, { target: { value: "foo" } });
-    expect(username.value).toBe("foo")
+    fireEvent.change(email, { target: { value: "foo" } });
+    expect(email.value).toBe("foo")
 
 
 
