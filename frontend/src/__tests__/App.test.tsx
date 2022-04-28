@@ -36,7 +36,6 @@ test('renders nav', async() => {
   act(() => {
     ReactDOMClient.createRoot(container).render(<BrowserRouter><App /></BrowserRouter>);
   });
-  expect(screen.getByText("PROFILE")).not.toBeNull()
   expect(screen.getByText("HOME")).not.toBeNull()
 });
 
