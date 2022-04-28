@@ -25,9 +25,8 @@ export const LoginForm = (): JSX.Element => {
           const resp = await axios.get(routes.isLoggedIn,
             {withCredentials: true })
           console.log(JSON.stringify(resp))
-          navigate("/profile")
-          //if (resp.data === sessionUser) 
-            //navigate("/profile")
+          if (resp.data !== "False") 
+            navigate("/profile")
         }  
       } catch (err) {
         console.error(err)

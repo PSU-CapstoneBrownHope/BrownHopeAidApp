@@ -1,11 +1,12 @@
 require('dotenv').config();
-import { response, Router } from 'express';
+import { Request, response, Router } from 'express';
 import passport from 'passport';
 import airtable from 'airtable';
 import * as local from 'passport-local';
 import bcrypt from 'bcrypt';
 import async from 'async';
 import nodemailer from 'nodemailer';
+import { isConstructorDeclaration } from 'typescript';
 
 const localStrategy = local.Strategy;
 const airtableApiKey = process.env.AIRTABLE_API_KEY;
@@ -13,9 +14,8 @@ const baseId = process.env.BASE_ID;
 const base = new airtable({apiKey: airtableApiKey}).base(baseId);
 const airtableRouter = Router();
 
-
 airtableRouter.get('/', (req, res, next) => {
-    res.sendStatus(200)
+  res.sendStatus(200)
 })
 
 
@@ -25,7 +25,7 @@ airtableRouter.post('/login', function(req, res, next) {
           console.log("Error: " + error);
       } else if (!user) {
           // invalid username or password
-          console.log(info.message);
+        console.log(info.message);
           res.send("Failed")
       } else {
           req.login(user, function(err) {
@@ -59,7 +59,7 @@ airtableRouter.post('/application_status', (req, res, next) => {
     });
 });
 
-airtableRouter.get("/isLoggedIn", function (req, res, next) {
+airtableRouter.get("/isLoggedIn", function (req, res, next) { 
   if (req.user) {
     res.send(req.user);
   } else {
@@ -67,10 +67,15 @@ airtableRouter.get("/isLoggedIn", function (req, res, next) {
   }
 });
 
-airtableRouter.post('/signout', function(req, res, next) {
-  req.logout();
-  res.send("Success");
+airtableRouter.post('/signout', function (req, res, next) {
+  req.session.destroy((err) => {
+    if (err)
+      return console.log(err)
+    res.send("Success")
+  })
 });
+
+
 
 
 airtableRouter.post("/getInfo", function (req, res) {
@@ -78,10 +83,20 @@ airtableRouter.post("/getInfo", function (req, res) {
     res.end();
     return;
   }
-  try {
-    
-    const userName = req.body.userName;
+
+  if (!req.user) {
+    res.end();
+    return
+  }
   
+  // combs user field for username information to compare to name on the request
+  const userName = JSON.stringify(req.user).match(/(?<="Username":")([A-Za-z0-9])+/)[0]
+  if (userName === null || userName !== req.body.userName) {
+    res.end();
+    return;
+  }
+
+  try {
     const fields = {
       firstName: "",
       lastName: "",
@@ -395,6 +410,19 @@ airtableRouter.post("/update", function (req, res) {
   
 
   console.log("what is this: " + JSON.stringify(req.body[0].value));
+
+  if (!req.user) {
+    res.end();
+    return
+  }
+  const userName = JSON.stringify(req.user).match(/(?<="Username":")([A-Za-z0-9])+/)[0]
+  console.log("userName: " + userName);
+  if (userName !== req.body[0].value || userName === null) {
+    res.end();
+    return;
+  }
+
+
   
   try {
     const fields = {
@@ -415,6 +443,7 @@ airtableRouter.post("/update", function (req, res) {
       (acc, field) => ({ [field.name]: field.value, ...acc }),
       {}
     );
+    userName = JSON.stringify(req.user).match(/(?<="Username":")([A-Za-z0-9])+/)[0]
     console.log("what is first: " + firstName)
     console.log('what is last: ' + lastName)
 
