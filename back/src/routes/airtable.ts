@@ -68,11 +68,8 @@ airtableRouter.get("/isLoggedIn", function (req, res, next) {
 });
 
 airtableRouter.post('/signout', function (req, res, next) {
-  req.session.destroy((err) => {
-    if (err)
-      return console.log(err)
-    res.send("Success")
-  })
+  req.logout()
+  res.end()
 });
 
 
