@@ -43,6 +43,7 @@ export const SignUp = (): JSX.Element => {
 
   // Was thinking the id should be added to this call
   function handleSignupSubmit(event: SyntheticEvent) {
+    event.preventDefault()
     const newSignupRequest = {
       username: username,
       email: email,
@@ -56,9 +57,8 @@ export const SignUp = (): JSX.Element => {
         console.log(resp.data);
         if (resp.data === "Success") {
           alert("Account Creation Successful! Redirecting to login")
-          navigate("/");
-          setUserName("");
-          setPassword("");
+          window.sessionStorage.setItem("username", username)
+          navigate("/profile");
         } else if (resp.data === "Email Already Exists") {
           alert("Sorry, user already exists")
         }
