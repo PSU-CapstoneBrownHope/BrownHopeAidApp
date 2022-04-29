@@ -1,5 +1,7 @@
+import React from 'react';
 import buttons from "../styles/Buttons.module.css"
 import text from "../styles/Text.module.css"
+
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 export const Redirect = (): JSX.Element => {
