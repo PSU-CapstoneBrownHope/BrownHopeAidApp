@@ -1,5 +1,6 @@
 import React, { useState, SyntheticEvent } from "react";
 import styles from "../styles/Buttons.module.css"
+import text from "../styles/Text.module.css"
 import axios from "axios";
 import { routes } from "../util/config";
 import { useNavigate, Link } from "react-router-dom";
@@ -35,6 +36,9 @@ export const ApplicationStatus = (): JSX.Element => {
   return (
     <div className="currentPage">
       <h1>check the status of your application</h1>
+      <p className={text["high"]}>
+        If you just submitted your application it can take up to 5min to show up in the system. Please reload the page to check for updates.
+      </p>
       <form id="applicationStatusForm" className={styles['buttonGroup']} onSubmit={checkApplicationStatus}>
         <div className={styles["buttonWrapper"]}>
           <input
