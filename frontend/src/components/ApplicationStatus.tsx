@@ -27,7 +27,8 @@ export const ApplicationStatus = (): JSX.Element => {
     const sendApplicationStatusRequest = async () => {
       try {
         const resp = await axios.post(routes.application_status, newApplicationStatusRequest, { withCredentials: true });
-        console.log(resp.data);
+          console.log(resp.data);
+        setHasApp(true)
         setStatus(resp.data.status)
         setDescription(resp.data.description)
       } catch (err) {
@@ -41,6 +42,7 @@ export const ApplicationStatus = (): JSX.Element => {
         return (
             <div>
                 <h1>Your Application Status Is:</h1>
+                <p>{HasApp}</p>
                 <p>{status}</p>
                 <p>{description}</p>
             </div>

@@ -26,7 +26,5 @@ test('All signup elements render', async () => {
     expect(screen.getAllByPlaceholderText("Confirm New Password")).toBeInTheDocument
 
 
-    const old = screen.getAllByPlaceholderText("Old Password");
-    
     
 });
