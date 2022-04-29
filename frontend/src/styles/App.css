@@ -95,6 +95,11 @@ h1{
 
 .footer{
   height:20vh;
+  font-size: calc(14px + 1vmin);
+  color: #146467;
+  font-family: bebas-neue;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .currentPage::-webkit-scrollbar{
