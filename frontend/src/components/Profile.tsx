@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { routes } from '../util/config';
 import { accountFields } from "../util/util";
 import style from "../styles/AccountInfo.module.css"
+import text from "../styles/Text.module.css"
 import buttons from "../styles/Buttons.module.css"
 
 
@@ -12,6 +13,7 @@ export const Profile = () => {
   const [form, setForm] = useState(accountFields);
   const [info, setInfo] = useState(accountFields);
   const [contactMethod, setContact] = useState('');
+  const [noInfo, setNoInfo] = useState(false);
   const [currentId, setCurrentId] = useState("");
   const navigate = useNavigate();
 
@@ -23,6 +25,25 @@ export const Profile = () => {
     }
   });
 
+  function loginCheck() {
+    const sessionUser = sessionStorage.getItem("username")
+    const isLoggedIn = async () => {
+      try {
+        if (sessionUser !== "" && sessionUser !== null) {
+          const resp = await axios.get(routes.isLoggedIn,
+            {withCredentials: true })
+          console.log(JSON.stringify(resp))
+          if (resp.data === "False") 
+            navigate("/login")
+        } else 
+          navigate("/login")
+      } catch (err) {
+        console.error(err)
+      }
+    } 
+    isLoggedIn()
+  }
+
 
 
   function editCheck(cancelChanges: boolean) {
@@ -30,8 +51,7 @@ export const Profile = () => {
     if (cancelChanges === true)
       window.location.reload();
     if (process.env.BROWSER) {
-      if ((form[0].value === null || form[0].value === "") && editing === false)
-        alert("You are not signed in")
+      loginCheck()
     } else {
       setEditing(!editing)
     }
@@ -74,7 +94,6 @@ export const Profile = () => {
     formCopy[index].value = elementValue;
     setForm(formCopy);
     setCurrentId(elementId);
-    console.log(form)
   };
 
   const handleContactChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -100,6 +119,7 @@ export const Profile = () => {
   }
 
   function getExistingAccountInfo() {
+    loginCheck()
     accountFields[0].value = sessionStorage.getItem("username")
     const newLoginRequest = {
       userName: accountFields[0].value,
@@ -109,9 +129,10 @@ export const Profile = () => {
       try {
         const resp = await axios.post(routes.getAccountInfo, newLoginRequest, { withCredentials: true });
         if (resp.data === "") {
-          navigate("/login")
+          setNoInfo(true)
         }
         else {
+          setNoInfo(false)
           const formCopy: any = [...form];
           formCopy[1].value = resp.data.firstName;
           formCopy[2].value = resp.data.lastName;
@@ -123,6 +144,7 @@ export const Profile = () => {
           setInfo(formCopy);
         }
       } catch (err) {
+        setNoInfo(true)
         console.error(err);
       }
     };
@@ -166,6 +188,12 @@ export const Profile = () => {
       )
     });
     return <>{items}</>
+  }
+
+  const InfoMessage = () => {
+    return (
+      <p className={text["high"]}>If you have just created an account please allow up to 5 minutes for your info to show up in the system</p>
+    )
   }
 
   const AccountFieldsInputs = () => {
@@ -222,6 +250,7 @@ export const Profile = () => {
   return (
     <div className="currentPage">
       <h1>Account Information</h1>
+      {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
       {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
       <div className={buttons['buttonWrapper']}>
         <button

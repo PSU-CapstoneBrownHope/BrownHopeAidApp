@@ -78,9 +78,9 @@ export const ApplicationStatus = (): JSX.Element => {
             <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Check Application Status</button>
           </div>
       </form>
-      <Link to="/" className={styles['buttonWrapper']}>
+      <Link to="login" className={styles['buttonWrapper']}>
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>
-          Back to home
+          Login
         </button>
       </Link>
     </div>
