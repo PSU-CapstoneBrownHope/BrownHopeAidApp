@@ -56,11 +56,4 @@ export const accountFields: IAccountFields[] = [
     options: ["Email", "Text", "Phone call"],
     value: ""
   },
-  {
-    name: "paymentMethod",
-    label: "Payment Method",
-    type: "select",
-    options: ["online", "check"],
-    value: ""
-  }
 ]

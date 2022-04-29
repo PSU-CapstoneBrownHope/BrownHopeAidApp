@@ -1,11 +1,12 @@
 require('dotenv').config();
-import { response, Router } from 'express';
+import { Request, response, Router } from 'express';
 import passport from 'passport';
 import airtable from 'airtable';
 import * as local from 'passport-local';
 import bcrypt from 'bcrypt';
 import async from 'async';
 import nodemailer from 'nodemailer';
+import { isConstructorDeclaration } from 'typescript';
 
 const localStrategy = local.Strategy;
 const airtableApiKey = process.env.AIRTABLE_API_KEY;
@@ -13,9 +14,8 @@ const baseId = process.env.BASE_ID;
 const base = new airtable({apiKey: airtableApiKey}).base(baseId);
 const airtableRouter = Router();
 
-
 airtableRouter.get('/', (req, res, next) => {
-    res.sendStatus(200)
+  res.sendStatus(200)
 })
 
 
@@ -25,7 +25,7 @@ airtableRouter.post('/login', function(req, res, next) {
           console.log("Error: " + error);
       } else if (!user) {
           // invalid username or password
-          console.log(info.message);
+        console.log(info.message);
           res.send("Failed")
       } else {
           req.login(user, function(err) {
@@ -59,7 +59,7 @@ airtableRouter.post('/application_status', (req, res, next) => {
     });
 });
 
-airtableRouter.get("/isLoggedIn", function (req, res, next) {
+airtableRouter.get("/isLoggedIn", function (req, res, next) { 
   if (req.user) {
     res.send(req.user);
   } else {
@@ -67,21 +67,33 @@ airtableRouter.get("/isLoggedIn", function (req, res, next) {
   }
 });
 
-airtableRouter.post('/signout', function(req, res, next) {
-  req.logout();
+airtableRouter.post('/signout', function (req, res, next) {
+  req.logout()
   res.send("Success");
 });
 
 
+
+
 airtableRouter.post("/getInfo", function (req, res) {
   if(req.body.userName == undefined){
-    res.end();
+    res.sendStatus(404).end();
     return;
   }
-  try {
-    
-    const userName = req.body.userName;
+
+  if (!req.user) {
+    res.sendStatus(404).end();
+    return
+  }
   
+  const userName = req.user[0].fields.Username
+  if (userName === null || userName !== req.body.userName) {
+    res.sendStatus(404).end();
+    return;
+  }
+
+  try {
+
     const fields = {
       firstName: "",
       lastName: "",
@@ -91,7 +103,6 @@ airtableRouter.post("/getInfo", function (req, res) {
       contactMethod: "",
       paymentMethod: "",
     };
-    console.log("what is the req.body: " + JSON.stringify(req.body))
     base("Authentication")
       .select({ filterByFormula: `{Username} = "${userName}"` })
       .firstPage((err, records) => {
@@ -99,38 +110,69 @@ airtableRouter.post("/getInfo", function (req, res) {
         if (records.length != 1)
           res.status(401).send({ error: "No such user exists" });
         const recordID = records[0].fields["User Data Record ID"];
-        console.log("record Id " + recordID);
-        console.log("what is it though: " + records)
         base('User Data')
         .find(recordID, (err, record) => {
-          console.log("what is the name " + JSON.stringify(fields));
-          console.log("done with that");
-
-          console.log('what is the record id: ' + JSON.stringify(record))
-          if(record.fields['Full Name'] != " "){
-            console.log("this is running?")
-            var fullName = record.fields["Full Name"]
-            fields.firstName = fullName.split(" ")[0]
-            fields.lastName = fullName.split(" ")[1]
+          if(record.fields['FR Record ID'] != undefined && (record.fields['First Name'] == undefined || record.fields['Last Name'] == undefined)){
+            base('2021 Form Responses').select({
+              fields: [
+                "Applicant First Name",
+                "Applicant Last Name",
+                "Applicant Phone",
+                "Applicant Mailing Address",
+                "Applicant Email",
+                "Preferred Contact Method"
+              ],
+              filterByFormula: `{BRF 2021 Application Record ID} = "${record.fields['FR Record ID']}"`
+            }).firstPage((err, records1) => {
+              if(err) { console.error(err); return; }
+              if(records1.length < 1) { 
+                res.sendStatus(404).end();
+                return; 
+              }
+              base('User Data').update([
+                {
+                  "id": recordID,
+                  "fields": {
+                    "First Name": records1[0].fields['Applicant First Name'],
+                    "Last Name": records1[0].fields['Applicant Last Name'],
+                    "Phone Number": records1[0].fields['Applicant Phone'],
+                    "Mailing Address": records1[0].fields['Applicant Mailing Address'],
+                    "Email Address": records1[0].fields['Applicant Email'],
+                    "Preferred Contact Method": records1[0].fields['Preferred Contact Method']
+                  }
+                }
+              ], function(err, records1) {
+                if(err) {
+                  console.error(err);
+                  return;
+                }
+              });
+              fields.firstName = records1[0].fields['Applicant First Name'];
+              fields.lastName = records1[0].fields['Applicant Last Name'];
+              fields.phoneNumber = records1[0].fields['Applicant Phone'];
+              fields.address = records1[0].fields['Applicant Mailing Address'];
+              fields.emailAddress = records1[0].fields['Applicant Email'];
+              fields.contactMethod = records1[0].fields['Preferred Contact Method'];
+              res.send(JSON.stringify(fields)).end();
+            });
+          } else if(record.fields['FR Record ID'] != undefined && record.fields['First Name'] != undefined){
+            fields.firstName = record.fields["First Name"]
+            fields.lastName = record.fields["Last Name"]
             fields.phoneNumber = record.fields["Phone Number"];
             fields.address = record.fields["Mailing Address"];
             fields.emailAddress = record.fields["Email Address"];
             fields.contactMethod = record.fields["Preferred Contact Method"];
-            //fields.paymentMethod = records[0].fields["Funding Preference"];
-            console.log("fields: " + JSON.stringify(fields))
-            res.write(JSON.stringify(fields));
-            
-          }else {
-            res.write(JSON.stringify(null));
+            res.send(JSON.stringify(fields)).end();
+          } else {
+            res.sendStatus(404).end();
+            return;
           }
-          res.end();
-            
+          //res.end();
         });
-        
-    });
+      });
   } catch (err) {
     console.error(err);
-    res.end();
+    //res.end();
     throw err;
   }
 });
@@ -395,6 +437,19 @@ airtableRouter.post("/update", function (req, res) {
   
 
   console.log("what is this: " + JSON.stringify(req.body[0].value));
+
+  if (!req.user) {
+    res.end();
+    return
+  }
+  const userName = req.user[0].fields.Username
+  console.log("userName: " + userName);
+  if (userName !== req.body[0].value || userName === null) {
+    res.end();
+    return;
+  }
+
+
   
   try {
     const fields = {

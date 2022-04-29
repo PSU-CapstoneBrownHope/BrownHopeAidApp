@@ -63,6 +63,7 @@ a{
   color: #146467;
   text-decoration: none;
   width: 100%;
+  cursor:pointer;
 }
 
 a:hover{
