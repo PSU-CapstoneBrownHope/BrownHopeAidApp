@@ -17,8 +17,10 @@ export const ApplicationStatus = (): JSX.Element => {
   const navigate = useNavigate();
   const handleClick = () => navigate("/reset/verify-user");
 
+  const dobField = document.getElementById("DOB")
+
   useEffect(() => {
-    if (currentId) {
+    if (currentId && currentId !== "DOB") {
       const inputElement = document.getElementById(currentId);
       if (inputElement) inputElement.focus();
     }
@@ -35,6 +37,8 @@ export const ApplicationStatus = (): JSX.Element => {
       DOB: DOB
     };
 
+    console.log(newApplicationStatusRequest)
+
     const sendApplicationStatusRequest = async () => {
       try {
         const resp = await axios.post(routes.application_status, newApplicationStatusRequest, { withCredentials: true });
@@ -49,13 +53,20 @@ export const ApplicationStatus = (): JSX.Element => {
     };
     sendApplicationStatusRequest()
   }
+
+  function InfoMessage() {
+    return (
+      <p className={text["high"]}>If you have just submitted your application, Please allow up to 5 minutes for the system to update. Please reload later.</p>
+    )
+  }
+
   function AppStatus() {
     return (
       <div>
         <h1>Your Application Status Is:</h1>
-        <p>{HasApp}</p>
-        <p>{status}</p>
-        <p>{description}</p>
+        <InfoMessage></InfoMessage>
+        <p className={text["high"]}>{status}:</p>
+        <p className={text["high"]}>{description}</p>
       </div>
     )
   }
@@ -106,11 +117,6 @@ export const ApplicationStatus = (): JSX.Element => {
               role="date"
               type="date"
               id="DOB"
-              value={DOB}
-              onChange={(e) => {
-                setDOB(e.target.value);
-                setCurrentId((e.target as HTMLInputElement).id)
-              }}
               className={styles['textField']}
               required
             />
