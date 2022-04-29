@@ -1,4 +1,5 @@
-import styles from "../styles/Buttons.module.css"
+import buttons from "../styles/Buttons.module.css"
+import text from "../styles/Text.module.css"
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 export const Redirect = (): JSX.Element => {
@@ -18,20 +19,47 @@ export const Redirect = (): JSX.Element => {
   const navigate = useNavigate()
 
   return (
-    <div className="currentPage">
-      <h1>Success!</h1>
-      <p>Thank you for submitting the { applicationName}!</p>
-      <p>If you would like to track the status of your application:</p>
-      <Link to={redirectURL}>
-        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>
+    <div className="currentPage" >
+      <h1>Your application has been submitted!</h1>
+      <p className={text["low"]}>
+        Thank you for submitting your {applicationName}!
+      </p>
+      <p className={text["high"]}>
+        To track the status of your application click the create account button
+      </p>
+      <Link to={redirectURL} className={buttons['buttonWrapper']}>
+        <button className={buttons['fullscreenButton'] + " " + buttons['transparentButton']}>
           Create an Account
         </button>
       </Link>
-      <p>We will begin contacting applicants to schedule intake interviews after {interviewDate}</p> 
-      <p>We will being intake calls according to that schedule after {intakeCallsDate}. If you have requested {specialCases}, it's possible you may be contacted before then.</p>
-      <p>If you have any questions, please inquire at {infoEmail} and contact us at {contactURL}</p>
-      <p>If you're interested in volunteering with {organizationName} visit us at {volunteerURL}</p>
-      ID: {id}
+
+     
+      <p className={text["low"]}>
+        We will begin contacting applicants to schedule intake interviews after {interviewDate}
+      </p> 
+      <p className={text["low"]}>
+        We will being intake calls according to that schedule after {intakeCallsDate}.
+      </p>
+      <p className={text["low"]}>
+        If you have requested {specialCases}, it's possible you may be contacted before then.
+      </p>
+      <p className={text["low"]}>
+        If you have any questions, please inquire at {infoEmail} and contact us at {contactURL}
+      </p>
+      <p className={text["low"]}>
+        If you're interested in volunteering with {organizationName} visit us at {volunteerURL}
+      </p>
+      <p className={text["medium"]}>
+        Need to correct or update your contact info? click here
+      </p>
+
+      <Link to="/about" className={buttons['buttonWrapper']}>
+        <button className={buttons['fullscreenButton'] + " btn btn-outline-secondary"}>
+          Change contact information 
+        </button>
+      </Link>
+      
     </div>
   )
 }
+

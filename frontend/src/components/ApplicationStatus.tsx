@@ -1,5 +1,6 @@
 import React, { useState, SyntheticEvent } from "react";
 import styles from "../styles/Buttons.module.css"
+import text from "../styles/Text.module.css"
 import axios from "axios";
 import { routes } from "../util/config";
 import { useNavigate, Link } from "react-router-dom";
@@ -104,11 +105,11 @@ export const ApplicationStatus = (): JSX.Element => {
     }
   return (
     <div className="currentPage">
-      
-          {HasApp ? <AppStatus/> : <ApplicationStatusForm/>}
-      <Link to="/" className={styles['buttonWrapper']}>
+       {HasApp ? <AppStatus/> : <ApplicationStatusForm/>}
+      <Link to="login" className={styles['buttonWrapper']}>
+
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>
-          Back to home
+          Login
         </button>
       </Link>
     </div>

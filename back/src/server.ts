@@ -16,9 +16,8 @@ app.use(cookiePraser());
 app.use(session({
   'store': new fileStore({ttl:600}),
   'secret': 'gfr456$^(%$jfkderfg',
-  'resave': true,
-  'saveUninitialized': true
-
+  'resave': false,
+  'saveUninitialized': false
 }))
 
 

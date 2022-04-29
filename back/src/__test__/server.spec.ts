@@ -32,7 +32,7 @@ describe('get info route', () => {
             userName: undefined
         
         })
-        expect(res.statusCode).toEqual(200)
+        expect(res.statusCode).toEqual(404)
         expect((res) => {
             res.body.data.userName = undefined;
         })
