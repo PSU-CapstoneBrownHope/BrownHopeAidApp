@@ -113,9 +113,6 @@ export const LoginForm = (): JSX.Element => {
         </label>
           <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Login</button>
       </form>
-      <Link to="/sign-up" className={styles['buttonWrapper']}>
-        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Create Account</button>
-      </Link>
       <Link to="/" className={styles['buttonWrapper']}>
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Back to Home</button>
       </Link>

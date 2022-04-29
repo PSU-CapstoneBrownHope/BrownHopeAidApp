@@ -3,6 +3,7 @@ import axios from "axios";
 import { routes } from "../util/config";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
+import text from "../styles/Text.module.css"
 
 export const SignUp = (): JSX.Element => {
   const { id } = useParams()
@@ -128,6 +129,15 @@ export const SignUp = (): JSX.Element => {
       <Link to="/login" className={styles['buttonWrapper']}>
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Back to Login</button>
       </Link>
+      <p className={text["medium"]}>
+        Don't want to create an account? Click here to quick check your application
+      </p> 
+      <Link to="/" className={styles['buttonWrapper']}>
+        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Quick Check</button>
+      </Link>
+      <p className={text["high"]}>
+        Leaving this page will NOT affect your application
+      </p> 
     </div>
   );
 }
