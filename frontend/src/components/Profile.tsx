@@ -61,7 +61,6 @@ export const Profile = () => {
     const sendLogoutRequest = async () => {
       try {
         const resp = await axios.post(routes.signout, { withCredentials: true });
-        console.log(resp.data)
       } catch (err) {
         console.error(err)
       }
@@ -108,7 +107,6 @@ export const Profile = () => {
     const sendUpdateRequest = async () => {
       try {
         const resp = await axios.post(routes.updateAccount, form, { withCredentials: true });
-        console.log(resp.data);
       } catch (err) {
         // Handle Error Here
         console.error(err);
@@ -119,7 +117,8 @@ export const Profile = () => {
   }
 
   function getExistingAccountInfo() {
-    loginCheck()
+    if (process.env.BROWSER)
+      loginCheck()
     accountFields[0].value = sessionStorage.getItem("username")
     const newLoginRequest = {
       userName: accountFields[0].value,
