@@ -23,7 +23,6 @@ test('renders all relevant fields', async() => {
   expect(screen.getByPlaceholderText('Password')).toBeInTheDocument
   expect(screen.getByPlaceholderText('Username')).toBeInTheDocument
   expect(screen.getByText('Login')).toBeInTheDocument
-  expect(screen.getByText('Create Account')).toBeInTheDocument
 });
 
 
