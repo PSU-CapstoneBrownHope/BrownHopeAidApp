@@ -77,18 +77,18 @@ airtableRouter.post('/signout', function (req, res, next) {
 
 airtableRouter.post("/getInfo", function (req, res) {
   if(req.body.userName == undefined){
-    res.end();
+    res.sendStatus(404).end();
     return;
   }
 
   if (!req.user) {
-    res.end();
+    res.sendStatus(404).end();
     return
   }
   
   const userName = req.user[0].fields.Username
   if (userName === null || userName !== req.body.userName) {
-    res.end();
+    res.sendStatus(404).end();
     return;
   }
 
@@ -126,7 +126,7 @@ airtableRouter.post("/getInfo", function (req, res) {
             }).firstPage((err, records1) => {
               if(err) { console.error(err); return; }
               if(records1.length < 1) { 
-                res.sendStatus(404);
+                res.sendStatus(404).end();
                 return; 
               }
               base('User Data').update([
@@ -153,7 +153,7 @@ airtableRouter.post("/getInfo", function (req, res) {
               fields.address = records1[0].fields['Applicant Mailing Address'];
               fields.emailAddress = records1[0].fields['Applicant Email'];
               fields.contactMethod = records1[0].fields['Preferred Contact Method'];
-              res.write(JSON.stringify(fields));
+              res.send(JSON.stringify(fields)).end();
             });
           } else if(record.fields['FR Record ID'] != undefined && record.fields['First Name'] != undefined){
             fields.firstName = record.fields["First Name"]
@@ -162,17 +162,17 @@ airtableRouter.post("/getInfo", function (req, res) {
             fields.address = record.fields["Mailing Address"];
             fields.emailAddress = record.fields["Email Address"];
             fields.contactMethod = record.fields["Preferred Contact Method"];
-            res.write(JSON.stringify(fields));
+            res.send(JSON.stringify(fields)).end();
           } else {
-            res.sendStatus(404);
+            res.sendStatus(404).end();
             return;
           }
-          res.end();
+          //res.end();
         });
       });
   } catch (err) {
     console.error(err);
-    res.end();
+    //res.end();
     throw err;
   }
 });
