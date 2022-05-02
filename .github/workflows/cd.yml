@@ -11,7 +11,7 @@ on:
 
 jobs:
   deploy:
-    name: "Deploy to the dev GCP server"
+    #name: "Deploy to the dev GCP server"
     runs-on: ubuntu-latest
 
     steps:
