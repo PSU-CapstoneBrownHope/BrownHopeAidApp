@@ -11,7 +11,7 @@ on:
 
 jobs:
   deploy:
-    #name: "Deploy to the dev GCP server"
+    name: "Deploy to the dev GCP server"
     runs-on: ubuntu-latest
 
     steps:
@@ -27,10 +27,10 @@ jobs:
               IdentityFile ~/.ssh/dev.key
               StrictHostKeyChecking no
             END
-          env:
-            SSH_USER: ${{ secrets.DEV_SSH_USER }}
-            SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
-            SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
+        env:
+          SSH_USER: ${{ secrets.DEV_SSH_USER }}
+          SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
+          SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
 
       - name: Stop server
         run: ssh dev 'cd BrownHopeAidApp && sudo docker-compose down'
