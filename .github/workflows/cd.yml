@@ -1,4 +1,5 @@
 name: CD
+# adapted from https://blog.benoitblanchon.fr/github-action-run-ssh-commands/
 
 on:
   push:
