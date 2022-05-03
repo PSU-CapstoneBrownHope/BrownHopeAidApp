@@ -25,7 +25,6 @@ test('All signup elements render', async() => {
   expect(screen.getByPlaceholderText("password")).toBeInTheDocument
   expect(screen.getByPlaceholderText("confirm password")).toBeInTheDocument
   expect(screen.getByText("Create Account")).toBeInTheDocument
-  expect(screen.getByText("Back to Login")).toBeInTheDocument
   expect(screen.getByText("Create Your Account")).toBeInTheDocument
 });
 

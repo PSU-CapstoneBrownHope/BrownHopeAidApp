@@ -3,12 +3,46 @@
  level of priority to have to the user see it
 */
 
+@font-face {
+  font-family: bebas-neue;
+  src: url("./fonts/BebasNeue-Regular.ttf") format('woff2');
+}
+
+.themeColor{
+  color: #0e7d99;
+}
+
 p{
   margin: auto;
   width: 100%;
   padding-top: 15px;
   padding-left: 10px;
   padding-right: 10px;
+  font-weight: 400;
+}
+
+.textField{
+  font-size: calc(16px + 1vmin);
+  width: 70vw;
+  max-width: 575px;
+  border-radius: 3px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+
+
+.wrapper{
+  font-size: calc(12px + 1vmin);
+  display: flex;
+  flex-flow:column;
+  width:fit-content;
+  text-align: left;
+}
+
+.status{
+  font-family: bebas-neue;
+  font-size: calc(50px + 1vmin);
   font-weight: 400;
 }
 

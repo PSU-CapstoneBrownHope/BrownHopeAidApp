@@ -31,16 +31,16 @@ export const Profile = () => {
       try {
         if (sessionUser !== "" && sessionUser !== null) {
           const resp = await axios.get(routes.isLoggedIn,
-            {withCredentials: true })
+            { withCredentials: true })
           console.log(JSON.stringify(resp))
-          if (resp.data === "False") 
+          if (resp.data === "False")
             navigate("/login")
-        } else 
+        } else
           navigate("/login")
       } catch (err) {
         console.error(err)
       }
-    } 
+    }
     isLoggedIn()
   }
 
@@ -249,54 +249,58 @@ export const Profile = () => {
   return (
     <div className="currentPage">
       <h1>Account Information</h1>
-      {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
-      {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
-      <div className={buttons['buttonWrapper']}>
-        <button
-          className={buttons['fullscreenButton'] + " btn btn-outline-success"}
-          onClick={() => editCheck(false)}
-          hidden={editing ? true : false}
-        >
-          Edit Account Information
-        </button>
+      <div className="info">
+        {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
+        {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
       </div>
-      <div className={buttons['buttonWrapper']}>
-        <button
-          className={buttons['fullscreenButton'] + " btn btn-success"}
-          hidden={editing ? false : true}
-          onClick={postAccountUpdate}
-        >
-          Save
-        </button>
-      </div>
+      <div className="buttons">
+        <div className={buttons['buttonWrapper']}>
+          <button
+            className={buttons['fullscreenButton'] + " btn btn-outline-success"}
+            onClick={() => editCheck(false)}
+            hidden={editing ? true : false}
+          >
+            Edit Account Information
+          </button>
+        </div>
+        <div className={buttons['buttonWrapper']}>
+          <button
+            className={buttons['fullscreenButton'] + " btn btn-success"}
+            hidden={editing ? false : true}
+            onClick={postAccountUpdate}
+          >
+            Save
+          </button>
+        </div>
 
-      <div className={buttons['buttonWrapper']}>
-        <button
-          className={buttons['fullscreenButton'] + " btn btn-danger"}
-          hidden={editing ? false : true}
-          onClick={() => editCheck(true)}
-        >
-          Cancel Changes
-        </button>
-      </div>
+        <div className={buttons['buttonWrapper']}>
+          <button
+            className={buttons['fullscreenButton'] + " btn btn-danger"}
+            hidden={editing ? false : true}
+            onClick={() => editCheck(true)}
+          >
+            Cancel Changes
+          </button>
+        </div>
 
-      <Link to="/update-password" className={buttons['buttonWrapper']}>
-        <button
-          className={buttons['fullscreenButton'] + " btn btn-secondary"}
-          hidden={editing ? true : false}
-        >
-          Change Password
-        </button>
-      </Link>
+        <Link to="/update-password" className={buttons['buttonWrapper']}>
+          <button
+            className={buttons['fullscreenButton'] + " btn btn-secondary"}
+            hidden={editing ? true : false}
+          >
+            Change Password
+          </button>
+        </Link>
 
-      <div className={buttons['buttonWrapper']}>
-        <button
-          className={buttons['fullscreenButton'] + " btn btn-danger"}
-          hidden={editing ? true : false}
-          onClick={() => logout()}
-        >
-          Logout
-        </button>
+        <div className={buttons['buttonWrapper']}>
+          <button
+            className={buttons['fullscreenButton'] + " btn btn-danger"}
+            hidden={editing ? true : false}
+            onClick={() => logout()}
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );

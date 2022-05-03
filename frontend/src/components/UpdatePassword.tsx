@@ -3,6 +3,7 @@ import axios from 'axios';
 import { routes } from '../util/config';
 import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
+import text from "../styles/Text.module.css"
 
 
 export const UpdatePassword = (): JSX.Element => {
@@ -59,7 +60,7 @@ export const UpdatePassword = (): JSX.Element => {
     <div className="currentPage">
       <h1>Change your Password</h1>
       <form id="ChangePasswordForm">
-        <label htmlFor="oldPassword" className={styles["buttonWrapper"]}>
+        <label htmlFor="oldPassword" className={text["wrapper"]}>
           Old Password:
           <input
             id="oldPassword"
@@ -67,10 +68,10 @@ export const UpdatePassword = (): JSX.Element => {
             value={old_password}
             placeholder="Old Password"
             onChange={(e) => setOldPassword(e.target.value)}
-            className={styles["textField"]}
+            className={text["textField"]}
           />
         </label>
-        <label htmlFor="newPassword" className={styles["buttonWrapper"]}>
+        <label htmlFor="newPassword" className={text["wrapper"]}>
           New Password:
           <input
             id="newPassword"
@@ -78,10 +79,10 @@ export const UpdatePassword = (): JSX.Element => {
             value={new_password}
             placeholder="New Password"
             onChange={(e) => setNewPassword(e.target.value)}
-            className={styles["textField"]}
+            className={text["textField"]}
           />
         </label>
-        <label htmlFor="newPasswordVerify" className={styles["buttonWrapper"]}>
+        <label htmlFor="newPasswordVerify" className={text["wrapper"]}>
           Confirm New Password:
           <input
             id="newPasswordVerify"
@@ -89,7 +90,7 @@ export const UpdatePassword = (): JSX.Element => {
             value={new_password_verify}
             placeholder="Confirm New Password"
             onChange={(e) => setVerifyNewPassword(e.target.value)}
-            className={styles["textField"]}
+            className={text["textField"]}
           />
         </label>
           <button
