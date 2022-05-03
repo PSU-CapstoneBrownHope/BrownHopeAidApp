@@ -50,7 +50,10 @@ export const SignUp = (): JSX.Element => {
       password: password,
       id: id,
     };
-
+    const newSigninRequest = {
+      username: username,
+      password: password,
+    };
     const sendSignupRequest = async () => {
       try {
         const resp = await axios.post(routes.signup, newSignupRequest);
@@ -58,6 +61,7 @@ export const SignUp = (): JSX.Element => {
         if (resp.data === "Success") {
           alert("Account Creation Successful! Redirecting to login")
           window.sessionStorage.setItem("username", username)
+          const resp = await axios.post(routes.login, newSigninRequest);
           navigate("/profile");
         } else if (resp.data === "Email Already Exists") {
           alert("Sorry, user already exists")
@@ -77,30 +81,30 @@ export const SignUp = (): JSX.Element => {
   return (
     <div className="currentPage">
       <h1>Create Your Account</h1>
-      <form id="signUp" className={styles["buttonGroup"]} onSubmit={handleSignupSubmit}>
-        <label htmlFor="email" className={styles["buttonWrapper"]}>
+      <div id="signUp" className="info" onSubmit={handleSignupSubmit}>
+        <label htmlFor="email" className={text["wrapper"]}>
           Email:
           <input
             name="email"
             id="email"
             placeholder='email'
             onChange={(e) => setEmail(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
             />
         </label>
-        <label htmlFor="username" className={styles["buttonWrapper"]}>
+        <label htmlFor="username" className={text["wrapper"]}>
           Username:
           <input
             name="username"
             id="username"
             placeholder='username'
             onChange={(e) => setUserName(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
           />
         </label>
-        <label htmlFor="password" className={styles["buttonWrapper"]}>
+        <label htmlFor="password" className={text["wrapper"]}>
           Password:
           <input
             name="password"
@@ -108,11 +112,11 @@ export const SignUp = (): JSX.Element => {
             type="password"
             placeholder='password'
             onChange={(e) => setPassword(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
           />
         </label>
-        <label htmlFor="verifyPassword" className={styles["buttonWrapper"]}>
+        <label htmlFor="verifyPassword" className={text["wrapper"]}>
           Confirm Password:
           <input
             name="verifyPassword"
@@ -120,15 +124,13 @@ export const SignUp = (): JSX.Element => {
             placeholder='confirm password'
             type="password"
             onChange={(e) => setVerifyPassword(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
           />
         </label>
-        <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Create Account</button>
-      </form>
-      <Link to="/login" className={styles['buttonWrapper']}>
-        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Back to Login</button>
-      </Link>
+      </div>
+      <div className="buttons">
+      <button className={styles['fullscreenButton'] + " btn btn-success"} onClick={handleSignupSubmit}>Create Account</button>
       <p className={text["medium"]}>
         Don't want to create an account? Click here to quick check your application
       </p> 
@@ -137,7 +139,8 @@ export const SignUp = (): JSX.Element => {
       </Link>
       <p className={text["high"]}>
         Leaving this page will NOT affect your application
-      </p> 
+        </p> 
+      </div>
     </div>
   );
 }

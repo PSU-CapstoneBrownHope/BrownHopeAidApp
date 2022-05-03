@@ -53,9 +53,12 @@ export const ApplicationStatus = (): JSX.Element => {
     return (
       <div>
         <h1>Your Application Status Is:</h1>
-        <p>{HasApp}</p>
-        <p>{status}</p>
-        <p>{description}</p>
+        <p className={text["status"] + " " + text["themeColor"]}>
+          {status}
+        </p>
+        <p className={text["medium"] + " " + text["themeColor"]}>
+          {description}
+        </p>
       </div>
     )
   }
@@ -65,7 +68,7 @@ export const ApplicationStatus = (): JSX.Element => {
       <div>
         <h1>check the status of your application</h1>
         <form id="applicationStatusForm" className={styles['buttonGroup']} onSubmit={checkApplicationStatus}>
-          <label className={styles["buttonWrapper"]} htmlFor="first name">
+          <label className={text["wrapper"]} htmlFor="first name">
             First Name
             <input
               aria-label="first name"
@@ -78,11 +81,11 @@ export const ApplicationStatus = (): JSX.Element => {
                 setFirstName(e.target.value);
                 setCurrentId((e.target as HTMLInputElement).id)
               }}
-              className={styles['textField']}
+              className={text['textField']}
               required
             />
           </label>
-          <label className={styles["buttonWrapper"]} htmlFor="last name">
+          <label className={text["wrapper"]} htmlFor="last name">
             Last Name
             <input
               aria-label="last name"
@@ -95,23 +98,24 @@ export const ApplicationStatus = (): JSX.Element => {
                 setLastName(e.target.value);
                 setCurrentId((e.target as HTMLInputElement).id)
               }}
-              className={styles['textField']}
+              className={text['textField']}
               required
             />
           </label>
-          <label className={styles["buttonWrapper"]} htmlFor="DOB">
+          <label className={text["wrapper"]} htmlFor="DOB">
             Date Of Birth
             <input
               aria-label="Date of birth"
               role="date"
               type="date"
+              autoFocus={true}
               id="DOB"
               value={DOB}
               onChange={(e) => {
                 setDOB(e.target.value);
                 setCurrentId((e.target as HTMLInputElement).id)
               }}
-              className={styles['textField']}
+              className={text['textField']}
               required
             />
           </label>
@@ -125,8 +129,7 @@ export const ApplicationStatus = (): JSX.Element => {
   return (
     <div className="currentPage">
       {HasApp ? <AppStatus /> : <ApplicationStatusForm />}
-      <Link to="login" className={styles['buttonWrapper']}>
-
+      <Link to="login">
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>
           Login
         </button>

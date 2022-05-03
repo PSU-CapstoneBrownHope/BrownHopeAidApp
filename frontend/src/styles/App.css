@@ -59,7 +59,6 @@ li{
 
 a{
   vertical-align: middle;
-  margin:auto;
   color: #146467;
   text-decoration: none;
   width: 100%;
@@ -108,14 +107,28 @@ h1{
 }
 
 .currentPage{
-  overflow: auto;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
   height: 65vh;
   width: fit-content;
   max-width: 1100px;
   margin:auto;
   padding: 10px;
-  -ms-overflow-style: none; 
-  scrollbar-width: none;  
+}
+
+.info{
+  width: min-content;
+  margin:auto;
+  padding: 10px;
+  overflow: auto;
+  border:rgb(185, 185, 185) solid 2px;
+  border-radius: 3px;
+}
+
+.buttons{
+  height:fit-content;
+  
 }
 
 

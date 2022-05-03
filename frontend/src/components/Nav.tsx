@@ -52,7 +52,7 @@ export const Nav = (): JSX.Element => {
       <nav aria-label="nav">
         <a href="https://www.brownhope.org/">
         <figure>
-          <img src="./bh_full-color_stacked_black.png" className="navlogo" alt="Brown Hope Logo" />
+          <img src="bh_full-color_stacked_black.png" className="navlogo" alt="Brown Hope Logo" />
           </figure>
         </a>
         <ul>

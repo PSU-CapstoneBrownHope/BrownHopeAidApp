@@ -4,6 +4,7 @@ import { routes } from "../util/config";
 import { useNavigate, Link} from "react-router-dom";
 // says this is an error but it clearly isn't cause it works
 import styles from "../styles/Buttons.module.css"
+import text from "../styles/Text.module.css"
 import { env } from "process";
 
 export const LoginForm = (): JSX.Element => {
@@ -82,7 +83,7 @@ export const LoginForm = (): JSX.Element => {
     <div className="currentPage">
       <h1>Login to your account</h1>
       <form id="loginForm" className={styles["buttonGroup"]} onSubmit={handleLoginSubmit}>
-        <label htmlFor="username" className={styles["buttonWrapper"]}>
+        <label htmlFor="username" className={text["wrapper"]}>
           Username:
           <input
             role='textbox'
@@ -92,11 +93,11 @@ export const LoginForm = (): JSX.Element => {
             placeholder='Username'
             value={username}
             onChange={(e) => setUserName(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
           />
         </label>
-        <label htmlFor="password" className={styles["buttonWrapper"]}>
+        <label htmlFor="password" className={text["wrapper"]}>
           Password:
           <input
             aria-label= 'password'
@@ -107,7 +108,7 @@ export const LoginForm = (): JSX.Element => {
             value={password}
             placeholder='Password'
             onChange={(e) => setPassword(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
           />
         </label>
