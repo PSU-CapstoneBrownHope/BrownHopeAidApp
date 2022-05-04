@@ -61,6 +61,11 @@ a.noAlign{
   vertical-align: bottom;
 }
 
+a.logo{
+  display:flex;
+  align-items: center;
+}
+
 
 a{
   vertical-align: middle;
@@ -78,6 +83,7 @@ figure{
   display: flex;
   align-items: center;
   justify-self: baseline;
+  margin:auto;
   width: 100%;
   margin: 0%;
   padding-left: 20px
