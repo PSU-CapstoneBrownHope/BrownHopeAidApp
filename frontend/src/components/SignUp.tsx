@@ -4,6 +4,7 @@ import { routes } from "../util/config";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
 import text from "../styles/Text.module.css"
+import { wait } from "@testing-library/user-event/dist/types/utils";
 
 export const SignUp = (): JSX.Element => {
   const { id } = useParams()
@@ -16,8 +17,8 @@ export const SignUp = (): JSX.Element => {
   const handleClick = () => navigate("/reset/verify-user");
 
   useEffect(() => {
-    loginCheck() 
-  },[])
+    loginCheck()
+  }, [])
 
   function loginCheck() {
     const sessionUser = sessionStorage.getItem("username")
@@ -25,16 +26,14 @@ export const SignUp = (): JSX.Element => {
       try {
         if (sessionUser !== "" && sessionUser !== null) {
           const resp = await axios.get(routes.isLoggedIn,
-            {withCredentials: true })
-          console.log(JSON.stringify(resp))
-          navigate("/profile")
-          //if (resp.data === sessionUser) 
-            //navigate("/profile")
-        }  
+            { withCredentials: true })
+          if (resp.data !== "False")
+            navigate("/")
+        }
       } catch (err) {
         console.error(err)
       }
-    } 
+    }
     isLoggedIn()
   }
 
@@ -50,19 +49,26 @@ export const SignUp = (): JSX.Element => {
       password: password,
       id: id,
     };
-    const newSigninRequest = {
+
+    const newLoginRequest = {
       username: username,
       password: password,
     };
+
     const sendSignupRequest = async () => {
       try {
         const resp = await axios.post(routes.signup, newSignupRequest);
-        console.log(resp.data);
         if (resp.data === "Success") {
-          alert("Account Creation Successful! Redirecting to login")
           window.sessionStorage.setItem("username", username)
-          const resp = await axios.post(routes.login, newSigninRequest);
-          navigate("/profile");
+          
+          const loginResp = await axios.post(routes.login, newLoginRequest, {
+            withCredentials: true,
+          });
+
+          if (loginResp.data === "Success") {
+            alert("Account Creation Successful!")
+            navigate("/profile");
+          }
         } else if (resp.data === "Email Already Exists") {
           alert("Sorry, user already exists")
         }
@@ -91,7 +97,7 @@ export const SignUp = (): JSX.Element => {
             onChange={(e) => setEmail(e.target.value)}
             className={text['textField']}
             required
-            />
+          />
         </label>
         <label htmlFor="username" className={text["wrapper"]}>
           Username:
@@ -130,16 +136,16 @@ export const SignUp = (): JSX.Element => {
         </label>
       </div>
       <div className="buttons">
-      <button className={styles['fullscreenButton'] + " btn btn-success"} onClick={handleSignupSubmit}>Create Account</button>
-      <p className={text["medium"]}>
-        Don't want to create an account? Click here to quick check your application
-      </p> 
-      <Link to="/" className={styles['buttonWrapper']}>
-        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Quick Check</button>
-      </Link>
-      <p className={text["high"]}>
-        Leaving this page will NOT affect your application
-        </p> 
+        <button className={styles['fullscreenButton'] + " btn btn-success"} onClick={handleSignupSubmit}>Create Account</button>
+        <p className={text["medium"]}>
+          Don't want to create an account? Click here to quick check your application
+        </p>
+        <Link to="/" className={styles['buttonWrapper']}>
+          <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Quick Check</button>
+        </Link>
+        <p className={text["high"]}>
+          Leaving this page will NOT affect your application
+        </p>
       </div>
     </div>
   );
