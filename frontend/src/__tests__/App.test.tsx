@@ -30,7 +30,6 @@ test('renders all fields', async() => {
   expect(screen.getByRole("textbox", {name: "last name"})).toBeInTheDocument
   expect(screen.getByRole("date", {name: "Date of birth"})).toBeInTheDocument
   expect(screen.getByRole("button", {name: "Check Application Status"})).toBeInTheDocument
-  expect(screen.getByRole("button", {name: "Login"})).toBeInTheDocument
 });
 
 
