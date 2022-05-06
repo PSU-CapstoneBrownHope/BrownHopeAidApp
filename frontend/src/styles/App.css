@@ -130,9 +130,8 @@ h1{
 
 .info{
   width: min-content;
-  margin:auto;
-  padding: 10px;
-  overflow: auto;
+  margin:auto ;
+  overflow-y: auto;
   border:rgb(185, 185, 185) solid 2px;
   border-radius: 3px;
 }

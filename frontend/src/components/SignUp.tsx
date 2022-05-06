@@ -4,7 +4,7 @@ import { routes } from "../util/config";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
 import text from "../styles/Text.module.css"
-import { wait } from "@testing-library/user-event/dist/types/utils";
+import { LoginCheck } from "../util/userFunctions";
 
 export const SignUp = (): JSX.Element => {
   const { id } = useParams()
@@ -14,29 +14,18 @@ export const SignUp = (): JSX.Element => {
   const [verifyPassword, setVerifyPassword] = useState("");
 
   const navigate = useNavigate();
-  const handleClick = () => navigate("/reset/verify-user");
 
   useEffect(() => {
-    loginCheck()
+    isLoggedIn()
   }, [])
 
-  function loginCheck() {
-    const sessionUser = sessionStorage.getItem("username")
-    const isLoggedIn = async () => {
-      try {
-        if (sessionUser !== "" && sessionUser !== null) {
-          const resp = await axios.get(routes.isLoggedIn,
-            { withCredentials: true })
-          if (resp.data !== "False")
-            navigate("/")
-        }
-      } catch (err) {
-        console.error(err)
-      }
+  const isLoggedIn = async () => {
+    const username = await LoginCheck()
+    if (username !== "False") {
+      sessionStorage.setItem("username", username)
+      navigate("/profile")
     }
-    isLoggedIn()
   }
-
 
 
 
@@ -60,14 +49,14 @@ export const SignUp = (): JSX.Element => {
         const resp = await axios.post(routes.signup, newSignupRequest);
         if (resp.data === "Success") {
           window.sessionStorage.setItem("username", username)
-          
+
           const loginResp = await axios.post(routes.login, newLoginRequest, {
             withCredentials: true,
           });
 
           if (loginResp.data === "Success") {
             alert("Account Creation Successful!")
-            navigate("/profile");
+            window.location.reload()
           }
         } else if (resp.data === "Email Already Exists") {
           alert("Sorry, user already exists")

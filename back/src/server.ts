@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookiePraser());
 app.use(session({
-  'store': new fileStore({ttl:600}),
+  'store': new fileStore({ttl:600, reapInterval:10}),
   'secret': 'gfr456$^(%$jfkderfg',
   'resave': false,
   'saveUninitialized': false

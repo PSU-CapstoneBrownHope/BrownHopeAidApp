@@ -28,5 +28,5 @@ test('Renders ~ Redirect Page', async() => {
     ReactDOMClient.createRoot(container).render(<BrowserRouter><Redirect /></BrowserRouter>);
   });
 
-    expect(screen.getByRole("button", { name: "Create an Account" }))
+    expect(screen.getByRole("button", { name: "Check Application Status" }))
 });

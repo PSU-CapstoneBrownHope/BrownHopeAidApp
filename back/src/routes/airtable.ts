@@ -1,12 +1,13 @@
 require('dotenv').config();
 import { Request, response, Router } from 'express';
-import passport from 'passport';
+import passport, { session } from 'passport';
 import airtable from 'airtable';
 import * as local from 'passport-local';
 import bcrypt from 'bcrypt';
 import async from 'async';
 import nodemailer from 'nodemailer';
-import { isConstructorDeclaration } from 'typescript';
+import { isConstructorDeclaration, isExpressionStatement, isImportEqualsDeclaration } from 'typescript';
+
 
 const localStrategy = local.Strategy;
 const airtableApiKey = process.env.AIRTABLE_API_KEY;
@@ -61,15 +62,18 @@ airtableRouter.post('/application_status', (req, res, next) => {
 
 airtableRouter.get("/isLoggedIn", function (req, res, next) { 
   if (req.user) {
-    res.send(req.user);
+    res.send(req.user[0].fields.Username);
   } else {
     res.send("False");
   }
 });
 
-airtableRouter.post('/signout', function (req, res, next) {
+airtableRouter.get('/signout', function (req, res, next) { 
   req.logout()
-  res.send("Success");
+  req.session.destroy(() => {
+    req.session = null
+    res.clearCookie("connect.sid").send("Success")
+  })
 });
 
 
