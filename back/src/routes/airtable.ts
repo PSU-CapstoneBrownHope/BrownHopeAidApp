@@ -69,10 +69,13 @@ airtableRouter.get("/isLoggedIn", function (req, res, next) {
 });
 
 airtableRouter.get('/signout', function (req, res, next) { 
-  req.session.destroy(() => {
-    req.session = null
-    res.clearCookie("connect.sid").send("Success")
-  })
+  req.logout()
+  if (req.session) {
+    req.session.destroy(() => {
+      req.session = null
+      res.clearCookie("connect.sid").send("Success")
+    })
+  }
 });
 
 
