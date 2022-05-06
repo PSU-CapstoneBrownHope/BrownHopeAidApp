@@ -4,7 +4,6 @@ import text from "../styles/Text.module.css"
 import axios from "axios";
 import { routes } from "../util/config";
 import { useNavigate, Link } from "react-router-dom";
-import { useCookies, withCookies } from "react-cookie";
 
 
 export const ApplicationStatus = (): JSX.Element => {
@@ -15,7 +14,6 @@ export const ApplicationStatus = (): JSX.Element => {
   const [status, setStatus] = useState("");
   const [description, setDescription] = useState("");
   const [currentId, setCurrentId] = useState("");
-  const [cookies, setCookie] = useCookies()
   const navigate = useNavigate();
   const handleClick = () => navigate("/reset/verify-user");
 
@@ -35,7 +33,6 @@ export const ApplicationStatus = (): JSX.Element => {
   function autoGetAppStatus() {
 
 
-    console.log(cookies)
 
     const getInfoThenStatus = async () => {
       try {

@@ -14,7 +14,6 @@ const LoginCheck = async () => {
     console.log(resp.headers)
     return resp.data;
   } catch (err) {
-    console.error(err)
     return "False"
   }
 }
@@ -25,7 +24,8 @@ function Logout() {
       const resp = await axios.get(routes.signout, { withCredentials: true });
       sessionStorage.removeItem("username")
     } catch (err) {
-      console.error(err)
+      if (process.env.BROWSER)
+        console.error(err)
     }
   }
   sendLogoutRequest()
