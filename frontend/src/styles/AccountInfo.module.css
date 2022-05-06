@@ -10,12 +10,24 @@
   padding: 5px;
 }
 
+.fieldData{
+  width:50%;
+  text-align: left;
+}
+
+
+@media only screen and (max-width: 768px){
+  .userInfo{
+    flex-direction: column;
+  }
+  .fieldData{
+    width: 100%;
+    text-align: center;
+  }
+}
+
 .userInfoLabel{
   text-align: left;
   font-size: calc(12px + 1vmin);
 }
 
-.fieldData{
-  width:50%;
-  text-align: left;
-}

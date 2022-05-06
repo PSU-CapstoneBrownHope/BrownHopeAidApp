@@ -10,7 +10,11 @@ if (container) {
 
   const root = ReactDOMClient.createRoot(container);
 
-  root.render(<BrowserRouter><App /></BrowserRouter>);
+  root.render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+  );
 }
 
 reportWebVitals();

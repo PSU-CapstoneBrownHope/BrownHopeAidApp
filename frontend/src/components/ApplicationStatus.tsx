@@ -32,45 +32,41 @@ export const ApplicationStatus = (): JSX.Element => {
 
   function autoGetAppStatus() {
 
-    const sessionUser = sessionStorage.getItem("username")
-
-
-    const newInfoRequest = {
-      userName: sessionStorage.getItem("username"),
-    };
-
 
 
     const getInfoThenStatus = async () => {
       try {
-        if (sessionUser !== "" && sessionUser !== null) {
-          const resp = await axios.get(
-            routes.isLoggedIn,
+        const resp = await axios.get(
+          routes.isLoggedIn,
+          { withCredentials: true }
+        )
+        // is logged in, so get their info
+        if (resp.data !== "False") {
+          sessionStorage.setItem("username", resp.data)
+          console.log(resp.data)
+          const newInfoRequest = {
+            userName: resp.data
+          };
+          const info = await axios.post(
+            routes.getAccountInfo,
+            newInfoRequest,
             { withCredentials: true }
-          )
-          // is logged in, so get their info
-          if (resp.data !== "False") {
-            const info = await axios.post(
-              routes.getAccountInfo,
-              newInfoRequest,
-              { withCredentials: true }
-            );
-            // they have info
-            if (info.data !== "") {
-              // this needs to be changed
-              const fakeDOB = "2000-12-12"
-              const newApplicationStatusRequest = {
-                firstName: info.data.firstName,
-                lastName: info.data.lastName,
-                DOB: fakeDOB
-              };
+          );
+          // they have info
+          if (info.data !== "") {
+            // this needs to be changed
+            const fakeDOB = "2000-12-12"
+            const newApplicationStatusRequest = {
+              firstName: info.data.firstName,
+              lastName: info.data.lastName,
+              DOB: fakeDOB
+            };
 
-              // get application status
-              const resp = await axios.post(routes.application_status, newApplicationStatusRequest, { withCredentials: true });
-              setHasApp(true)
-              setStatus(resp.data.status)
-              setDescription(resp.data.description)
-            }
+            // get application status
+            const resp = await axios.post(routes.application_status, newApplicationStatusRequest, { withCredentials: true });
+            setHasApp(true)
+            setStatus(resp.data.status)
+            setDescription(resp.data.description)
           }
         }
       } catch (err) {
@@ -87,7 +83,7 @@ export const ApplicationStatus = (): JSX.Element => {
       // ----------------
       // below section is a work around. I need to get it working 
       // with original setup. 
-      
+
       const entries = event.currentTarget.getElementsByTagName("input");
       setFirstName(entries[0].value)
       setLastName(entries[1].value)
@@ -134,50 +130,50 @@ export const ApplicationStatus = (): JSX.Element => {
   const SimplifiedApplicationStatusForm = () => {
     return (
       <div>
-      <h1>check the status of your application</h1>
-      <form
-        id="applicationStatusForm"
-        className={styles["buttonGroup"]}
-        onSubmit={checkApplicationStatus}
-      >
-        <label className={text["wrapper"]} htmlFor="first name">
-          First Name
-          <input
-            aria-label="first name"
-            role="textbox"
-            name="first name"
+        <h1>check the status of your application</h1>
+        <form
+          id="applicationStatusForm"
+          className={styles["buttonGroup"]}
+          onSubmit={checkApplicationStatus}
+        >
+          <label className={text["wrapper"]} htmlFor="first name">
+            First Name
+            <input
+              aria-label="first name"
+              role="textbox"
+              name="first name"
               id="first name"
-            placeholder="First name"
-            className={text['textField']}
-            required
-          />
-        </label>
-        <label className={text["wrapper"]} htmlFor="last name">
-          Last Name
-          <input
-            aria-label="last name"
-            role="textbox"
-            name="last name"
-            id="last name"
-            placeholder="Last name"
-            className={text['textField']}
-            required
-          />
-        </label>
-        <label className={text["wrapper"]} htmlFor="DOB">
-          Date Of Birth
-          <input
-            aria-label="Date of birth"
-            role="date"
-            type="date"
-            autoFocus={true}
-            id="DOB"
-            className={text['textField']}
-            required
-          />
-        </label>
+              placeholder="First name"
+              className={text['textField']}
+              required
+            />
+          </label>
+          <label className={text["wrapper"]} htmlFor="last name">
+            Last Name
+            <input
+              aria-label="last name"
+              role="textbox"
+              name="last name"
+              id="last name"
+              placeholder="Last name"
+              className={text['textField']}
+              required
+            />
+          </label>
+          <label className={text["wrapper"]} htmlFor="DOB">
+            Date Of Birth
+            <input
+              aria-label="Date of birth"
+              role="date"
+              type="date"
+              autoFocus={true}
+              id="DOB"
+              className={text['textField']}
+              required
+            />
+          </label>
 
-        <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Check Application Status</button>
+          <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Check Application Status</button>
 
 
         </form>
