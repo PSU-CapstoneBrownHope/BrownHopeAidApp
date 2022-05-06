@@ -4,6 +4,7 @@ import { routes } from "../util/config";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
 import text from "../styles/Text.module.css"
+import { LoginCheck } from "../util/userFunctions";
 
 export const SignUp = (): JSX.Element => {
   const { id } = useParams()
@@ -13,36 +14,24 @@ export const SignUp = (): JSX.Element => {
   const [verifyPassword, setVerifyPassword] = useState("");
 
   const navigate = useNavigate();
-  const handleClick = () => navigate("/reset/verify-user");
 
   useEffect(() => {
-    loginCheck() 
-  },[])
-
-  function loginCheck() {
-    const sessionUser = sessionStorage.getItem("username")
-    const isLoggedIn = async () => {
-      try {
-        if (sessionUser !== "" && sessionUser !== null) {
-          const resp = await axios.get(routes.isLoggedIn,
-            {withCredentials: true })
-          console.log(JSON.stringify(resp))
-          navigate("/profile")
-          //if (resp.data === sessionUser) 
-            //navigate("/profile")
-        }  
-      } catch (err) {
-        console.error(err)
-      }
-    } 
     isLoggedIn()
-  }
+  }, [])
 
+  const isLoggedIn = async () => {
+    const username = await LoginCheck()
+    if (username !== "False") {
+      sessionStorage.setItem("username", username)
+      navigate("/profile")
+    }
+  }
 
 
 
   // Was thinking the id should be added to this call
   function handleSignupSubmit(event: SyntheticEvent) {
+    event.preventDefault()
     const newSignupRequest = {
       username: username,
       email: email,
@@ -50,15 +39,25 @@ export const SignUp = (): JSX.Element => {
       id: id,
     };
 
+    const newLoginRequest = {
+      username: username,
+      password: password,
+    };
+
     const sendSignupRequest = async () => {
       try {
         const resp = await axios.post(routes.signup, newSignupRequest);
-        console.log(resp.data);
         if (resp.data === "Success") {
-          alert("Account Creation Successful! Redirecting to login")
-          navigate("/");
-          setUserName("");
-          setPassword("");
+          window.sessionStorage.setItem("username", username)
+
+          const loginResp = await axios.post(routes.login, newLoginRequest, {
+            withCredentials: true,
+          });
+
+          if (loginResp.data === "Success") {
+            alert("Account Creation Successful!")
+            window.location.reload()
+          }
         } else if (resp.data === "Email Already Exists") {
           alert("Sorry, user already exists")
         }
@@ -77,30 +76,30 @@ export const SignUp = (): JSX.Element => {
   return (
     <div className="currentPage">
       <h1>Create Your Account</h1>
-      <form id="signUp" className={styles["buttonGroup"]} onSubmit={handleSignupSubmit}>
-        <label htmlFor="email" className={styles["buttonWrapper"]}>
+      <div id="signUp" className="info" onSubmit={handleSignupSubmit}>
+        <label htmlFor="email" className={text["wrapper"]}>
           Email:
           <input
             name="email"
             id="email"
             placeholder='email'
             onChange={(e) => setEmail(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
-            />
+          />
         </label>
-        <label htmlFor="username" className={styles["buttonWrapper"]}>
+        <label htmlFor="username" className={text["wrapper"]}>
           Username:
           <input
             name="username"
             id="username"
             placeholder='username'
             onChange={(e) => setUserName(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
           />
         </label>
-        <label htmlFor="password" className={styles["buttonWrapper"]}>
+        <label htmlFor="password" className={text["wrapper"]}>
           Password:
           <input
             name="password"
@@ -108,11 +107,11 @@ export const SignUp = (): JSX.Element => {
             type="password"
             placeholder='password'
             onChange={(e) => setPassword(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
           />
         </label>
-        <label htmlFor="verifyPassword" className={styles["buttonWrapper"]}>
+        <label htmlFor="verifyPassword" className={text["wrapper"]}>
           Confirm Password:
           <input
             name="verifyPassword"
@@ -120,24 +119,23 @@ export const SignUp = (): JSX.Element => {
             placeholder='confirm password'
             type="password"
             onChange={(e) => setVerifyPassword(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
           />
         </label>
-        <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Create Account</button>
-      </form>
-      <Link to="/login" className={styles['buttonWrapper']}>
-        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Back to Login</button>
-      </Link>
-      <p className={text["medium"]}>
-        Don't want to create an account? Click here to quick check your application
-      </p> 
-      <Link to="/" className={styles['buttonWrapper']}>
-        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Quick Check</button>
-      </Link>
-      <p className={text["high"]}>
-        Leaving this page will NOT affect your application
-      </p> 
+      </div>
+      <div className="buttons">
+        <button className={styles['fullscreenButton'] + " btn btn-success"} onClick={handleSignupSubmit}>Create Account</button>
+        <p className={text["medium"]}>
+          Don't want to create an account? Click here to quick check your application
+        </p>
+        <Link to="/" className={styles['buttonWrapper']}>
+          <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Quick Check</button>
+        </Link>
+        <p className={text["high"]}>
+          Leaving this page will NOT affect your application
+        </p>
+      </div>
     </div>
   );
 }

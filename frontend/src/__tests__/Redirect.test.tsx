@@ -2,8 +2,9 @@ import React from 'react';
 import {screen} from "@testing-library/react";
 import * as ReactDOMClient from 'react-dom/client';
 import {act} from "react-dom/test-utils"
+import App from '../App' 
 import { BrowserRouter } from 'react-router-dom';
-import { ApplicationStatus} from "../components/ApplicationStatus"
+import { Redirect } from '../components/Redirect';
 
 /*this feels goofy but i think it's necessary to
   establishing typing.
@@ -22,21 +23,10 @@ afterEach(() => {
   document.body.removeChild(container); 
 });
 
-test('renders all fields', async() => {
+test('Renders ~ Redirect Page', async() => {
   act(() => {
-    ReactDOMClient.createRoot(container).render(<BrowserRouter><ApplicationStatus /></BrowserRouter>);
+    ReactDOMClient.createRoot(container).render(<BrowserRouter><Redirect /></BrowserRouter>);
   });
-  expect(screen.getByRole("textbox", {name: "first name"})).toBeInTheDocument
-  expect(screen.getByRole("textbox", {name: "last name"})).toBeInTheDocument
-  expect(screen.getByRole("date", {name: "Date of birth"})).toBeInTheDocument
-  expect(screen.getByRole("button", {name: "Check Application Status"})).toBeInTheDocument
+
+    expect(screen.getByRole("button", { name: "Check Application Status" }))
 });
-
-
-
-
-
-
-
-
-

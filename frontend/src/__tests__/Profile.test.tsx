@@ -34,7 +34,6 @@ test('Editting elements present', async () => {
     expect(screen.getByText("Save")).toBeInTheDocument
     expect(screen.getByText("Cancel Changes")).toBeInTheDocument
     expect(screen.getByText("Change Password")).toBeInTheDocument
-    expect(screen.getByText("Logout")).toBeInTheDocument
 
     
 
@@ -44,8 +43,6 @@ test('Editting elements present', async () => {
    */
   const changepwBtn = screen.getByRole("button", { name: "Change Password" });
   expect(changepwBtn).toBeVisible
-  const logoutBtn = screen.getByRole("button", { name: "Logout" });
-  expect(logoutBtn).toBeVisible 
 
 
   const editBtn = screen.getByRole("button", { name: "Edit Account Information" });

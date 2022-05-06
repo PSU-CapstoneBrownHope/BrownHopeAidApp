@@ -1,9 +1,11 @@
 import React, { useState, SyntheticEvent, useEffect } from "react";
 import axios from "axios";
 import { routes } from "../util/config";
-import { useNavigate, Link} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 // says this is an error but it clearly isn't cause it works
 import styles from "../styles/Buttons.module.css"
+import text from "../styles/Text.module.css"
+import { LoginCheck } from "../util/userFunctions";
 import { env } from "process";
 
 export const LoginForm = (): JSX.Element => {
@@ -11,28 +13,16 @@ export const LoginForm = (): JSX.Element => {
   const [password, setPassword] = useState("");
   const [signUpState, setSignUpState] = useState(false);
 
-
-
   useEffect(() => {
-    loginCheck() 
-  },[])
-
-  function loginCheck() {
-    const sessionUser = sessionStorage.getItem("username")
-    const isLoggedIn = async () => {
-      try {
-        if (sessionUser !== "" && sessionUser !== null) {
-          const resp = await axios.get(routes.isLoggedIn,
-            {withCredentials: true })
-          console.log(JSON.stringify(resp))
-          if (resp.data !== "False") 
-            navigate("/profile")
-        }  
-      } catch (err) {
-        console.error(err)
-      }
-    } 
     isLoggedIn()
+  }, [])
+
+  const isLoggedIn = async () => {
+    const username = await LoginCheck() 
+    if (username !== "False") {
+      sessionStorage.setItem("username", username)
+      navigate("/profile")
+    }
   }
 
 
@@ -41,7 +31,7 @@ export const LoginForm = (): JSX.Element => {
 
   function validateForm() {
     return username.length > 0 && password.length > 0 && !signUpState;
-  }  
+  }
 
   function handleLoginSubmit(event: SyntheticEvent) {
     event.preventDefault();
@@ -51,19 +41,13 @@ export const LoginForm = (): JSX.Element => {
       password: password,
     };
 
-    // Was added for testing navbar, but may actually work for future use
-    function setUsername() {
-      return sessionStorage.setItem('username', newLoginRequest.username);
-    }
-
     const sendLoginRequest = async () => {
       try {
         const resp = await axios.post(routes.login, newLoginRequest, { withCredentials: true });
         console.log(resp.data);
         if (resp.data === "Success") {
-          console.log(resp)
-          setUsername(); // added for testing navbar
-          navigate("/profile");
+          sessionStorage.setItem('username', newLoginRequest.username);
+          window.location.reload()
         } else if (resp.data === "Failed") {
           alert("Sorry, wrong username or password. Please try again!")
         }
@@ -82,24 +66,24 @@ export const LoginForm = (): JSX.Element => {
     <div className="currentPage">
       <h1>Login to your account</h1>
       <form id="loginForm" className={styles["buttonGroup"]} onSubmit={handleLoginSubmit}>
-        <label htmlFor="username" className={styles["buttonWrapper"]}>
+        <label htmlFor="username" className={text["wrapper"]}>
           Username:
           <input
             role='textbox'
-            aria-label= 'username'
+            aria-label='username'
             name="username"
             id="username"
             placeholder='Username'
             value={username}
             onChange={(e) => setUserName(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
           />
         </label>
-        <label htmlFor="password" className={styles["buttonWrapper"]}>
+        <label htmlFor="password" className={text["wrapper"]}>
           Password:
           <input
-            aria-label= 'password'
+            aria-label='password'
             role='password'
             type="password"
             name="password"
@@ -107,15 +91,16 @@ export const LoginForm = (): JSX.Element => {
             value={password}
             placeholder='Password'
             onChange={(e) => setPassword(e.target.value)}
-            className={styles['textField']}
+            className={text['textField']}
             required
           />
         </label>
-          <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Login</button>
+        <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Login</button>
       </form>
       <Link to="/" className={styles['buttonWrapper']}>
         <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Back to Home</button>
       </Link>
     </div>
   );
-};
+}
+

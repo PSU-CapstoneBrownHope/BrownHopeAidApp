@@ -2,12 +2,28 @@
   display: flex;
   flex-direction: row;
   width: 70vw;
-  max-width: 575px;
-  margin: auto;
+  max-width: 600px;
+  margin: none;
   text-align:left;
   justify-content: space-between;
   font-size: calc(16px + 1vmin);
   padding: 5px;
+}
+
+.fieldData{
+  width:50%;
+  text-align: left;
+}
+
+
+@media only screen and (max-width: 768px){
+  .userInfo{
+    flex-direction: column;
+  }
+  .fieldData{
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .userInfoLabel{
@@ -15,7 +31,3 @@
   font-size: calc(12px + 1vmin);
 }
 
-.fieldData{
-  width:50%;
-  text-align: left;
-}

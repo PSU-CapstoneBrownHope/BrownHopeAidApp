@@ -6,9 +6,10 @@ import { accountFields } from "../util/util";
 import style from "../styles/AccountInfo.module.css"
 import text from "../styles/Text.module.css"
 import buttons from "../styles/Buttons.module.css"
+import { LoginCheck, Logout } from '../util/userFunctions';
 
 
-export const Profile = () => {
+export const Profile = (): JSX.Element => {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState(accountFields);
   const [info, setInfo] = useState(accountFields);
@@ -25,50 +26,21 @@ export const Profile = () => {
     }
   });
 
-  function loginCheck() {
-    const sessionUser = sessionStorage.getItem("username")
-    const isLoggedIn = async () => {
-      try {
-        if (sessionUser !== "" && sessionUser !== null) {
-          const resp = await axios.get(routes.isLoggedIn,
-            {withCredentials: true })
-          console.log(JSON.stringify(resp))
-          if (resp.data === "False") 
-            navigate("/login")
-        } else 
-          navigate("/login")
-      } catch (err) {
-        console.error(err)
-      }
-    } 
-    isLoggedIn()
-  }
 
-
-
-  function editCheck(cancelChanges: boolean) {
+  const editCheck = async (cancelChanges: boolean) => {
     // reload window to throw out changes made
     if (cancelChanges === true)
       window.location.reload();
     if (process.env.BROWSER) {
-      loginCheck()
+      if (await LoginCheck() === "False") {
+        navigate("Profile")
+      }
     } else {
       setEditing(!editing)
     }
   }
 
-  function logout() {
-    const sendLogoutRequest = async () => {
-      try {
-        const resp = await axios.post(routes.signout, { withCredentials: true });
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    sendLogoutRequest()
-    window.sessionStorage.clear();
-    window.location.reload()
-  }
+
 
   // https://tomduffytech.com/how-to-format-phone-number-in-javascript/
   function formatPhoneNumber(value: String) {
@@ -117,8 +89,6 @@ export const Profile = () => {
   }
 
   function getExistingAccountInfo() {
-    if (process.env.BROWSER)
-      loginCheck()
     accountFields[0].value = sessionStorage.getItem("username")
     const newLoginRequest = {
       userName: accountFields[0].value,
@@ -126,22 +96,19 @@ export const Profile = () => {
 
     const sendInfoRequest = async () => {
       try {
+        if (process.env.BROWSER && await LoginCheck() === "False")
+          navigate("/");
         const resp = await axios.post(routes.getAccountInfo, newLoginRequest, { withCredentials: true });
-        if (resp.data === "") {
-          setNoInfo(true)
-        }
-        else {
-          setNoInfo(false)
-          const formCopy: any = [...form];
-          formCopy[1].value = resp.data.firstName;
-          formCopy[2].value = resp.data.lastName;
-          formCopy[3].value = resp.data.phoneNumber;
-          formCopy[4].value = resp.data.address;
-          formCopy[5].value = resp.data.emailAddress;
-          formCopy[6].value = resp.data.contactMethod;
-          setContact(resp.data.contactMethod);
-          setInfo(formCopy);
-        }
+        setNoInfo(false)
+        const formCopy: any = [...form];
+        formCopy[1].value = resp.data.firstName;
+        formCopy[2].value = resp.data.lastName;
+        formCopy[3].value = resp.data.phoneNumber;
+        formCopy[4].value = resp.data.address;
+        formCopy[5].value = resp.data.emailAddress;
+        formCopy[6].value = resp.data.contactMethod;
+        setContact(resp.data.contactMethod);
+        setInfo(formCopy);
       } catch (err) {
         setNoInfo(true)
         console.error(err);
@@ -162,10 +129,8 @@ export const Profile = () => {
           className={style['userInfo']}
           id={item.name}
         >
-          <div>
-            {item.label}:
-          </div>
-          <div className={style["fieldData"]}>
+          <span className={text['gray']}>{item.label}:</span>
+          <div className={style["fieldData"] + " " + text["high"]}>
             {item.value}
           </div>
         </div>
@@ -249,56 +214,49 @@ export const Profile = () => {
   return (
     <div className="currentPage">
       <h1>Account Information</h1>
-      {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
-      {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
-      <div className={buttons['buttonWrapper']}>
-        <button
-          className={buttons['fullscreenButton'] + " btn btn-outline-success"}
-          onClick={() => editCheck(false)}
-          hidden={editing ? true : false}
-        >
-          Edit Account Information
-        </button>
+      <div className="info">
+        {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
+        {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
       </div>
-      <div className={buttons['buttonWrapper']}>
-        <button
-          className={buttons['fullscreenButton'] + " btn btn-success"}
-          hidden={editing ? false : true}
-          onClick={postAccountUpdate}
-        >
-          Save
-        </button>
-      </div>
+      <div className="buttons">
+        <div className={buttons['buttonWrapper']}>
+          <button
+            className={buttons['fullscreenButton'] + " btn btn-outline-success"}
+            onClick={() => editCheck(false)}
+            hidden={editing ? true : false}
+          >
+            Edit Account Information
+          </button>
+        </div>
+        <div className={buttons['buttonWrapper']}>
+          <button
+            className={buttons['fullscreenButton'] + " btn btn-success"}
+            hidden={editing ? false : true}
+            onClick={postAccountUpdate}
+          >
+            Save
+          </button>
+        </div>
 
-      <div className={buttons['buttonWrapper']}>
-        <button
-          className={buttons['fullscreenButton'] + " btn btn-danger"}
-          hidden={editing ? false : true}
-          onClick={() => editCheck(true)}
-        >
-          Cancel Changes
-        </button>
-      </div>
+        <div className={buttons['buttonWrapper']}>
+          <button
+            className={buttons['fullscreenButton'] + " btn btn-danger"}
+            hidden={editing ? false : true}
+            onClick={() => editCheck(true)}
+          >
+            Cancel Changes
+          </button>
+        </div>
 
-      <Link to="/update-password" className={buttons['buttonWrapper']}>
-        <button
-          className={buttons['fullscreenButton'] + " btn btn-secondary"}
-          hidden={editing ? true : false}
-        >
-          Change Password
-        </button>
-      </Link>
-
-      <div className={buttons['buttonWrapper']}>
-        <button
-          className={buttons['fullscreenButton'] + " btn btn-danger"}
-          hidden={editing ? true : false}
-          onClick={() => logout()}
-        >
-          Logout
-        </button>
+        <Link to="/update-password" className={buttons['buttonWrapper']}>
+          <button
+            className={buttons['fullscreenButton'] + " btn btn-secondary"}
+            hidden={editing ? true : false}
+          >
+            Change Password
+          </button>
+        </Link>
       </div>
     </div>
   );
 }
-

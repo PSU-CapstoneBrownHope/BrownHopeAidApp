@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
-import { Profile } from "./components/Profile"
+import {Profile} from "./components/Profile"
 import { LoginForm } from "./components/LoginForm"
 import { SignUp } from "./components/SignUp"
 import { Nav } from "./components/Nav"
@@ -28,9 +28,9 @@ function App() {
         <Route path="/" element={<ApplicationStatus />} />
         <Route path="profile" element={<Profile />} />
         <Route path="login" element={<LoginForm />} />
-        <Route path="sign-up/:id" element={<SignUp />} />
+        <Route path="sign-up" element={<SignUp />} />
         <Route path="update-password" element={<UpdatePassword/>} />
-        <Route path=":id" element={<Redirect/>}/>
+        <Route path="redirect" element={<Redirect/>}/>
       </Routes>
       <Footer/>
     </div>
