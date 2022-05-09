@@ -14,8 +14,6 @@ export const ApplicationStatus = (): JSX.Element => {
   const [status, setStatus] = useState("");
   const [description, setDescription] = useState("");
   const [currentId, setCurrentId] = useState("");
-  const navigate = useNavigate();
-  const handleClick = () => navigate("/reset/verify-user");
 
   useEffect(() => {
     if (currentId && currentId !== "DOB") {
