@@ -18,7 +18,7 @@ export const LoginForm = (): JSX.Element => {
   }, [])
 
   const isLoggedIn = async () => {
-    const username = await LoginCheck() 
+    const username = await LoginCheck()
     if (username !== "False") {
       sessionStorage.setItem("username", username)
       navigate("/profile")
@@ -65,7 +65,7 @@ export const LoginForm = (): JSX.Element => {
   return (
     <div className="currentPage">
       <h1>Login to your account</h1>
-      <form id="loginForm" className={styles["buttonGroup"]} onSubmit={handleLoginSubmit}>
+      <form id="loginForm" className={styles["buttonGroup"] + " info"} onSubmit={handleLoginSubmit}>
         <label htmlFor="username" className={text["wrapper"]}>
           Username:
           <input
@@ -95,11 +95,15 @@ export const LoginForm = (): JSX.Element => {
             required
           />
         </label>
-        <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Login</button>
       </form>
-      <Link to="/" className={styles['buttonWrapper']}>
-        <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Back to Home</button>
-      </Link>
+    
+        <button
+          className={styles['fullscreenButton'] + " btn btn-success"}
+          onClick={(e) => handleLoginSubmit(e)}
+        >
+          Login
+        </button>
+    
     </div>
   );
 }

@@ -126,12 +126,6 @@ export const SignUp = (): JSX.Element => {
       </div>
       <div className="buttons">
         <button className={styles['fullscreenButton'] + " btn btn-success"} onClick={handleSignupSubmit}>Create Account</button>
-        <p className={text["medium"]}>
-          Don't want to create an account? Click here to quick check your application
-        </p>
-        <Link to="/" className={styles['buttonWrapper']}>
-          <button className={styles['fullscreenButton'] + " btn btn-outline-secondary"}>Quick Check</button>
-        </Link>
         <p className={text["high"]}>
           Leaving this page will NOT affect your application
         </p>

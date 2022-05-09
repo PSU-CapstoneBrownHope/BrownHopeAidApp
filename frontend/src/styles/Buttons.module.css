@@ -2,14 +2,14 @@
   font-weight: 200;
   letter-spacing: 0.1em;
   font-family: bebas-neue;
-  font-size: calc(18px + 1vmin);
+  font-size: calc(9px + 2vmin);
   text-align: center;
   width: 70vw;
   max-width: 575px;
-  padding: 10px;
   border-radius: calc(5px + 1vmin);
   cursor: pointer;
-  margin-top: 10px;
+  margin:auto;
+  margin-top: 1vmin;
 }
 
 .buttonGroup{

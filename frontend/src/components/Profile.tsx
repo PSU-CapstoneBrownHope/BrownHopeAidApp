@@ -26,6 +26,21 @@ export const Profile = (): JSX.Element => {
     }
   });
 
+  useEffect(() => {
+    if (process.env.BROWSER)
+      isLoggedIn()
+  }, [])
+
+  const isLoggedIn = async () => {
+    const username = await LoginCheck()
+    if (username === "False") {
+      sessionStorage.removeItem("username")
+      navigate("/login")
+    } else {
+      sessionStorage.setItem("username", username)
+    }
+  }
+
 
   const editCheck = async (cancelChanges: boolean) => {
     // reload window to throw out changes made

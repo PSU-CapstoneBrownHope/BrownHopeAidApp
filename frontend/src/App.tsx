@@ -4,7 +4,6 @@ import {Profile} from "./components/Profile"
 import { LoginForm } from "./components/LoginForm"
 import { SignUp } from "./components/SignUp"
 import { Nav } from "./components/Nav"
-import { Redirect } from "./components/Redirect"
 import { ApplicationStatus } from './components/ApplicationStatus';
 import { Footer } from './components/Footer';
 import { UpdatePassword } from './components/UpdatePassword';
@@ -24,13 +23,11 @@ function App() {
     <div className="App">
       <Nav/>
       <Routes>
-        <Route path="application-status" element={<ApplicationStatus />} />
         <Route path="/" element={<ApplicationStatus />} />
         <Route path="profile" element={<Profile />} />
         <Route path="login" element={<LoginForm />} />
         <Route path="sign-up" element={<SignUp />} />
         <Route path="update-password" element={<UpdatePassword/>} />
-        <Route path="redirect" element={<Redirect/>}/>
       </Routes>
       <Footer/>
     </div>

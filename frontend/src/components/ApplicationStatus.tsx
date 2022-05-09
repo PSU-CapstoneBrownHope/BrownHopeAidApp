@@ -17,8 +17,6 @@ export const ApplicationStatus = (): JSX.Element => {
   const navigate = useNavigate();
   const handleClick = () => navigate("/reset/verify-user");
 
-  const dobField = document.getElementById("DOB")
-
   useEffect(() => {
     if (currentId && currentId !== "DOB") {
       const inputElement = document.getElementById(currentId);
@@ -29,8 +27,7 @@ export const ApplicationStatus = (): JSX.Element => {
   useEffect(() => {
     autoGetAppStatus()
   }, []);
-
-
+  
 
   function autoGetAppStatus() {
 
@@ -82,15 +79,6 @@ export const ApplicationStatus = (): JSX.Element => {
 
   function checkApplicationStatus(event?: SyntheticEvent) {
     if (event) {
-      // ----------------
-      // below section is a work around. I need to get it working 
-      // with original setup. 
-
-      const entries = event.currentTarget.getElementsByTagName("input");
-      setFirstName(entries[0].value)
-      setLastName(entries[1].value)
-      setDOB(entries[2].value)
-      // ----------------
       event.preventDefault();
     }
 
@@ -100,8 +88,6 @@ export const ApplicationStatus = (): JSX.Element => {
       lastName: lastName,
       DOB: DOB
     };
-
-    console.log(newApplicationStatusRequest)
 
     const sendApplicationStatusRequest = async () => {
       try {
@@ -127,7 +113,6 @@ export const ApplicationStatus = (): JSX.Element => {
   function AppStatus() {
     return (
       <div>
-        <h1>Your Application Status Is:</h1>
 
         <p className={text["status"] + " " + text["themeColor"]}>
           {status}
@@ -139,65 +124,12 @@ export const ApplicationStatus = (): JSX.Element => {
     )
   }
 
-  const SimplifiedApplicationStatusForm = () => {
-    return (
-      <div>
-        <h1>check the status of your application</h1>
-        <form
-          id="applicationStatusForm"
-          className={styles["buttonGroup"]}
-          onSubmit={checkApplicationStatus}
-        >
-          <label className={text["wrapper"]} htmlFor="first name">
-            First Name
-            <input
-              aria-label="first name"
-              role="textbox"
-              name="first name"
-              id="first name"
-              placeholder="First name"
-              className={text['textField']}
-              required
-            />
-          </label>
-          <label className={text["wrapper"]} htmlFor="last name">
-            Last Name
-            <input
-              aria-label="last name"
-              role="textbox"
-              name="last name"
-              id="last name"
-              placeholder="Last name"
-              className={text['textField']}
-              required
-            />
-          </label>
-          <label className={text["wrapper"]} htmlFor="DOB">
-            Date Of Birth
-            <input
-              aria-label="Date of birth"
-              role="date"
-              type="date"
-              autoFocus={true}
-              id="DOB"
-              className={text['textField']}
-              required
-            />
-          </label>
-
-          <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Check Application Status</button>
-
-
-        </form>
-      </div>
-    )
-  }
-
   const ApplicationStatusForm = () => {
     return (
-      <div>
-        <h1>check the status of your application</h1>
-        <form id="applicationStatusForm" className={styles['buttonGroup']} onSubmit={checkApplicationStatus}>
+      <div className="info">
+        <form id="applicationStatusForm" 
+          className={styles['buttonGroup']}
+          onSubmit={checkApplicationStatus}>
           <label className={text["wrapper"]} htmlFor="first name">
             First Name
             <input
@@ -251,7 +183,6 @@ export const ApplicationStatus = (): JSX.Element => {
             />
           </label>
 
-          <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Check Application Status</button>
 
         </form>
       </div>
@@ -259,7 +190,18 @@ export const ApplicationStatus = (): JSX.Element => {
   }
   return (
     <div className="currentPage">
-      {HasApp ? <AppStatus /> : <SimplifiedApplicationStatusForm />}
+      <h1 hidden={HasApp? true: false}>check the status of your application</h1>
+      <h1 hidden={HasApp? false: true}>Your Application Status Is:</h1>
+      {HasApp ? <AppStatus /> : <ApplicationStatusForm />}
+      <div>
+        <button
+          className={styles['fullscreenButton'] + " btn btn-success"}
+          onClick={(e) => checkApplicationStatus(e)}
+          hidden={HasApp? true: false}
+        >
+          Check Application Status
+        </button>
+      </div>
     </div>
   );
 }

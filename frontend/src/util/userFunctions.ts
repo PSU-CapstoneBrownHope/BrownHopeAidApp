@@ -21,8 +21,9 @@ const LoginCheck = async () => {
 function Logout() {
   const sendLogoutRequest = async () => {
     try {
-      const resp = await axios.get(routes.signout, { withCredentials: true });
       sessionStorage.removeItem("username")
+      const resp = await axios.get(routes.signout, { withCredentials: true });
+      window.location.reload()
     } catch (err) {
       if (process.env.BROWSER)
         console.error(err)

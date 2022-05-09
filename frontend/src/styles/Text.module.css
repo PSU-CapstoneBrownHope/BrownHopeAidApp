@@ -23,11 +23,14 @@ p{
 
 .textField{
   font-size: calc(16px + 1vmin);
-  width: 70vw;
+  width: 70%;
   max-width: 575px;
+  width: 100%;
   border-radius: 3px;
   padding: 10px;
+  margin: auto;
   margin-top: 10px;
+  margin-bottom: 0px;
 }
 
 
@@ -36,13 +39,13 @@ p{
   font-size: calc(12px + 1vmin);
   display: flex;
   flex-flow:column;
-  width:fit-content;
+  width:100%;
   text-align: left;
 }
 
 .status{
   font-family: bebas-neue;
-  font-size: calc(50px + 1vmin);
+  font-size: calc(25px + 4vmin);
   font-weight: 400;
 }
 
@@ -51,13 +54,13 @@ p{
 }
 
 .high {
-  font-size: calc(18px + 1vmin);
+  font-size: calc(10px + 2vmin);
 }
 
 .medium {
-  font-size: calc(14px + 1vmin);
+  font-size: calc(8px + 2vmin);
 }
 
 .low {
-  font-size: calc(12px + 1vmin);
+  font-size: calc(6px + 2vmin);
 }
