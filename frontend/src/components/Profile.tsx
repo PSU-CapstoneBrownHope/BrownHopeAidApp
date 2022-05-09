@@ -27,7 +27,8 @@ export const Profile = (): JSX.Element => {
   });
 
   useEffect(() => {
-    isLoggedIn()
+    if (process.env.BROWSER)
+      isLoggedIn()
   }, [])
 
   const isLoggedIn = async () => {
