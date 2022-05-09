@@ -113,7 +113,6 @@ export const ApplicationStatus = (): JSX.Element => {
   function AppStatus() {
     return (
       <div>
-        <h1>Your Application Status Is:</h1>
 
         <p className={text["status"] + " " + text["themeColor"]}>
           {status}
@@ -127,9 +126,10 @@ export const ApplicationStatus = (): JSX.Element => {
 
   const ApplicationStatusForm = () => {
     return (
-      <div>
-        <h1>check the status of your application</h1>
-        <form id="applicationStatusForm" className={styles['buttonGroup']} onSubmit={checkApplicationStatus}>
+      <div className="info">
+        <form id="applicationStatusForm" 
+          className={styles['buttonGroup']}
+          onSubmit={checkApplicationStatus}>
           <label className={text["wrapper"]} htmlFor="first name">
             First Name
             <input
@@ -183,7 +183,6 @@ export const ApplicationStatus = (): JSX.Element => {
             />
           </label>
 
-          <button className={styles['fullscreenButton'] + " btn btn-success"} type="submit">Check Application Status</button>
 
         </form>
       </div>
@@ -191,7 +190,18 @@ export const ApplicationStatus = (): JSX.Element => {
   }
   return (
     <div className="currentPage">
+      <h1 hidden={HasApp? true: false}>check the status of your application</h1>
+      <h1 hidden={HasApp? false: true}>Your Application Status Is:</h1>
       {HasApp ? <AppStatus /> : <ApplicationStatusForm />}
+      <div>
+        <button
+          className={styles['fullscreenButton'] + " btn btn-success"}
+          onClick={(e) => checkApplicationStatus(e)}
+          hidden={HasApp? true: false}
+        >
+          Check Application Status
+        </button>
+      </div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ export const Footer = (): JSX.Element =>  {
   return (
     <div className="footer">
       <p>Contact us at: {infoEmail}</p>
-      <p>Or for other forms of contact: 
+      <p>Or: 
         <a href={contactPage} className="noAlign">
           {contactPage}
         </a>

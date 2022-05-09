@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: row;
   width: 70vw;
-  max-width: 600px;
+  max-width: 575px;
+  height:auto;
   margin: none;
   text-align:left;
   justify-content: space-between;
@@ -19,6 +20,7 @@
 @media only screen and (max-width: 768px){
   .userInfo{
     flex-direction: column;
+    width: 100%;
   }
   .fieldData{
     width: 100%;
@@ -27,7 +29,10 @@
 }
 
 .userInfoLabel{
+  width: 90%;
   text-align: left;
   font-size: calc(12px + 1vmin);
+  margin-top: 10px;
+  margin-bottom: 0px;
 }
 
