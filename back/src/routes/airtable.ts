@@ -19,8 +19,13 @@ airtableRouter.get('/', (req, res, next) => {
   res.sendStatus(200)
 })
 
-airtableRouter.get('/email', (req, res, next) => {
-  const userEmail = 'jeffrey.jernstrom@gmail.com';
+airtableRouter.post('/email', (req, res, next) => {
+  const token = '1234';
+
+  const userEmail = req.body.userEmail;
+  const subjectMessage = 'Account Verification';
+  const bodyMessage = 'Verification code: ' + token;
+
   const smtpTransport = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -28,14 +33,17 @@ airtableRouter.get('/email', (req, res, next) => {
       pass: process.env.NOREPLY_PASS
     }
   });
+
   const MAIL_INFO  = {
     to: userEmail,
     from: process.env.NOREPLY_EMAIL,
-    subject: 'test',
-    text: 'This is a automated test email. If you are seeing this we have a proof of concept!'
+    subject: subjectMessage,
+    text: bodyMessage 
   };
+
   smtpTransport.sendMail(MAIL_INFO, function(err) {});
-  res.sendStatus(200)
+
+  res.send(token)
 })
 
 airtableRouter.post('/login', function(req, res, next) {
