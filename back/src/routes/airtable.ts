@@ -20,7 +20,6 @@ airtableRouter.get('/', (req, res, next) => {
 })
 
 airtableRouter.get('/email', (req, res, next) => {
-  console.log('We are here!');
   const userEmail = 'jeffrey.jernstrom@gmail.com';
   const smtpTransport = nodemailer.createTransport({
     service: 'gmail',
