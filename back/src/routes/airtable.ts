@@ -19,6 +19,25 @@ airtableRouter.get('/', (req, res, next) => {
   res.sendStatus(200)
 })
 
+airtableRouter.get('/email', (req, res, next) => {
+  console.log('We are here!');
+  const userEmail = 'jeffrey.jernstrom@gmail.com';
+  const smtpTransport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.NOREPLY_EMAIL,
+      pass: process.env.NOREPLY_PASS
+    }
+  });
+  const MAIL_INFO  = {
+    to: userEmail,
+    from: process.env.NOREPLY_EMAIL,
+    subject: 'test',
+    text: 'This is a automated test email. If you are seeing this we have a proof of concept!'
+  };
+  smtpTransport.sendMail(MAIL_INFO, function(err) {});
+  res.sendStatus(200)
+})
 
 airtableRouter.post('/login', function(req, res, next) {
     passport.authenticate('local', function(error, user, info) {
