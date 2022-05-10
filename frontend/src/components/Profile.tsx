@@ -253,6 +253,7 @@ export const Profile = (): JSX.Element => {
           </button>
         </div>
 
+        <div>
         <div className={buttons['buttonWrapper']}>
           <button
             className={buttons['fullscreenButton'] + " btn btn-danger"}
@@ -270,7 +271,8 @@ export const Profile = (): JSX.Element => {
           >
             Change Password
           </button>
-        </Link>
+          </Link>
+        </div>
       </div>
     </div>
   );

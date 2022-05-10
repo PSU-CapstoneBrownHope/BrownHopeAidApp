@@ -1,9 +1,11 @@
 .fullscreenButton{
+  display: flex;
+  justify-content: center;
+  align-self:flex-start;
   font-weight: 200;
   letter-spacing: 0.1em;
   font-family: bebas-neue;
   font-size: calc(9px + 2vmin);
-  text-align: center;
   width: 70vw;
   max-width: 575px;
   border-radius: calc(5px + 1vmin);
