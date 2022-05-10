@@ -21,6 +21,7 @@ airtableRouter.get('/', (req, res, next) => {
 
 airtableRouter.post('/email', (req, res, next) => {
   const token = '1234';
+  const tokenCreationTime = Date.now();
 
   const userEmail = req.body.userEmail;
   const subjectMessage = 'Account Verification';
@@ -43,7 +44,7 @@ airtableRouter.post('/email', (req, res, next) => {
 
   smtpTransport.sendMail(MAIL_INFO, function(err) {});
 
-  res.send(token)
+  res.send("token=" + token + "&" + "tokenCreationTime=" + tokenCreationTime)
 })
 
 airtableRouter.post('/login', function(req, res, next) {
