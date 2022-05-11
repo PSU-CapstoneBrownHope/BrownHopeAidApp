@@ -90,6 +90,10 @@ airtableRouter.post('/application_status', (req, res, next) => {
           res.sendStatus(404);
           return; 
         }
+        if(records.length < 1) { 
+          res.sendStatus(404);
+          return; 
+        }
         fields.status = records[0].fields['PWA Status'];
         fields.description = records[0].fields['PWA Status Description'];
         res.write(JSON.stringify(fields));
