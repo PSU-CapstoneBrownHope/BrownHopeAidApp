@@ -43,21 +43,63 @@ airtableRouter.post('/application_status', (req, res, next) => {
       status: "",
       description: "",
     };
-    base('2021 Form Responses').select({
-      fields: ["Applicant First Name", "Applicant Last Name", "PWA Status", "PWA Status Description"],
-      filterByFormula: `AND({Applicant First Name} = '${req.body.firstName}', {Applicant Last Name} = '${req.body.lastName}')`
-    }).firstPage(function(err, records) {
-      if(err) { console.error(err); return; }
-      if(records.length > 1) { 
-        console.error("More than one record return from application status check"); 
-        res.sendStatus(404);
-        return; 
-      }
-      fields.status = records[0].fields['PWA Status'];
-      fields.description = records[0].fields['PWA Status Description'];
-      res.write(JSON.stringify(fields));
-      res.end();
-    });
+
+    // if logged in
+    if(req.user){
+      base('User Data').find(req.user[0].fields["User Data Record ID"], (err, record) => {
+        if(record.fields['FR Record ID'] != undefined) {
+          base('2021 Form Responses').select({
+            fields: [
+              "PWA Status",
+              "PWA Status Description"
+            ],
+            filterByFormula: `{BRF 2021 Application Record ID} = "${record.fields['FR Record ID']}"`
+          }).firstPage((err, records1) => {
+            if(err) { console.error(err); return; }
+            if(records1.length != 1) { 
+              res.sendStatus(404).end();
+              return; 
+            }
+            fields.status = records1[0].fields['PWA Status'];
+            fields.description = records1[0].fields['PWA Status Description'];
+            res.write(JSON.stringify(fields));
+            res.end();
+          });
+        }
+        else {
+          res.sendStatus(404).end();
+          return;
+        }
+      });
+    }
+
+    // if not logged in
+    else{
+      base('2021 Form Responses').select({
+        fields: ["Applicant First Name", "Applicant Last Name", "PWA Status", "PWA Status Description"],
+        // Birthdate is expecting mm/dd/yyyy with leading zeros stripped
+        filterByFormula: `AND(
+          {Applicant First Name} = '${req.body.firstName}', 
+          {Applicant Last Name} = '${req.body.lastName}',
+          {Birthdate} = '${req.body.DOB}'
+        )`
+      }).firstPage(function(err, records) {
+        if(err) { console.error(err); return; }
+        if(records.length > 1) { 
+          console.error("More than one record return from application status check"); 
+          res.sendStatus(404);
+          return; 
+        }
+        if(records.length < 1) { 
+          res.sendStatus(404);
+          return; 
+        }
+        fields.status = records[0].fields['PWA Status'];
+        fields.description = records[0].fields['PWA Status Description'];
+        res.write(JSON.stringify(fields));
+        res.end();
+      });
+    }
 });
 
 airtableRouter.get("/isLoggedIn", function (req, res, next) { 

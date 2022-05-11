@@ -14,12 +14,19 @@ export const ApplicationStatus = (): JSX.Element => {
   const [status, setStatus] = useState("");
   const [description, setDescription] = useState("");
   const [currentId, setCurrentId] = useState("");
+  const [validSubmit, setValidSubmit] = useState(false);
+  const [displayError, setDisplayError] = useState(false);
+  const [position, setPosition] = useState(0);
+
 
   useEffect(() => {
+
     if (currentId && currentId !== "DOB") {
       const inputElement = document.getElementById(currentId);
       if (inputElement) inputElement.focus();
+      
     }
+  
   });
 
   useEffect(() => {
@@ -31,6 +38,7 @@ export const ApplicationStatus = (): JSX.Element => {
     if (event) {
       event.preventDefault();
     }
+
 
 
     const newApplicationStatusRequest = {
@@ -46,13 +54,16 @@ export const ApplicationStatus = (): JSX.Element => {
         setHasApp(true)
         setStatus(resp.data.status)
         setDescription(resp.data.description)
+
       } catch (err) {
         console.error(err)
         setWait(true);
         alert("Failed to find application")
       }
     };
-    sendApplicationStatusRequest()
+    if(validSubmit)
+      sendApplicationStatusRequest()
+    
   }
 
   function InfoMessage() {
@@ -120,20 +131,23 @@ export const ApplicationStatus = (): JSX.Element => {
             <input
               aria-label="Date of birth"
               role="date"
-              type="date"
+              type="text"
               autoFocus={true}
               id="DOB"
               value={DOB}
+              placeholder="dd-mm-yyyy"
+              onBlur={()=>{
+                isValidDate(DOB)
+              }}
               onChange={(e) => {
-                setDOB(e.target.value);
+                updateDOB(e.target.value)
                 setCurrentId((e.target as HTMLInputElement).id)
               }}
               className={text['textField']}
-
+              style={{borderColor: displayError ? 'red' : 'none'}}
               required
             />
           </label>
-
 
         </form>
       </div>
