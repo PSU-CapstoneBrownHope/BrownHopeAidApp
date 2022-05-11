@@ -10,6 +10,7 @@ export const ApplicationStatus = (): JSX.Element => {
   const [lastName, setLastName] = useState("");
   const [DOB, setDOB] = useState("");
   const [HasApp, setHasApp] = useState(false);
+  const [wait, setWait] = useState(false)
   const [status, setStatus] = useState("");
   const [description, setDescription] = useState("");
   const [currentId, setCurrentId] = useState("");
@@ -22,56 +23,8 @@ export const ApplicationStatus = (): JSX.Element => {
   });
 
   useEffect(() => {
-    autoGetAppStatus()
+    checkApplicationStatus()
   }, []);
-  
-
-  function autoGetAppStatus() {
-
-
-
-    const getInfoThenStatus = async () => {
-      try {
-        const resp = await axios.get(
-          routes.isLoggedIn,
-          { withCredentials: true }
-        )
-        // is logged in, so get their info
-        if (resp.data !== "False") {
-          sessionStorage.setItem("username", resp.data)
-          console.log(resp.data)
-          const newInfoRequest = {
-            userName: resp.data
-          };
-          const info = await axios.post(
-            routes.getAccountInfo,
-            newInfoRequest,
-            { withCredentials: true }
-          );
-          // they have info
-          if (info.data !== "") {
-            // this needs to be changed
-            const fakeDOB = "2000-12-12"
-            const newApplicationStatusRequest = {
-              firstName: info.data.firstName,
-              lastName: info.data.lastName,
-              DOB: fakeDOB
-            };
-
-            // get application status
-            const resp = await axios.post(routes.application_status, newApplicationStatusRequest, { withCredentials: true });
-            setHasApp(true)
-            setStatus(resp.data.status)
-            setDescription(resp.data.description)
-          }
-        }
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    getInfoThenStatus()
-  }
-
 
 
   function checkApplicationStatus(event?: SyntheticEvent) {
@@ -95,6 +48,7 @@ export const ApplicationStatus = (): JSX.Element => {
         setDescription(resp.data.description)
       } catch (err) {
         console.error(err)
+        setWait(true);
         alert("Failed to find application")
       }
     };
@@ -110,7 +64,7 @@ export const ApplicationStatus = (): JSX.Element => {
   function AppStatus() {
     return (
       <div>
-
+        {wait? <InfoMessage/>: <p hidden></p>}
         <p className={text["status"] + " " + text["themeColor"]}>
           {status}
         </p>
