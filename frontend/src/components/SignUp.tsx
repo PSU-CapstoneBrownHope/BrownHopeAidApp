@@ -11,7 +11,7 @@ export const SignUp = (): JSX.Element => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
-  const [pin, setPin] = useState("");
+  const [pin, setPin] = useState(0);
   const [verificationScreen, setVerificationScreen] = useState(false);
 
   const navigate = useNavigate();
@@ -26,6 +26,16 @@ export const SignUp = (): JSX.Element => {
       sessionStorage.setItem("username", username)
       navigate("/profile")
     }
+  }
+
+  function stringToNum(strNum: string) {
+    let ret = 0;
+    let place = 1;
+    for (let i = strNum.length - 1; i >= 0; i--){
+      ret += place * strNum.charCodeAt(i) - 48;
+      place *= 10;
+    }
+    return ret;
   }
 
   function handleVerificationSubmit(event: SyntheticEvent) {
@@ -105,7 +115,7 @@ export const SignUp = (): JSX.Element => {
               name="pin"
               id="pin"
               placeholder='pin'
-              onChange={(e) => setPin(e.target.value)}
+              onChange={(e) => setPin(stringToNum(e.target.value))}
               className={text['textField']}
               required
             />
