@@ -171,7 +171,7 @@ export const SignUp = (): JSX.Element => {
     <div className="currentPage">
       <h1 hidden={verificationScreen? true: false}>Create Your Account</h1>
       <h1 hidden={verificationScreen ? false : true}>Enter Verification Code</h1>
-      {verificationScreen? <SignUpForm/>: <VerificationForm/>}
+      {verificationScreen? <VerificationForm/>: <SignUpForm/>}
       <div className="buttons">
         <button
           className={styles['fullscreenButton'] + " btn btn-success"}
