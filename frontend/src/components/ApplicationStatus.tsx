@@ -13,18 +13,43 @@ export const ApplicationStatus = (): JSX.Element => {
   const [status, setStatus] = useState("");
   const [description, setDescription] = useState("");
   const [currentId, setCurrentId] = useState("");
+  const [validSubmit, setValidSubmit] = useState(false);
+  const [displayError, setDisplayError] = useState(false);
+  const [position, setPosition] = useState(0);
+
 
   useEffect(() => {
+
     if (currentId && currentId !== "DOB") {
       const inputElement = document.getElementById(currentId);
       if (inputElement) inputElement.focus();
+      
     }
+  
   });
 
   useEffect(() => {
     autoGetAppStatus()
   }, []);
   
+ 
+  const updateDOB = (dob: string) => {
+    setDOB(dob);
+  }
+
+  function isValidDate(datestring: string){
+    if(!datestring)
+      return false;
+    
+    let regex = new RegExp('^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$')
+    if(regex.test(datestring)){
+      setValidSubmit(true) 
+      setDisplayError(false)
+    }else{
+      setValidSubmit(false)
+      setDisplayError(true)
+    } 
+  }
 
   function autoGetAppStatus() {
 
@@ -80,6 +105,7 @@ export const ApplicationStatus = (): JSX.Element => {
     }
 
 
+
     const newApplicationStatusRequest = {
       firstName: firstName,
       lastName: lastName,
@@ -93,12 +119,15 @@ export const ApplicationStatus = (): JSX.Element => {
         setHasApp(true)
         setStatus(resp.data.status)
         setDescription(resp.data.description)
+
       } catch (err) {
         console.error(err)
         alert("Failed to find application")
       }
     };
-    sendApplicationStatusRequest()
+    if(validSubmit)
+      sendApplicationStatusRequest()
+    
   }
 
   function InfoMessage() {
@@ -166,20 +195,23 @@ export const ApplicationStatus = (): JSX.Element => {
             <input
               aria-label="Date of birth"
               role="date"
-              type="date"
+              type="text"
               autoFocus={true}
               id="DOB"
               value={DOB}
+              placeholder="dd-mm-yyyy"
+              onBlur={()=>{
+                isValidDate(DOB)
+              }}
               onChange={(e) => {
-                setDOB(e.target.value);
+                updateDOB(e.target.value)
                 setCurrentId((e.target as HTMLInputElement).id)
               }}
               className={text['textField']}
-
+              style={{borderColor: displayError ? 'red' : 'none'}}
               required
             />
           </label>
-
 
         </form>
       </div>
