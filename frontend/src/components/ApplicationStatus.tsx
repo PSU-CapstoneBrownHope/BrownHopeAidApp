@@ -32,6 +32,25 @@ export const ApplicationStatus = (): JSX.Element => {
   useEffect(() => {
     checkApplicationStatus()
   }, []);
+  
+  
+  const updateDOB = (dob: string) => {
+    setDOB(dob);
+  }
+
+  function isValidDate(datestring: string){
+    if(!datestring)
+      return false;
+
+    let regex = new RegExp('^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$')
+    if(regex.test(datestring)){
+      setValidSubmit(true) 
+      setDisplayError(false)
+    }else{
+      setValidSubmit(false)
+      setDisplayError(true)
+    } 
+  }
 
 
   function checkApplicationStatus(event?: SyntheticEvent) {
