@@ -8,7 +8,7 @@ This version of the frontend was created for Brown Hope. This document will cove
 - Clone this repo to your local machine.
 - in the terminal switch to the "BrownHopeAidApp/frontend" directory
 - run npm install 
-  - fixing vulnerabilities is covered in common issues
+  - fixing vulnerabilities is covered in packages under common issues
 - Change server in config.ts to localhost:5000
   - ensure you do not merge to development with this change. It should be set to the ip address of your server. 
 
@@ -18,5 +18,30 @@ This section will cover some of the issues we ran into in development and how we
 
 ## Packages
 
-With the number of dependencies on the frontend, there are commonly vulnerabilities created by outdated ones. To fix these vulnerabilities, you will need to fix the file packagelock.json. Below are the steps for how to indetify the problem package and fix it. If you run into any more issues consult the FAQ section, or create an issue on the [github](https://github.com/PSU-CapstoneBrownHope/BrownHopeAidApp/)
+With the number of dependencies on the frontend, there are commonly vulnerabilities created by outdated ones. Below are some of the ways for how to indetify the problem package and fix it. If you run into any more issues consult the FAQ section, or create an issue on the [github](https://github.com/PSU-CapstoneBrownHope/BrownHopeAidApp/).
+
+If you run npm install and see vulnerabilities:
+
+![vulnerabilitiesOnInstall](https://user-images.githubusercontent.com/77218586/167921834-0f0b846f-3d84-450e-8394-e660f32d12be.png)
+
+1. run npm audit
+
+![npmAudit](https://user-images.githubusercontent.com/77218586/167924046-8c50d3d7-1eba-43bd-af7e-4b8534d2731a.png)
+
+This shows an audit report. The first box is surrounding the offending package nth-check. In this example there is a single dependency issue, but you might see more. The next red highlight shows something you should NOT do, as it will cause more vulnerabilities. In gray is the list of packages affected by this dependency issue. 
+
+2. Search for package name in package-lock.json (I used vim). Using the information from the audit report we know that "css-select" is the package dependent on this vulnerable version of nth-check. 
+
+![badPackage](https://user-images.githubusercontent.com/77218586/167924665-9194e87b-00c5-41cc-aed9-3c2b2aeb15b5.png)
+
+In the audit report the system told us the issue was that the nth-check package was below version 2.0.1. We change that value to be "^2.0.1":
+
+![goodPackage](https://user-images.githubusercontent.com/77218586/167924983-0f61531e-2dbd-4ccf-bdf6-c44644f47f9f.png)
+
+now lets run npm install again
+
+![goodInstall](https://user-images.githubusercontent.com/77218586/167925988-343f611e-e45d-489f-ae0a-5408a9aab196.png)
+
+For those of you wanting to update the packages as they advance in the future, this is a way to sort out any new vulnerabilities. 
+
 
