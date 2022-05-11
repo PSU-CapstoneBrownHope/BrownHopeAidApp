@@ -15,10 +15,51 @@ const baseId = process.env.BASE_ID;
 const base = new airtable({apiKey: airtableApiKey}).base(baseId);
 const airtableRouter = Router();
 
+interface UserToken {
+  token: number;
+  tokenCreationTime: number;
+}
+
+let userTokens = new Map<string, UserToken>();
+
 airtableRouter.get('/', (req, res, next) => {
   res.sendStatus(200)
 })
 
+airtableRouter.post('/email', (req, res, next) => {
+  const token = Math.floor(Math.random() * 900000) + 100000;
+  const tokenCreationTime = Date.now();
+  const userEmail = req.body.userEmail;
+
+  let userToken: UserToken = {
+    token: token,
+    tokenCreationTime: tokenCreationTime,
+  };
+
+  userTokens.set(userEmail, userToken);
+
+  const subjectMessage = 'Account Verification';
+  const bodyMessage = 'Verification code: ' + token;
+
+  const smtpTransport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.NOREPLY_EMAIL,
+      pass: process.env.NOREPLY_PASS
+    }
+  });
+
+  const MAIL_INFO  = {
+    to: userEmail,
+    from: process.env.NOREPLY_EMAIL,
+    subject: subjectMessage,
+    text: bodyMessage 
+  };
+
+  smtpTransport.sendMail(MAIL_INFO, function(err) {});
+
+  res.sendStatus(200);
+})
 
 airtableRouter.post('/login', function(req, res, next) {
     passport.authenticate('local', function(error, user, info) {
