@@ -60,15 +60,12 @@ export const ApplicationStatus = (): JSX.Element => {
       ret += place * (value.charCodeAt(i) - 48);
       place *= 10;
     }
-    console.log("strToNum: ", ret, value, place)
     return ret;
   }
 
   function dayMaxVal(month: string, day: string) {
-    console.log(day.length)
     const ret = stringToNum(day);
     let maxVal = 31;
-    console.log("b4  ", ret, maxVal)
     switch (month) {
       case "2":
         maxVal = 29;
@@ -86,7 +83,6 @@ export const ApplicationStatus = (): JSX.Element => {
         maxVal = 30;
         break;
     }
-    console.log("after", ret, maxVal)
     if (ret > maxVal)
       return maxVal.toString();
     if (ret < 10) {
@@ -101,7 +97,6 @@ export const ApplicationStatus = (): JSX.Element => {
     let reg = new RegExp("[./-]")
     const splitDate = value.split(reg);
     const date = value.replace(/[^\d]/g, '');
-    console.log(splitDate)
     let dateLen = value.length;
     if (dateLen < 3) {
       return date;
@@ -115,24 +110,25 @@ export const ApplicationStatus = (): JSX.Element => {
         month = date.slice(2);
       }
 
-      console.log("<5  ", month, day)
       if (stringToNum(month) > 12) {
         month = "12";
       }
       day = dayMaxVal(month, day);
-      if (splitDate.length === 2 && dateLen === 4)
-        return `${day}-${month}-`;
       return `${day}-${month}`;
     }
     let year = splitDate[2];
     let month = splitDate[1];
     let day = splitDate[0];
+    if (!year) {
+      year = date.slice(4, 8)
+      month = date.slice(2, 4)
+    }
     if (stringToNum(month) > 12)
       month = "12";
     day = dayMaxVal(month, day);
     if (stringToNum(year) * (3.154 * 10 ^ 7) > Date.now() / (3.154 * 10 ^ 7))
       year = (Date.now() / (3.154 * 10 ^ 7)).toString();
-    return `${day}-${month}-${year}`;
+    return `${day}-${month}-${year.slice(0, 4)}`;
   }
 
 
