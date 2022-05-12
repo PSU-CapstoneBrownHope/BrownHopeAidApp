@@ -11,10 +11,18 @@ export const SignUp = (): JSX.Element => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
+  const [currentId, setCurrentId] = useState("");
   const [pin, setPin] = useState(0);
   const [verificationScreen, setVerificationScreen] = useState(false);
 
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (currentId) {
+      const inputElement = document.getElementById(currentId);
+      if (inputElement) inputElement.focus();
+    }
+  });
 
   useEffect(() => {
     isLoggedIn()
@@ -31,7 +39,7 @@ export const SignUp = (): JSX.Element => {
   function stringToNum(strNum: string) {
     let ret = 0;
     let place = 1;
-    for (let i = strNum.length - 1; i >= 0; i--){
+    for (let i = strNum.length - 1; i >= 0; i--) {
       ret += place * strNum.charCodeAt(i) - 48;
       place *= 10;
     }
@@ -111,14 +119,18 @@ export const SignUp = (): JSX.Element => {
           Please enter the pin sent to {email}
         </p>
         <label htmlFor="pin" className={text["wrapper"]}>
-            <input
-              name="pin"
-              id="pin"
-              placeholder='pin'
-              onChange={(e) => setPin(stringToNum(e.target.value))}
-              className={text['textField']}
-              required
-            />
+          <input
+            name="pin"
+            id="pin"
+            placeholder='pin'
+            value={pin}
+            onChange={(e) => {
+              setPin(stringToNum(e.target.value))
+              setCurrentId((e.target as HTMLInputElement).id);
+            }}
+            className={text['textField']}
+            required
+          />
         </label>
       </form>
     )
@@ -126,74 +138,92 @@ export const SignUp = (): JSX.Element => {
 
   const SignUpForm = () => {
     return (
-        <form id="signUp" className="info" onSubmit={handleSignupSubmit}>
-          <label htmlFor="email" className={text["wrapper"]}>
-            Email:
-            <input
-              name="email"
-              id="email"
-              placeholder='email'
-              onChange={(e) => setEmail(e.target.value)}
-              className={text['textField']}
-              required
-            />
-          </label>
-          <label htmlFor="username" className={text["wrapper"]}>
-            Username:
-            <input
-              name="username"
-              id="username"
-              placeholder='username'
-              onChange={(e) => setUserName(e.target.value)}
-              className={text['textField']}
-              required
-            />
-          </label>
-          <label htmlFor="password" className={text["wrapper"]}>
-            Password:
-            <input
-              name="password"
-              id="password"
-              type="password"
-              placeholder='password'
-              onChange={(e) => setPassword(e.target.value)}
-              className={text['textField']}
-              required
-            />
-          </label>
-          <label htmlFor="verifyPassword" className={text["wrapper"]}>
-            Confirm Password:
-            <input
-              name="verifyPassword"
-              id="verifyPassword"
-              placeholder='confirm password'
-              type="password"
-              onChange={(e) => setVerifyPassword(e.target.value)}
-              className={text['textField']}
-              required
-            />
-          </label>
-        </form>
+      <form id="signUp" className="info" onSubmit={handleSignupSubmit}>
+        <label htmlFor="email" className={text["wrapper"]}>
+          Email:
+          <input
+            name="email"
+            id="email"
+            placeholder='email'
+            type="text"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              setCurrentId((e.target as HTMLInputElement).id);
+            }}
+            className={text['textField']}
+            required
+          />
+        </label>
+        <label htmlFor="username" className={text["wrapper"]}>
+          Username:
+          <input
+            name="username"
+            id="username"
+            value={username}
+            type="text"
+            placeholder='username'
+            onChange={(e) => {
+              setUserName(e.target.value);
+              setCurrentId((e.target as HTMLInputElement).id);
+            }}
+            className={text['textField']}
+            required
+          />
+        </label>
+        <label htmlFor="password" className={text["wrapper"]}>
+          Password:
+          <input
+            name="password"
+            id="password"
+            type="password"
+            value={password}
+            placeholder='password'
+            onChange={(e) => {
+              setPassword(e.target.value)
+              setCurrentId((e.target as HTMLInputElement).id)
+            }}
+            className={text['textField']}
+            required
+          />
+        </label>
+        <label htmlFor="verifyPassword" className={text["wrapper"]}>
+          Confirm Password:
+          <input
+            name="verifyPassword"
+            id="verifyPassword"
+            placeholder='confirm password'
+            value={verifyPassword}
+            type="password"
+            onChange={(e) => {
+              setVerifyPassword(e.target.value);
+              setCurrentId((e.target as HTMLInputElement).id);
+            }}
+            className={text['textField']}
+            required
+          />
+        </label>
+      </form>
     );
   }
 
   return (
     <div className="currentPage">
-      <h1 hidden={verificationScreen? true: false}>Create Your Account</h1>
+      <h1 hidden={verificationScreen ? true : false}>Create Your Account</h1>
       <h1 hidden={verificationScreen ? false : true}>Enter Verification Code</h1>
-      {verificationScreen? <VerificationForm/>: <SignUpForm/>}
+      {verificationScreen ? <VerificationForm /> : <SignUpForm />}
       <div className="buttons">
         <button
           className={styles['fullscreenButton'] + " btn btn-success"}
           onClick={handleVerificationSubmit}
-          hidden={verificationScreen? true: false}
+          hidden={verificationScreen ? true : false}
         >
           Create Account
         </button>
         <button
           className={styles['fullscreenButton'] + " btn btn-success"}
           onClick={handleSignupSubmit}
-          hidden={verificationScreen? false: true}
+          hidden={verificationScreen ? false : true}
         >
           Create Account
         </button>
