@@ -9,6 +9,7 @@ const server = '34.82.220.171';
 export const routes = {
   login: `http://${server}/api/airtable/login/`,
   signup: `http://${server}/api/airtable/signup/`,
+  email: `http://${server}/api/airtable/email/`,
   signup_verify: `http://${server}/api/airtable/signup/verify/:token`,
   signout: `http://${server}/api/airtable/signout/`,
   isLoggedIn: `http://${server}/api/airtable/isLoggedIn/`,
