@@ -123,9 +123,11 @@ export const SignUp = (): JSX.Element => {
             name="pin"
             id="pin"
             placeholder='pin'
-            onChange={
-              (e) => setPin(stringToNum(e.target.value))
-            }
+            value={pin}
+            onChange={(e) => {
+              setPin(stringToNum(e.target.value))
+              setCurrentId((e.target as HTMLInputElement).id);
+            }}
             className={text['textField']}
             required
           />
