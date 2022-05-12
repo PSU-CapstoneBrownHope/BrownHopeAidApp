@@ -44,14 +44,13 @@ airtableRouter.post('/application_status', (req, res, next) => {
       description: "",
     };
     let regex = new RegExp('^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$')
-    
     if(req.body.DOB){
       if(!regex.test(req.body.BOD)){
         res.sendStatus(404).end();
         return; 
       }
+
     }
-    
     // if logged in
     if(req.user){
       base('User Data').find(req.user[0].fields["User Data Record ID"], (err, record) => {
