@@ -12,7 +12,7 @@ export const SignUp = (): JSX.Element => {
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
   const [currentId, setCurrentId] = useState("");
-  const [pin, setPin] = useState(0);
+  const [pin, setPin] = useState("");
   const [verificationScreen, setVerificationScreen] = useState(false);
 
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ export const SignUp = (): JSX.Element => {
     const sendVerificationRequest = async () => {
       try {
         const newVerificationRequest = {
-          email: email
+          userEmail: email
         }
         const resp = await axios.post(routes.email, newVerificationRequest);
         setVerificationScreen(true)
@@ -125,7 +125,7 @@ export const SignUp = (): JSX.Element => {
             placeholder='pin'
             value={pin}
             onChange={(e) => {
-              setPin(stringToNum(e.target.value))
+              setPin(e.target.value)
               setCurrentId((e.target as HTMLInputElement).id);
             }}
             className={text['textField']}
@@ -138,7 +138,7 @@ export const SignUp = (): JSX.Element => {
 
   const SignUpForm = () => {
     return (
-      <form id="signUp" className="info" onSubmit={handleSignupSubmit}>
+      <form id="signUp" className="info" onSubmit={handleVerificationSubmit}>
         <label htmlFor="email" className={text["wrapper"]}>
           Email:
           <input

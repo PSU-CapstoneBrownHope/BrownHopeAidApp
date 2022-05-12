@@ -14,6 +14,7 @@ const airtableApiKey = process.env.AIRTABLE_API_KEY;
 const baseId = process.env.BASE_ID;
 const base = new airtable({apiKey: airtableApiKey}).base(baseId);
 const airtableRouter = Router();
+const emailTokenValidTimeInSeconds = 300;
 
 interface UserToken {
   token: number;
@@ -282,7 +283,11 @@ airtableRouter.post('/signup', function(req, res, next) {
 
     // Check for a matching token
     function(done){
-      if(token != userTokens.get(email)){
+      console.log("Current: " + Date.now() + " Token: " + userTokens.get(email).tokenCreationTime)
+      if(userTokens.get(email).tokenCreationTime + (emailTokenValidTimeInSeconds * 1000) < Date.now()){
+        done("Token is expired");
+      }
+      else if(token != userTokens.get(email).token){
         done("Token doesn't match");
       }
       else done(null);
@@ -290,28 +295,22 @@ airtableRouter.post('/signup', function(req, res, next) {
 
     // hash the new user password
     function(done) {
-      console.log("Hashing new user password");
       bcrypt.hash(password, Number(process.env.SALT), function(err, hash) {
         if (err) {
-          console.error(err);
           done(err);
         }
         else {
-          console.log("Success");
-          console.log(hash);
           done(err, hash);
         }
       });
     },
     // make sure the user does not already exist
     function(hashed_pw, done) {
-      console.log(hashed_pw);
       base('Authentication').select({filterByFormula: `Username = "${username}"`}).firstPage((err, records) => {
         if (err) {
           console.error(err);
         }
         else if (records.length == 0) {
-          console.log("Create new user...");
           done(err, hashed_pw);
         }
         else {
@@ -367,7 +366,7 @@ airtableRouter.post('/signup', function(req, res, next) {
     },
 
     function(done){
-      console.log("Account creation successful");
+      console.log("Account creation for " + username + " successful");
       res.send("Success");
     }
     
