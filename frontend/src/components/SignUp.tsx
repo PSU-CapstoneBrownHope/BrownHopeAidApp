@@ -66,7 +66,7 @@ export const SignUp = (): JSX.Element => {
           email: email,
           password: password,
           // double check name with mack before sending PR
-          pin: pin
+          token: pin
         };
 
         const newLoginRequest = {
