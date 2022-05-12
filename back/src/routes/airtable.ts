@@ -225,12 +225,19 @@ airtableRouter.post('/signup', function(req, res, next) {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
-  const appid = req.body.id;
-  console.log("signup route hit with " + appid);
+  const token = req.body.token;
   async.waterfall ([
     // Should probably check if the email is already in use.
     // This will already be checked by frontend but the request
     // could come from elsewhere technically.
+
+    // Check for a matching token
+    function(done){
+      if(token != userTokens.get(email)){
+        done("Token doesn't match");
+      }
+      else done(null);
+    },
 
     // hash the new user password
     function(done) {
