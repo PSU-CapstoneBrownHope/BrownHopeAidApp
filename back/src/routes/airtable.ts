@@ -228,6 +228,10 @@ airtableRouter.post('/signup', function(req, res, next) {
   const appid = req.body.id;
   console.log("signup route hit with " + appid);
   async.waterfall ([
+    // Should probably check if the email is already in use.
+    // This will already be checked by frontend but the request
+    // could come from elsewhere technically.
+
     // hash the new user password
     function(done) {
       console.log("Hashing new user password");
@@ -258,30 +262,6 @@ airtableRouter.post('/signup', function(req, res, next) {
           done("User already exists");
         }
       });
-    },
-
-    // ensure that the record does not already exist
-    function(hashed_pw, done) {
-      // if (do_signup == false) {
-      //   done(null, do_signup, record_id);
-      // }
-      // else {
-      //   base("User Data").select({filterByFormula: `{Email Address} = "${email}"`}).firstPage((err, records) => {
-      //     if (err) {
-      //       console.error(err);
-      //       done(err, false, null);
-      //     }
-      //     else if (records.length > 0) {
-      //       console.log("Email Exists in User Data Already");
-      //       done(err, do_signup, record_id);
-      //     }
-      //     else {
-      //       console.log("Create New User Data Record");
-      //       done(err, do_signup, record_id);
-      //     }
-      //   });
-      // }
-      done(null, hashed_pw);
     },
 
     // Find Form Responses record if it exists
