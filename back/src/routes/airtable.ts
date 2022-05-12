@@ -15,10 +15,51 @@ const baseId = process.env.BASE_ID;
 const base = new airtable({apiKey: airtableApiKey}).base(baseId);
 const airtableRouter = Router();
 
+interface UserToken {
+  token: number;
+  tokenCreationTime: number;
+}
+
+let userTokens = new Map<string, UserToken>();
+
 airtableRouter.get('/', (req, res, next) => {
   res.sendStatus(200)
 })
 
+airtableRouter.post('/email', (req, res, next) => {
+  const token = Math.floor(Math.random() * 900000) + 100000;
+  const tokenCreationTime = Date.now();
+  const userEmail = req.body.userEmail;
+
+  let userToken: UserToken = {
+    token: token,
+    tokenCreationTime: tokenCreationTime,
+  };
+
+  userTokens.set(userEmail, userToken);
+
+  const subjectMessage = 'Account Verification';
+  const bodyMessage = 'Verification code: ' + token;
+
+  const smtpTransport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.NOREPLY_EMAIL,
+      pass: process.env.NOREPLY_PASS
+    }
+  });
+
+  const MAIL_INFO  = {
+    to: userEmail,
+    from: process.env.NOREPLY_EMAIL,
+    subject: subjectMessage,
+    text: bodyMessage 
+  };
+
+  smtpTransport.sendMail(MAIL_INFO, function(err) {});
+
+  res.sendStatus(200);
+})
 
 airtableRouter.post('/login', function(req, res, next) {
     passport.authenticate('local', function(error, user, info) {
@@ -233,9 +274,20 @@ airtableRouter.post('/signup', function(req, res, next) {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
-  const appid = req.body.id;
-  console.log("signup route hit with " + appid);
+  const token = req.body.token;
   async.waterfall ([
+    // Should probably check if the email is already in use.
+    // This will already be checked by frontend but the request
+    // could come from elsewhere technically.
+
+    // Check for a matching token
+    function(done){
+      if(token != userTokens.get(email)){
+        done("Token doesn't match");
+      }
+      else done(null);
+    },
+
     // hash the new user password
     function(done) {
       console.log("Hashing new user password");
@@ -260,161 +312,65 @@ airtableRouter.post('/signup', function(req, res, next) {
         }
         else if (records.length == 0) {
           console.log("Create new user...");
-          done(err, hashed_pw, true);
+          done(err, hashed_pw);
         }
         else {
-          console.log("User already exists");
-          done(err, hashed_pw, false);
+          done("User already exists");
         }
       });
     },
-    // create the new user record in users table and return the record_id
-    function(hashed_pw, do_signup, done) {
-      if (do_signup == false) {
-        done(null, false, null);
-      }
-      else{
-        base('Authentication').create([
-          {
-            "fields": {
-              "Username": username,
-              "Password": hashed_pw,
-            }
-          }
-        ], function(err, record_new){
-          if (err) {
-            console.error(err);
-            done(err, false, null);
-          }
-          else {
-            console.log("Success")
-            console.log("Record Id: " + record_new[0].getId())
-            done(err, do_signup, record_new[0].getId());
-          }
-        });
-      }
-    },
-    // ensure that the record does not already exist
-    function(do_signup, record_id, done) {
-      if (do_signup == false) {
-        done(null, do_signup, record_id, null);
-      }
-      else {
-        base("User Data").select({filterByFormula: `{Email Address} = "${email}"`}).firstPage((err, records) => {
-          if (err) {
-            console.error(err);
-            done(err, false, null, null, null);
-          }
-          else if (records.length > 0) {
-            console.log("Email Exists in User Data Already");
-            done(err, do_signup, record_id, records[0].getId(), records[0].fields.Name);
-          }
-          else {
-            console.log("Create New Form Responses Record");
-            done(err, do_signup, record_id, null, null);
-          }
-        });
-      }
-    },
-    // associate the record id to the Form Responses table
-    function(do_signup, record_id, fr_record_id, name, done) {
-      if (do_signup == false ) {
-        done(null, do_signup, null, null);
-      }
-      // There is not a record in the Form Respnonses table already,
-      // create a new record with the record id from the users table
-      else if (fr_record_id == null) {
-        console.log("Associating Record ID " + record_id)
-        
-        base('User Data').create([
-          {
-            fields: {
-              "Email Address" : email,
-              "FR Record ID": appid
-            }
-          }
-        ], function(err, record_new) {
-          if(err) {
-            console.error(err);
-            done(err, false, null, null);
-          }
-          else {
-            console.log("this is the record id: " + record_new[0].getId())
 
-            base('Authentication').update([{'id': record_id, 'fields': {'User Data Record ID': record_new[0].getId()},}], function(err, update_record) {
-              if (err) {
-                console.error(err)
-              };
-          
-              // redirect user to logged in page? or somewhere?
-              
-            })
-            done(err, do_signup, null, null);
-          }
-        });
-      }
-      // The user had information entered in the Form Responses table already
-      // but did not have an online account. Update the email address and 
-      // record id to reflect the appropriate user
-      else {
-        const token = record_id.substring(3, record_id.length) 
-                      + '-' 
-                      + fr_record_id.substring(3, fr_record_id.length);
-        done(null, do_signup, token, name);
-      }
+    // Find Form Responses record if it exists
+    function(hashed_pw, done){
+      base('2021 Form Responses').select({filterByFormula: `{Applicant Email} = "${email}"`})
+      .firstPage((err, records) => {
+        if(err){
+          console.error(err);
+          done(err);
+        }
+        else if(records.length < 1){
+          done(null, hashed_pw, null);
+        }
+        else{
+          done(null, hashed_pw, records[0].fields["BRF 2021 Application Record ID"]);
+        }
+      });
     },
-    // Report back to front end!
-    
 
-    function(do_signup, token, name, done) {
-      if(do_signup) {
-        if (token == null) {
-          console.log("Send success message");
-          res.send("Success");
+    // create the record in the User Data table and associate it with the Auth table
+    function(hashed_pw, fr_record_id, done) {
+      base('User Data').create([
+        {
+          fields: {
+            "Email Address" : email,
+            "FR Record ID": fr_record_id
+          }
         }
-        else {
-          console.log("Send email")
-          console.log("Create SMTP Transport")
-          const smtpTransport = nodemailer.createTransport({
-            // host: "smtp.mailtrap.io",
-            // port: 2525,
-            service: 'gmail',
-            auth: {
-              user: process.env.NOREPLY_EMAIL,
-              pass: process.env.NOREPLY_PASS
-            }
-          });
-          const mail_info = {
-            to: email,
-            from: process.env.NOREPLY_EMAIL,
-            subject: process.env.RESET_SUBJECT,
-            text: 'Hello ' + name + ','
-                  + '\n\n' 
-                  + 'You are receiving this email because you are attempting '
-                  + 'to create an account on our app to manage your existing '
-                  + 'profile in our system. To claim your account, please use '
-                  + 'the link below and enter your password to verify that it '
-                  + 'is you. Once you have claimed your account you will be '
-                  + 'able to log in with the username you proviced: '
-                  + username + '.'
-                  + '\n\n' 
-                  + 'http://' + process.env.RESET_SERVER + '/signup/verify/' + token 
-                  + '\n\n' + 'If you did not request this, please ignore this email.'
-                  + '\n\n'
-                  + 'Thank you,\n'
-                  + 'The BRF Team'
-          };
-          smtpTransport.sendMail(mail_info,)
-          res.send("Emailed")
+      ], function(err, record_new) {
+        done(err, hashed_pw, record_new[0].getId());
+      });
+    },
+
+    // create the new user record in Authentication table 
+    function(hashed_pw, user_data_rid, done) {
+      base('Authentication').create([
+        {
+          "fields": {
+            "Username": username,
+            "Password": hashed_pw,
+            "User Data Record ID": user_data_rid
+          }
         }
-        done(null);
-      }
-      else {
-        console.log("Send failed message");
-        res.send("Failed");
-        done(null);
-      }
+      ], function(err, record_new){
+        done(err);
+      });
+    },
+
+    function(done){
+      console.log("Account creation successful");
+      res.send("Success");
     }
+    
   ], function(err) {
     if (err) {
       console.error(err);
