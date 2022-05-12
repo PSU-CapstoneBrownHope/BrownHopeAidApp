@@ -36,6 +36,7 @@ export const ApplicationStatus = (): JSX.Element => {
 
   const updateDOB = (dob: string) => {
     setDOB(dob);
+    isValidDate(dob)
   }
 
   function isValidDate(datestring: string) {
@@ -43,7 +44,7 @@ export const ApplicationStatus = (): JSX.Element => {
       return false;
 
     let regex = new RegExp('^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$')
-    if (regex.test(datestring)) {
+    if (!regex.test(datestring)) {
       setValidSubmit(true)
       setDisplayError(false)
     } else {
@@ -88,36 +89,47 @@ export const ApplicationStatus = (): JSX.Element => {
     console.log("after", ret, maxVal)
     if (ret > maxVal)
       return maxVal.toString();
+    if (ret < 10) {
+      return "0" + ret.toString();
+    }
     return ret.toString();
   }
 
   function formatDate(value: string) {
     if (!value)
       return value;
-    const date = value.replace(/[^\d]/g, '')
-    const dateLen = date.length;
+    let reg = new RegExp("[./-]")
+    const splitDate = value.split(reg);
+    const date = value.replace(/[^\d]/g, '');
+    console.log(splitDate)
+    let dateLen = value.length;
     if (dateLen < 3) {
-      console.log("<3  ", date);
       return date;
     }
+    dateLen = date.length;
     if (dateLen < 5) {
-      let month = date.slice(2);
-      let day = date.slice(0, 2);
+      let month = splitDate[1];
+      let day = splitDate[0];
+      if (!month) {
+        day = date.slice(0, 2);
+        month = date.slice(2);
+      }
+
       console.log("<5  ", month, day)
       if (stringToNum(month) > 12) {
         month = "12";
       }
       day = dayMaxVal(month, day);
+      if (splitDate.length === 2 && dateLen === 4)
+        return `${day}-${month}-`;
       return `${day}-${month}`;
     }
-    let month = date.slice(2);
+    let year = splitDate[2];
+    let month = splitDate[1];
+    let day = splitDate[0];
     if (stringToNum(month) > 12)
       month = "12";
-    let day = date.slice(0, 2);
     day = dayMaxVal(month, day);
-    let year = date.slice(4, 8);
-    console.log(Date.now() / (3.154 * 10 ^ 7))
-    console.log(stringToNum(year) * (3.154 * 10 ^ 7))
     if (stringToNum(year) * (3.154 * 10 ^ 7) > Date.now() / (3.154 * 10 ^ 7))
       year = (Date.now() / (3.154 * 10 ^ 7)).toString();
     return `${day}-${month}-${year}`;
@@ -253,6 +265,7 @@ export const ApplicationStatus = (): JSX.Element => {
           className={styles['fullscreenButton'] + " btn btn-success"}
           onClick={(e) => checkApplicationStatus(e)}
           hidden={HasApp ? true : false}
+          disabled={validSubmit}
         >
           Check Application Status
         </button>
