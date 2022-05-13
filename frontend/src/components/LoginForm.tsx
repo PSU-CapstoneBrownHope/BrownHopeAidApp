@@ -96,15 +96,23 @@ export const LoginForm = (): JSX.Element => {
           />
         </label>
       </form>
-    
+        <div>
         <button
           className={styles['fullscreenButton'] + " btn btn-success"}
           onClick={(e) => handleLoginSubmit(e)}
         >
           Login
         </button>
-    
+        <Link to="/sign-up">
+        <button
+          className={styles['fullscreenButton'] + " btn btn-secondary"}
+        >
+          Create An Account
+          </button>
+        </Link>
+      </div>
     </div>
+
   );
 }
 
