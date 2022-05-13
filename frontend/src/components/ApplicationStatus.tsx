@@ -30,7 +30,8 @@ export const ApplicationStatus = (): JSX.Element => {
   });
 
   useEffect(() => {
-    checkApplicationStatus()
+    if (sessionStorage.getItem("username"))
+      checkApplicationStatus()
   }, []);
 
 
@@ -137,8 +138,6 @@ export const ApplicationStatus = (): JSX.Element => {
       event.preventDefault();
     }
 
-
-
     const newApplicationStatusRequest = {
       firstName: firstName,
       lastName: lastName,
@@ -159,9 +158,11 @@ export const ApplicationStatus = (): JSX.Element => {
         alert("Failed to find application")
       }
     };
-    if (validSubmit)
+    
+    if (event && validSubmit)
       sendApplicationStatusRequest()
-
+    else if (!event)
+      sendApplicationStatusRequest()
   }
 
   function InfoMessage() {
