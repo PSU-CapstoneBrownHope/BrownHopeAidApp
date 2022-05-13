@@ -27,6 +27,8 @@ jobs:
         env:
           AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
           BASE_ID: ${{ secrets.BASE_ID }}
+          NOREPLY_EMAIL: ${{ secrets.NOREPLY_EMAIL }}
+          NOREPLY_PASS: ${{ secrets.NOREPLY_PASS }}
         run: |
           cd ./back
           npm install
