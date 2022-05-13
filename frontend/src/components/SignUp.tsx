@@ -225,7 +225,7 @@ export const SignUp = (): JSX.Element => {
           onClick={handleSignupSubmit}
           hidden={verificationScreen ? false : true}
         >
-          Create Account
+          Confirm Pin
         </button>
         <p className={text["high"]}>
           Leaving this page will NOT affect your application
