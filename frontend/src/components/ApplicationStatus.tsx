@@ -30,7 +30,8 @@ export const ApplicationStatus = (): JSX.Element => {
   });
 
   useEffect(() => {
-    checkApplicationStatus()
+    if (sessionStorage.getItem("username"))
+      checkApplicationStatus()
   }, []);
 
 
