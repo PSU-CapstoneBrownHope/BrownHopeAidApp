@@ -85,9 +85,9 @@ airtableRouter.post('/application_status', (req, res, next) => {
       status: "",
       description: "",
     };
-    let regex = new RegExp('^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$')
+    let regex = new RegExp('^([0]?[1-9]|[1][0-2])[./]([0]?[1-9]|[1|2][0-9]|[3][0|1])[./]([0-9]{4})$')
     if(req.body.DOB){
-      if(!regex.test(req.body.BOD)){
+      if(!regex.test(req.body.DOB)){
         res.sendStatus(404).end();
         return; 
       }
