@@ -457,22 +457,15 @@ airtableRouter.post('/update_password', function(req, res, next) {
 });
 
 airtableRouter.post("/update", function (req, res) {
-  
-
-  console.log("what is this: " + JSON.stringify(req.body[0].value));
-
   if (!req.user) {
     res.end();
     return
   }
   const userName = req.user[0].fields.Username
-  console.log("userName: " + userName);
   if (userName !== req.body[0].value || userName === null) {
     res.end();
     return;
   }
-
-
   
   try {
     const fields = {
@@ -493,12 +486,7 @@ airtableRouter.post("/update", function (req, res) {
       (acc, field) => ({ [field.name]: field.value, ...acc }),
       {}
     );
-    console.log("what is first: " + firstName)
-    console.log('what is last: ' + lastName)
-
-    console.log("even though this is empty: " + JSON.stringify(fieldsToChange));
     fieldsToChange.Name = `${firstName} ${lastName}`;
-    console.log("splitting hairs: " + fieldsToChange.Name.split(' ')[0]);
     fieldsToChange.firstName = `${firstName}`;
     fieldsToChange.lastName = `${lastName}`;
     for (const field in fieldsToChange) {
@@ -523,46 +511,20 @@ airtableRouter.post("/update", function (req, res) {
           break;
       }
     }
-    console.log("what is the name " + userName);
-  
-    base("Authentication")
-    .select({ filterByFormula: `{Username} = "${userName}"` })
-    .firstPage((err, records) => {
-      
-      if (err) console.error(err);
-   
-      if (records.length != 1)
-        return res.status(403).send({ error: "Unauthorized user" });
-      
-      const recordID = records[0].fields["User Data Record ID"];
-     
-      base('User Data')
-      .find(recordID, (err, record) => {
-        console.log("what is the name " + JSON.stringify(fields));
-        console.log("done with that");
 
-        console.log('what is the record id: ' + recordID)
-        
-        base("User Data").update([
-          {
-            "id": recordID.toString(),
-            "fields": fields
-          }
-
-        ], function(err, records){
-          if(err){
-            console.error(err);
-            return;
-          }
-          console.log("were not fucked yet")
-
-        });
-
-
-      })
-      });
+    const recordID = req.user[0].fields["User Data Record ID"];
+    base("User Data").update([
+      {
+        "id": recordID,
+        "fields": fields
+      }
+    ], function(err, records){
+      if(err){
+        console.error(err);
+        return;
+      }
+    });
   } catch (err) {
-   
     console.log(err);
     throw err;
   }
