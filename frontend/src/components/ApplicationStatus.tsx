@@ -44,8 +44,8 @@ export const ApplicationStatus = (): JSX.Element => {
     if (!datestring)
       return false;
 
-    let regex = new RegExp('^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$')
-    if (!regex.test(datestring)) {
+    let regex = new RegExp('^([0]?[1-9]|[1][0-2])[./]([0]?[1-9]|[1|2][0-9]|[3][0|1])[./]([0-9]{4})$')
+    if (regex.test(datestring)) {
       setValidSubmit(true)
       setDisplayError(false)
     } else {
@@ -84,52 +84,52 @@ export const ApplicationStatus = (): JSX.Element => {
         maxVal = 30;
         break;
     }
+    console.log(month, day);
+    if (ret < 10 && ret != 0 && day.length !== 1) {
+      console.log("zeroPad");
+      return "0" + ret.toString()
+    }
     if (ret > maxVal)
       return maxVal.toString();
-    if (ret < 10) {
-      return "0" + ret.toString();
-    }
+    console.log(ret.toString())
     return ret.toString();
   }
 
   function formatDate(value: string) {
+    console.log(value)
     if (!value)
       return value;
-    let reg = new RegExp("[./-]")
+    let reg = new RegExp("[./]")
     const splitDate = value.split(reg);
     const date = value.replace(/[^\d]/g, '');
-    let dateLen = value.length;
+    let dateLen = date.length;
+    let year = splitDate[2];
+    let month = splitDate[0];
+    let day = splitDate[1];
     if (dateLen < 3) {
       return date;
     }
-    dateLen = date.length;
     if (dateLen < 5) {
-      let month = splitDate[1];
-      let day = splitDate[0];
-      if (!month) {
-        day = date.slice(0, 2);
-        month = date.slice(2);
-      }
-
-      if (stringToNum(month) > 12) {
-        month = "12";
+      if (!day) {
+        month = date.slice(0, 2);
+        day = date.slice(2);
       }
       day = dayMaxVal(month, day);
-      return `${day}-${month}`;
+      if (stringToNum(month) > 12)
+        month = "12"
+      return `${month}/${day}`;
     }
-    let year = splitDate[2];
-    let month = splitDate[1];
-    let day = splitDate[0];
+    
     if (!year) {
       year = date.slice(4, 8)
-      month = date.slice(2, 4)
+      day = date.slice(2, 4)
     }
-    if (stringToNum(month) > 12)
-      month = "12";
     day = dayMaxVal(month, day);
     if (stringToNum(year) * (3.154 * 10 ^ 7) > Date.now() / (3.154 * 10 ^ 7))
       year = (Date.now() / (3.154 * 10 ^ 7)).toString();
-    return `${day}-${month}-${year.slice(0, 4)}`;
+    if (stringToNum(month) > 12)
+      month = "12"
+    return `${month}/${day}/${year.slice(0, 4)}`;
   }
 
 
@@ -141,7 +141,7 @@ export const ApplicationStatus = (): JSX.Element => {
     const newApplicationStatusRequest = {
       firstName: firstName,
       lastName: lastName,
-      DOB: DOB
+      DOB: DOB.replace(/(?=0)(\d)/g,'')
     };
 
     const sendApplicationStatusRequest = async () => {
@@ -174,7 +174,6 @@ export const ApplicationStatus = (): JSX.Element => {
   function AppStatus() {
     return (
       <div>
-        {wait ? <InfoMessage /> : <p hidden></p>}
         <p className={text["status"] + " " + text["themeColor"]}>
           {status}
         </p>
@@ -234,7 +233,7 @@ export const ApplicationStatus = (): JSX.Element => {
               autoFocus={true}
               id="DOB"
               value={DOB}
-              placeholder="dd-mm-yyyy"
+              placeholder="mm-dd-yyyy"
               onBlur={() => {
                 isValidDate(DOB)
               }}
@@ -243,7 +242,7 @@ export const ApplicationStatus = (): JSX.Element => {
                 setCurrentId((e.target as HTMLInputElement).id)
               }}
               className={text['textField']}
-              style={{ borderColor: displayError ? 'red' : 'none' }}
+              style={{ borderColor: displayError ? 'red':'none'}}
               required
             />
           </label>
@@ -256,13 +255,14 @@ export const ApplicationStatus = (): JSX.Element => {
     <div className="currentPage">
       <h1 hidden={HasApp ? true : false}>check the status of your application</h1>
       <h1 hidden={HasApp ? false : true}>Your Application Status Is:</h1>
+      {wait ? <InfoMessage /> : <p hidden></p>}
       {HasApp ? <AppStatus /> : <ApplicationStatusForm />}
       <div>
         <button
           className={styles['fullscreenButton'] + " btn btn-success"}
           onClick={(e) => checkApplicationStatus(e)}
           hidden={HasApp ? true : false}
-          disabled={validSubmit}
+          disabled={!validSubmit}
         >
           Check Application Status
         </button>
