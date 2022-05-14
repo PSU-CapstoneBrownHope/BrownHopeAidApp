@@ -164,7 +164,32 @@ airtableRouter.get('/signout', function (req, res, next) {
   res.clearCookie("connect.sid").send("Success")
 });
 
+// Checks for if an email or username is already in use, called during signup
+airtableRouter.get('/duplicateInfoCheck', function (req, res) {
+  base('Authentication').select({filterByFormula: `Username = "${req.body.username}"`}).firstPage((err, records) => {
+    if (err){
+      res.send(err);
+      return;
+    }
+    else if (records.length > 0) {
+      res.send("Username already in use").end();
+      return;
+    }
+  });
 
+  base('User Data').select({filterByFormula: `{Email Address} = "${req.body.email}"`}).firstPage((err, records) => {
+    if (err){
+      res.send(err);
+      return;
+    }
+    else if (records.length > 0) {
+      res.send("Email already in use").end();
+      return;
+    }
+  });
+
+  res.send("Info OK").end();
+});
 
 
 airtableRouter.post("/getInfo", function (req, res) {
