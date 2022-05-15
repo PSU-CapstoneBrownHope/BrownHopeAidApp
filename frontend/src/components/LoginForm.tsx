@@ -11,7 +11,7 @@ import { env } from "process";
 export const LoginForm = (): JSX.Element => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [signUpState, setSignUpState] = useState(false);
+  const [validSubmit, setValidSubmit] = useState(false);
 
   useEffect(() => {
     isLoggedIn()
@@ -30,7 +30,12 @@ export const LoginForm = (): JSX.Element => {
   const handleClick = () => navigate("/reset/verify-user");
 
   function validateForm() {
-    return username.length > 0 && password.length > 0 && !signUpState;
+    return username.length > 0 && password.length > 0;
+  }
+
+  const updatePassword = (password: string) => {
+    setPassword(password);
+    setValidSubmit(validateForm())
   }
 
   function handleLoginSubmit(event: SyntheticEvent) {
@@ -90,7 +95,7 @@ export const LoginForm = (): JSX.Element => {
             id="password"
             value={password}
             placeholder='Password'
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => updatePassword(e.target.value)}
             className={text['textField']}
             required
           />
@@ -99,6 +104,7 @@ export const LoginForm = (): JSX.Element => {
         <div>
         <button
           className={styles['fullscreenButton'] + " btn btn-success"}
+          disabled = {!validSubmit}
           onClick={(e) => handleLoginSubmit(e)}
         >
           Login
