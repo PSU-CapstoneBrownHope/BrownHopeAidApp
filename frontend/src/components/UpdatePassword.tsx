@@ -1,10 +1,10 @@
-import React, { useState, SyntheticEvent } from "react";
+import React, { useState, useEffect, SyntheticEvent } from "react";
 import axios from 'axios';
 import { routes } from '../util/config';
 import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
 import text from "../styles/Text.module.css"
-
+import { LoginCheck, Logout } from '../util/userFunctions';
 
 export const UpdatePassword = (): JSX.Element => {
   //const [username, setUsername] = useState("");
@@ -14,6 +14,21 @@ export const UpdatePassword = (): JSX.Element => {
 
   const navigate = useNavigate()
 
+  const isLoggedIn = async () => {
+    const username = await LoginCheck()
+    if (username === "False") {
+      sessionStorage.removeItem("username")
+      navigate("/login")
+    } else {
+      sessionStorage.setItem("username", username)
+    }
+  }
+
+  useEffect(() => {
+    if (process.env.BROWSER)
+      isLoggedIn()
+  }, [])
+  
   function validatePasswordChange() {
     return (
       /*username.length > 0 && */old_password.length > 0 && new_password.length > 0 && new_password === new_password_verify && new_password !== old_password
