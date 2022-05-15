@@ -6,16 +6,31 @@ import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
 import text from "../styles/Text.module.css"
 import { LoginCheck } from "../util/userFunctions";
+import { fields, buttons, header, IButtons } from "../util/loginUtil";
+import { updateField } from "../util/inputUtil";
 import { env } from "process";
 
 export const LoginForm = (): JSX.Element => {
+  const [form, setForm] = useState(fields)
+  const [btns] = useState(buttons)
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [validSubmit, setValidSubmit] = useState(false);
+  const [currentId, setCurrentId] = useState("");
+
+
+
 
   useEffect(() => {
     isLoggedIn()
   }, [])
+
+  useEffect(() => {
+    if (currentId) {
+      const inputElement = document.getElementById(currentId);
+      if (inputElement) inputElement.focus();
+    }
+  });
 
   const isLoggedIn = async () => {
     const username = await LoginCheck()
@@ -65,6 +80,67 @@ export const LoginForm = (): JSX.Element => {
     sendLoginRequest();
   }
 
+  const LoginForm = () => {
+    let items: any = [];
+    form.forEach((item: any, index: any) => {
+      items.push(
+        <label htmlFor={item.id} className={text["wrapper"]}>
+          {item.label}:
+          <input
+            role={item.type}
+            name={item.id}
+            id={item.id}
+            placeholder={item.label}
+            value={item.value}
+            onBlur={(e) => {
+              setForm(updateField(e, index, form));
+              //setCurrentId(item.id)
+            }}
+            className={text['textField']}
+            required
+          />
+        </label>
+      )
+    })
+    let buttons: any = [];
+    btns.forEach((item: any, index: any) => {
+      if (item.type === "submit") {
+        return (
+          <button
+            className={styles['fullscreenButton'] + " " + item.bootstrapClass}
+            disabled={!validateForm()}
+            type="submit"
+          >
+            {item.text}
+          </button>
+        );
+      } else if (item.to) {
+        return (
+          <Link to={item.to}>
+            <button
+              className={styles["fullscreenButton"] + " " + item.bootstrapClass}
+            >
+              {item.text}
+            </button>
+          </Link>
+        )
+      }
+    })
+    return (
+      <div className="currentPage">
+        <h1>{header}</h1>
+        <form id="loginForm"
+          className={styles["buttonGroup"]}
+          onSubmit={handleLoginSubmit}
+        >
+          <div className="info">
+            {items}
+            {buttons}
+          </div>
+        </form>
+      </div>
+    )
+  }
 
 
   return (
@@ -93,7 +169,7 @@ export const LoginForm = (): JSX.Element => {
               role='password'
               type="password"
               name="password"
-              autoComplete="currentPassword"
+              autoComplete="current-password"
               id="password"
               value={password}
               placeholder='Password'
