@@ -93,6 +93,7 @@ export const LoginForm = (): JSX.Element => {
             role='password'
             type="password"
             name="password"
+            autoComplete="currentPassword"
             id="password"
             value={password}
             placeholder='Password'
