@@ -114,7 +114,7 @@ export const SignUp = (): JSX.Element => {
 
   const VerificationForm = () => {
     return (
-      <form id="signUp" className="info" onSubmit={handleSignupSubmit}>
+      <form id="signUp" onSubmit={handleSignupSubmit}>
         <div className="info">
         <p className={text["medium"]}>
           Please enter the pin sent to {email}
@@ -141,6 +141,10 @@ export const SignUp = (): JSX.Element => {
         >
           Confirm Pin
         </button>
+
+        <p className={text["high"]}>
+          Leaving this page will NOT affect your application
+        </p>
       </form>
     )
   }
@@ -224,6 +228,9 @@ export const SignUp = (): JSX.Element => {
         >
           Create Account
         </button>
+        <p className={text["high"]}>
+          Leaving this page will NOT affect your application
+        </p>
       </form>
     );
   }
@@ -233,13 +240,6 @@ export const SignUp = (): JSX.Element => {
       <h1 hidden={verificationScreen ? true : false}>Create Your Account</h1>
       <h1 hidden={verificationScreen ? false : true}>Enter Verification Code</h1>
       {verificationScreen ? <VerificationForm /> : <SignUpForm />}
-      <div className="buttons">
-
-   
-        <p className={text["high"]}>
-          Leaving this page will NOT affect your application
-        </p>
-      </div>
     </div>
   );
 }
