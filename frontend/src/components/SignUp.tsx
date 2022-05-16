@@ -115,6 +115,7 @@ export const SignUp = (): JSX.Element => {
   const VerificationForm = () => {
     return (
       <form id="signUp" className="info" onSubmit={handleSignupSubmit}>
+        <div className="info">
         <p className={text["medium"]}>
           Please enter the pin sent to {email}
         </p>
@@ -131,20 +132,30 @@ export const SignUp = (): JSX.Element => {
             className={text['textField']}
             required
           />
-        </label>
+          </label>
+          </div>
+        <button
+          className={styles['fullscreenButton'] + " btn btn-success"}
+          type="submit"
+          hidden={verificationScreen ? false : true}
+        >
+          Confirm Pin
+        </button>
       </form>
     )
   }
 
   const SignUpForm = () => {
     return (
-      <form id="signUp" className="info" onSubmit={handleVerificationSubmit}>
+      <form id="signUp" onSubmit={handleVerificationSubmit}>
+        <div className="info">
         <label htmlFor="email" className={text["wrapper"]}>
           Email:
           <input
             name="email"
             id="email"
             placeholder='email'
+            autoComplete="email"
             type="text"
             value={email}
             onChange={(e) => {
@@ -161,6 +172,7 @@ export const SignUp = (): JSX.Element => {
             name="username"
             id="username"
             value={username}
+            autoComplete="username"
             type="text"
             placeholder='username'
             onChange={(e) => {
@@ -178,6 +190,7 @@ export const SignUp = (): JSX.Element => {
             id="password"
             type="password"
             value={password}
+            autoComplete="new-password"
             placeholder='password'
             onChange={(e) => {
               setPassword(e.target.value)
@@ -193,6 +206,7 @@ export const SignUp = (): JSX.Element => {
             name="verifyPassword"
             id="verifyPassword"
             placeholder='confirm password'
+            autoComplete="new-password"
             value={verifyPassword}
             type="password"
             onChange={(e) => {
@@ -203,6 +217,13 @@ export const SignUp = (): JSX.Element => {
             required
           />
         </label>
+        </div>
+        <button
+          className={styles['fullscreenButton'] + " btn btn-success"}
+          type="submit"
+        >
+          Create Account
+        </button>
       </form>
     );
   }
@@ -213,20 +234,8 @@ export const SignUp = (): JSX.Element => {
       <h1 hidden={verificationScreen ? false : true}>Enter Verification Code</h1>
       {verificationScreen ? <VerificationForm /> : <SignUpForm />}
       <div className="buttons">
-        <button
-          className={styles['fullscreenButton'] + " btn btn-success"}
-          onClick={handleVerificationSubmit}
-          hidden={verificationScreen ? true : false}
-        >
-          Create Account
-        </button>
-        <button
-          className={styles['fullscreenButton'] + " btn btn-success"}
-          onClick={handleSignupSubmit}
-          hidden={verificationScreen ? false : true}
-        >
-          Confirm Pin
-        </button>
+
+   
         <p className={text["high"]}>
           Leaving this page will NOT affect your application
         </p>

@@ -186,10 +186,11 @@ export const ApplicationStatus = (): JSX.Element => {
 
   const ApplicationStatusForm = () => {
     return (
-      <div className="info">
         <form id="applicationStatusForm"
           className={styles['buttonGroup']}
           onSubmit={checkApplicationStatus}>
+
+          <div className="info">
           <label className={text["wrapper"]} htmlFor="first name">
             First Name
             <input
@@ -247,17 +248,7 @@ export const ApplicationStatus = (): JSX.Element => {
             />
           </label>
 
-        </form>
       </div>
-    )
-  }
-  return (
-    <div className="currentPage">
-      <h1 hidden={HasApp ? true : false}>check the status of your application</h1>
-      <h1 hidden={HasApp ? false : true}>Your Application Status Is:</h1>
-      {wait ? <InfoMessage /> : <p hidden></p>}
-      {HasApp ? <AppStatus /> : <ApplicationStatusForm />}
-      <div>
         <button
           className={styles['fullscreenButton'] + " btn btn-success"}
           onClick={(e) => checkApplicationStatus(e)}
@@ -266,7 +257,15 @@ export const ApplicationStatus = (): JSX.Element => {
         >
           Check Application Status
         </button>
-      </div>
+      </form>
+    )
+  }
+  return (
+    <div className="currentPage">
+      <h1 hidden={HasApp ? true : false}>check the status of your application</h1>
+      <h1 hidden={HasApp ? false : true}>Your Application Status Is:</h1>
+      {wait ? <InfoMessage /> : <p hidden></p>}
+      {HasApp ? <AppStatus /> : <ApplicationStatusForm />}
     </div>
   );
 }

@@ -70,7 +70,8 @@ export const LoginForm = (): JSX.Element => {
   return (
     <div className="currentPage">
       <h1>Login to your account</h1>
-      <form id="loginForm" className={styles["buttonGroup"] + " info"} onSubmit={handleLoginSubmit}>
+      <form id="loginForm" className={styles["buttonGroup"]} onSubmit={handleLoginSubmit}>
+        <div className="info">
         <label htmlFor="username" className={text["wrapper"]}>
           Username:
           <input
@@ -92,6 +93,7 @@ export const LoginForm = (): JSX.Element => {
             role='password'
             type="password"
             name="password"
+            autoComplete="currentPassword"
             id="password"
             value={password}
             placeholder='Password'
@@ -99,16 +101,17 @@ export const LoginForm = (): JSX.Element => {
             className={text['textField']}
             required
           />
-        </label>
-      </form>
-        <div>
+          </label>
+        </div>
         <button
           className={styles['fullscreenButton'] + " btn btn-success"}
-          disabled = {!validSubmit}
-          onClick={(e) => handleLoginSubmit(e)}
+          disabled={!validateForm()}
+          type="submit"
         >
           Login
         </button>
+      </form>
+        <div>
         <Link to="/sign-up">
         <button
           className={styles['fullscreenButton'] + " btn btn-secondary"}
