@@ -1,0 +1,61 @@
+/* 
+  This file is used to set variables for display options like:
+    - font
+    - colors
+    - font size
+    - html item size
+
+    IF YOU CHANGE THIS FILE:
+    - Check that the display looks correct ON ALL PAGES at sizes:
+      - 768px (Tablet)
+      - 414px (Phone)
+      - 320px X 480px (Small phone, may be outdated) 
+*/
+
+@font-face {
+     /* do not change*/
+    font-family: header-font;
+    /* route to font for header in fonts */
+    src: url("./fonts/BebasNeue-Regular.ttf")format(--header-font-format);
+    --header-font-format: "woff2";
+}
+
+
+* {
+  /* color gradient at the bottom of the page */
+  --gradient: #e6ac19da;
+  --background-color: white;
+  --gradientHeight: 30vh;
+
+  /* Color for header text */
+  --themeColor: #146467;
+
+  /* Text color, for non-outline button */
+  --button-text-color: white;
+  /* Base size. Will scale with screen size*/
+  --header-font-size: 14px;
+
+  /* max width of app display */
+  --max-width: 1100px;
+
+  /* width of nav list item */
+  --nav-item-width: calc(10vw + 2vmin);
+
+  /* max-width non-nav display */
+  --current-page-max-width: 575px;
+  /* normal page width */
+  --current-page-std-width: 70vw;
+
+  /* high priority font size */
+  --high: calc(10px + 2vmin);
+  /* medium priority font size */
+  --medium: calc(8px + 2vmin);
+  /* low priority font size */
+  --low: calc(6px + 2vmin);
+  /* text field font size */
+  --textfield: calc(16px + 1vmin);  
+  /* input label size 
+  --inputLabel: */
+  /* application status text size */
+  --status: calc(25px + 4vmin);
+}
