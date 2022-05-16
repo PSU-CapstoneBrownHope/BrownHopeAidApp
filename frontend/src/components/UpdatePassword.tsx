@@ -74,7 +74,8 @@ export const UpdatePassword = (): JSX.Element => {
   return (
     <div className="currentPage">
       <h1>Change your Password</h1>
-      <form id="ChangePasswordForm" className="info">
+      <form id="ChangePasswordForm" onSubmit={(e) => handleUpdatePassword}>
+        <div className="info">
         <label htmlFor="oldPassword" className={text["wrapper"]}>
           Old Password:
           <input
@@ -108,16 +109,18 @@ export const UpdatePassword = (): JSX.Element => {
             className={text["textField"]}
           />
         </label>
-      </form>
-      <div>
-        <button
+        </div>
+       <button
           id="changePasswordBtn"
           className={styles["fullscreenButton"] + " btn btn-success"}
           disabled={!validatePasswordChange()}
-          onClick={handleUpdatePassword}
+          type="submit"
         >
           Change password
         </button>
+      </form>
+      <div>
+ 
         <Link to="/profile">
           <button
             id="backToProfile"
