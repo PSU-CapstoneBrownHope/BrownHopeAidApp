@@ -53,7 +53,7 @@ body{
   font-weight: 400;
   font-style: normal;
   background-color: transparent;
-  height: 11%;
+  height: 11vh;
 }
 
 .currentPage{
@@ -62,7 +62,7 @@ body{
   align-content: center;
   width: fit-content;
   max-width: 1100px;
-  height: 75%;
+  height: 70vh;
   margin:auto;
   margin-top: 0px;
   margin-bottom: 0px;
@@ -74,7 +74,7 @@ body{
 .info{
   display: flex;
   flex-direction: column;
-  max-height: 85%;
+  max-height: 50vh;
   max-width: 600px;
   width: 100%;
   margin: auto;
@@ -101,9 +101,10 @@ body{
 
 
 .footer{
-  justify-self:end;
-  font-size: calc(10px + 2vmin);
-  max-height: 8%;
+  margin-top:auto;
+  justify-self: flex-end;
+  font-size: calc(6px + 2vmin);
+  max-height: 10vh;
   color: #146467;
   font-family: bebas-neue;
   font-weight: 400;
@@ -111,7 +112,6 @@ body{
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-self:flex-end;
   padding-bottom: 10px;
 }
 
@@ -186,7 +186,7 @@ figure{
 }
 
 form{
-  max-height: 80%;
+  max-height: 60vh;
 }
 
 
