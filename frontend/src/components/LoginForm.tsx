@@ -72,35 +72,35 @@ export const LoginForm = (): JSX.Element => {
       <h1>Login to your account</h1>
       <form id="loginForm" className={styles["buttonGroup"]} onSubmit={handleLoginSubmit}>
         <div className="info">
-        <label htmlFor="username" className={text["wrapper"]}>
-          Username:
-          <input
-            role='textbox'
-            aria-label='username'
-            name="username"
-            id="username"
-            placeholder='Username'
-            value={username}
-            onChange={(e) => setUserName(e.target.value)}
-            className={text['textField']}
-            required
-          />
-        </label>
-        <label htmlFor="password" className={text["wrapper"]}>
-          Password:
-          <input
-            aria-label='password'
-            role='password'
-            type="password"
-            name="password"
-            autoComplete="currentPassword"
-            id="password"
-            value={password}
-            placeholder='Password'
-            onChange={(e) => updatePassword(e.target.value)}
-            className={text['textField']}
-            required
-          />
+          <label htmlFor="username" className={text["wrapper"]}>
+            Username:
+            <input
+              role='textbox'
+              aria-label='username'
+              name="username"
+              id="username"
+              placeholder='Username'
+              value={username}
+              onChange={(e) => setUserName(e.target.value)}
+              className={text['textField']}
+              required
+            />
+          </label>
+          <label htmlFor="password" className={text["wrapper"]}>
+            Password:
+            <input
+              aria-label='password'
+              role='password'
+              type="password"
+              name="password"
+              autoComplete="currentPassword"
+              id="password"
+              value={password}
+              placeholder='Password'
+              onChange={(e) => updatePassword(e.target.value)}
+              className={text['textField']}
+              required
+            />
           </label>
         </div>
         <button
@@ -110,16 +110,14 @@ export const LoginForm = (): JSX.Element => {
         >
           Login
         </button>
-      </form>
-        <div>
         <Link to="/sign-up">
-        <button
-          className={styles['fullscreenButton'] + " btn btn-secondary"}
-        >
-          Create An Account
+          <button
+            className={styles['fullscreenButton'] + " btn btn-secondary"}
+          >
+            Create An Account
           </button>
         </Link>
-      </div>
+      </form>
     </div>
 
   );

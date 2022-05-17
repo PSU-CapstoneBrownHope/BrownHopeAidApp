@@ -12,50 +12,57 @@
       - 320px X 480px (Small phone, may be outdated) 
 */
 
-@font-face {
-     /* do not change*/
-    font-family: header-font;
-    /* route to font for header in fonts */
-    src: url("./fonts/BebasNeue-Regular.ttf")format(--header-font-format);
-    --header-font-format: "woff2";
-}
-
 
 * {
+
   /* color gradient at the bottom of the page */
   --gradient: #e6ac19da;
   --background-color: white;
-  --gradientHeight: 30vh;
+  --gradient-height: 30vh;
 
   /* Color for header text */
-  --themeColor: #146467;
-
+  --theme-color: #146467;
+ 
   /* Text color, for non-outline button */
   --button-text-color: white;
-  /* Base size. Will scale with screen size*/
-  --header-font-size: 14px;
-
+  
   /* max width of app display */
   --max-width: 1100px;
-
-  /* width of nav list item */
+ 
+  /* nav item size */
   --nav-item-width: calc(10vw + 2vmin);
+  --logo-height: calc(30px + 5vmin);
+
 
   /* max-width non-nav display */
   --current-page-max-width: 575px;
   /* normal page width */
   --current-page-std-width: 70vw;
 
-  /* high priority font size */
+  /* font sizes*/
   --high: calc(10px + 2vmin);
-  /* medium priority font size */
   --medium: calc(8px + 2vmin);
-  /* low priority font size */
   --low: calc(6px + 2vmin);
-  /* text field font size */
-  --textfield: calc(16px + 1vmin);  
-  /* input label size 
-  --inputLabel: */
-  /* application status text size */
+  
+  --nav: calc(12px + 3vmin);
+  --nav-weight: 400;
+  
+  --footer: calc(14px + 1vmin);
+  --footer-weight: 400;
+
+  --header: calc(14px + 4vmin);
+  --header-weight: 200;
+  --header-letter-spacing: 0.2em;
+
+  --app-status-color: #0e7d99;
   --status: calc(25px + 4vmin);
+  --app-status-weight: 400;
+
+  --text-field: calc(16px + 1vmin);  
+  --label: calc(12px + 1vmin);
+
+  --button: calc(9px + 2vmin);
+  --button-letter-spacing: 0.1em;
+  --button-weight: 200;
+
 }

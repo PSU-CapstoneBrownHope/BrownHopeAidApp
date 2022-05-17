@@ -17,10 +17,7 @@ export const UpdatePassword = (): JSX.Element => {
   const isLoggedIn = async () => {
     const username = await LoginCheck()
     if (username === "False") {
-      sessionStorage.removeItem("username")
       navigate("/login")
-    } else {
-      sessionStorage.setItem("username", username)
     }
   }
 
@@ -28,7 +25,7 @@ export const UpdatePassword = (): JSX.Element => {
     if (process.env.BROWSER)
       isLoggedIn()
   }, [])
-  
+
   function validatePasswordChange() {
     return (
       /*username.length > 0 && */old_password.length > 0 && new_password.length > 0 && new_password === new_password_verify && new_password !== old_password
@@ -76,41 +73,43 @@ export const UpdatePassword = (): JSX.Element => {
       <h1>Change your Password</h1>
       <form id="ChangePasswordForm" onSubmit={(e) => handleUpdatePassword}>
         <div className="info">
-        <label htmlFor="oldPassword" className={text["wrapper"]}>
-          Old Password:
-          <input
-            id="oldPassword"
-            type="password"
-            value={old_password}
-            placeholder="Old Password"
-            onChange={(e) => setOldPassword(e.target.value)}
-            className={text["textField"]}
-          />
-        </label>
-        <label htmlFor="newPassword" className={text["wrapper"]}>
-          New Password:
-          <input
-            id="newPassword"
-            type="password"
-            value={new_password}
-            placeholder="New Password"
-            onChange={(e) => setNewPassword(e.target.value)}
-            className={text["textField"]}
-          />
-        </label>
-        <label htmlFor="newPasswordVerify" className={text["wrapper"]}>
-          Confirm New Password:
-          <input
-            id="newPasswordVerify"
-            type="password"
-            value={new_password_verify}
-            placeholder="Confirm New Password"
-            onChange={(e) => setVerifyNewPassword(e.target.value)}
-            className={text["textField"]}
-          />
-        </label>
+          <label htmlFor="oldPassword" className={text["wrapper"]}>
+            Old Password:
+            <input
+              id="oldPassword"
+              type="password"
+              value={old_password}
+              placeholder="Old Password"
+              onChange={(e) => setOldPassword(e.target.value)}
+              className={text["textField"]}
+            />
+          </label>
+          <label htmlFor="newPassword" className={text["wrapper"]}>
+            New Password:
+            <input
+              id="newPassword"
+              type="password"
+              value={new_password}
+              placeholder="New Password"
+              autoComplete="new-password"
+              onChange={(e) => setNewPassword(e.target.value)}
+              className={text["textField"]}
+            />
+          </label>
+          <label htmlFor="newPasswordVerify" className={text["wrapper"]}>
+            Confirm New Password:
+            <input
+              id="newPasswordVerify"
+              type="password"
+              value={new_password_verify}
+              placeholder="Confirm New Password"
+              autoComplete="new-password"
+              onChange={(e) => setVerifyNewPassword(e.target.value)}
+              className={text["textField"]}
+            />
+          </label>
         </div>
-       <button
+        <button
           id="changePasswordBtn"
           className={styles["fullscreenButton"] + " btn btn-success"}
           disabled={!validatePasswordChange()}
@@ -118,9 +117,6 @@ export const UpdatePassword = (): JSX.Element => {
         >
           Change password
         </button>
-      </form>
-      <div>
- 
         <Link to="/profile">
           <button
             id="backToProfile"
@@ -129,7 +125,7 @@ export const UpdatePassword = (): JSX.Element => {
             Back to Profile
           </button>
         </Link>
-      </div>
+      </form>
     </div>
   )
 

@@ -142,9 +142,9 @@ export const SignUp = (): JSX.Element => {
           Confirm Pin
         </button>
 
-      <div className={text["high"] + " buttons"}>
+      <p className={text["high"] + " buttons"}>
         Leaving this page will NOT affect your application
-      </div>
+      </p>
       </form>
     )
   }
@@ -228,9 +228,9 @@ export const SignUp = (): JSX.Element => {
         >
           Create Account
         </button>
-        <div className={text["medium"]}>
+        <p className={text["medium"]}>
           Leaving this page will NOT affect your application
-        </div>
+        </p>
       </form>
     );
   }
