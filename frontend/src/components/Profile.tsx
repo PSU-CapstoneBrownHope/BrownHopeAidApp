@@ -229,10 +229,8 @@ export const Profile = (): JSX.Element => {
   return (
     <div className="currentPage">
       <h1>Account Information</h1>
-      <div className="info">
-        {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
-        {editing ? <AccountFieldsInputs></AccountFieldsInputs> : <AccountFieldsInfo></AccountFieldsInfo>}
-      </div>
+      {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
+      {editing ? <form className='info'><AccountFieldsInputs/></form> : <div className="info"><AccountFieldsInfo/></div>}
       <div className="buttons">
         <div className={buttons['buttonWrapper']}>
           <button
