@@ -1,0 +1,37 @@
+.fullscreenButton{
+  display: flex;
+  justify-content: center;
+  align-self:flex-start;
+  font-weight: 200;
+  letter-spacing: 0.1em;
+  font-family: bebas-neue;
+  font-size: calc(9px + 2vmin);
+  width: 70vw;
+  max-width: 575px;
+  border-radius: calc(5px + 1vmin);
+  cursor: pointer;
+  margin:auto;
+  margin-top: 1vmin;
+}
+
+.buttonGroup{
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  justify-items: baseline;
+  align-items: center;
+}
+
+
+.transparentButton{
+  font-family: bebas-neue;
+  color: #146467;
+  background-color: transparent;
+}
+
+.transparentButton:hover{
+  color: white;
+  background-color: #146467;
+  border-color: white
+}
+

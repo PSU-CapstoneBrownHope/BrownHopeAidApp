@@ -1,0 +1,66 @@
+/*
+ These are intended to be used on text boxes and their names refer to the 
+ level of priority to have to the user see it
+*/
+
+@font-face {
+  font-family: bebas-neue;
+  src: url("./fonts/BebasNeue-Regular.ttf") format('woff2');
+}
+
+.themeColor{
+  color: #0e7d99;
+}
+
+p{
+  margin: auto;
+  width: 100%;
+  padding-top: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: 400;
+}
+
+.textField{
+  font-size: calc(16px + 1vmin);
+  width: 70%;
+  max-width: 575px;
+  width: 100%;
+  border-radius: 3px;
+  padding: 10px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+
+
+.wrapper{
+  font-size: calc(12px + 1vmin);
+  display: flex;
+  flex-flow:column;
+  width:100%;
+  text-align: left;
+}
+
+.status{
+  font-family: bebas-neue;
+  font-size: calc(25px + 4vmin);
+  font-weight: 400;
+}
+
+.gray{
+  color: gray
+}
+
+.high {
+  font-size: calc(10px + 2vmin);
+}
+
+.medium {
+  font-size: calc(8px + 2vmin);
+}
+
+.low {
+  font-size: calc(6px + 2vmin);
+}

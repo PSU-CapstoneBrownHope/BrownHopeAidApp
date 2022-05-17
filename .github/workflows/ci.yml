@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+    - development
+    - production
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: Run frontend tests
+        run: |
+          cd ./frontend
+          npm install
+          npm test
+
+      - name: Run backend tests
+        env:
+          AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
+          BASE_ID: ${{ secrets.BASE_ID }}
+          NOREPLY_EMAIL: ${{ secrets.NOREPLY_EMAIL }}
+          NOREPLY_PASS: ${{ secrets.NOREPLY_PASS }}
+        run: |
+          cd ./back
+          npm install
+          npm test

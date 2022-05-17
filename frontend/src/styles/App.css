@@ -1,0 +1,187 @@
+*{
+  box-sizing: border-box
+}
+
+.App{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height:100%
+}
+
+h1{
+  margin-top: 20px;
+  text-align:center;
+  font-weight: 200;
+  font-size: calc(14px + 4vmin);
+  letter-spacing: 0.2em;
+  font-family: bebas-neue;
+  color: #146467;
+  margin-left: 1.5vmin;
+}
+
+
+@font-face {
+  font-family: bebas-neue;
+  src: url("./fonts/BebasNeue-Regular.ttf") format('woff2');
+}
+
+body{
+  background: linear-gradient(to top, #e6ac19da, white 30vh);
+  text-align: center;
+  max-width: 1100px;
+  margin: auto;
+  height: 100vh;
+}
+
+#root{
+  height:100%
+}
+
+/**
+  Page sections 
+ */
+
+.appHeader {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: calc(12px + 3vmin);
+  color: #146467;
+  font-family: bebas-neue;
+  font-weight: 400;
+  font-style: normal;
+  background-color: transparent;
+  height: 11%;
+}
+
+.currentPage{
+  display:flex;
+  flex-direction: column;
+  align-content: center;
+  width: fit-content;
+  max-width: 1100px;
+  height: 70%;
+  margin:auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 10px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+.info{
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  width: 100%;
+  margin: auto;
+  margin-bottom:0%;
+  margin-top:0%;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  border:rgb(185, 185, 185) solid 2px;
+  border-radius: 3px;
+  padding: 1vmin;
+}
+
+@media only screen and (max-width: 414px){
+  .info{
+    width: 100%;
+  }
+}
+
+.buttons{
+  height:fit-content;
+  
+}
+
+
+.footer{
+  font-size: calc(10px + 2vmin);
+  color: #146467;
+  font-family: bebas-neue;
+  font-weight: 400;
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-self:flex-end;
+  padding-bottom: 2vmin;
+}
+
+
+/* Nav */
+
+nav{
+  display: flex;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+ul{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin:0%;
+  width: 80%;
+  padding:0%;
+}
+
+li{
+  display: flex;
+  height: 100%;
+  width: calc(10vw + 2vmin);
+  max-width: 150px;
+  min-width: fit-content;
+  align-items: center;
+  padding-right: 4vmin
+}
+
+a.noAlign{
+  vertical-align: bottom;
+}
+
+a.logo{
+  display:flex;
+  align-items: center;
+}
+
+
+a{
+  vertical-align: middle;
+  color: #146467;
+  text-decoration: none;
+  width: 100%;
+  cursor:pointer;
+}
+
+a:hover{
+  text-decoration: none;
+}
+
+a.navItem{
+  padding: 1vmin
+}
+
+figure{
+  display: flex;
+  align-items: center;
+  justify-self: flex-end;
+  margin:auto;
+  width: 100%;
+  margin: 0%;
+  padding-left: 4vmin;
+}
+
+.navlogo{
+  height: calc(30px + 5vmin);
+}
+
+
+
+
