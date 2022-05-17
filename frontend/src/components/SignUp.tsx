@@ -117,13 +117,13 @@ export const SignUp = (): JSX.Element => {
       <form id="signUp" onSubmit={handleSignupSubmit}>
         <div className="info">
         <p className={text["medium"]}>
-          Please enter the pin sent to {email}
+          Please enter the verification code sent to {email}
         </p>
         <label htmlFor="pin" className={text["wrapper"]}>
           <input
             name="pin"
             id="pin"
-            placeholder='pin'
+            placeholder='verification code'
             value={pin}
             onChange={(e) => {
               setPin(e.target.value)
@@ -139,7 +139,7 @@ export const SignUp = (): JSX.Element => {
           type="submit"
           hidden={verificationScreen ? false : true}
         >
-          Confirm Pin
+          Confirm Verification Code
         </button>
 
       <p className={text["high"] + " buttons"}>

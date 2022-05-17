@@ -42,12 +42,18 @@ export const Nav = (): JSX.Element => {
   return (
     <header className="appHeader">
       <nav aria-label="nav">
-        <a href="/" className="logo">
+        <a href="https://www.brownhope.org/" className="logo">
           <figure>
             <img src="bh_full-color_stacked_black.png" className="navlogo" alt="Brown Hope Logo" />
           </figure>
         </a>
         <ul>
+          <li>
+            <a href="/" className="navItem">
+              <p className='twoWordP'>App</p>
+              <p className='twoWordP'>Status</p>
+            </a> 
+          </li>
           <li>
             <a aria-label="Profile" href={link} className="navItem">
               {username}
