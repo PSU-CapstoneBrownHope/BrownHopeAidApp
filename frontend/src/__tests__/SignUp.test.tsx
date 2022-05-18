@@ -22,10 +22,10 @@ test('All signup elements render', async() => {
     ReactDOMClient.createRoot(container).render(<BrowserRouter><SignUp /></BrowserRouter>);
   });
   
-  expect(screen.getByLabelText("Email")).toBeInTheDocument
-  expect(screen.getByLabelText("Username")).toBeInTheDocument
-  expect(screen.getByLabelText("Password")).toBeInTheDocument
-  expect(screen.getByLabelText("Confirm Password")).toBeInTheDocument
+  expect(screen.getByLabelText("Email:")).toBeInTheDocument
+  expect(screen.getByLabelText("Username:")).toBeInTheDocument
+  expect(screen.getByLabelText("Password:")).toBeInTheDocument
+  expect(screen.getByLabelText("Confirm Password:")).toBeInTheDocument
   expect(screen.getByText("Create Account")).toBeInTheDocument
   expect(screen.getByText("Create Your Account")).toBeInTheDocument
 });
@@ -39,22 +39,22 @@ test('Sing-Up Input Fields Test', async() => {
     ReactDOMClient.createRoot(container).render(<BrowserRouter><SignUp /></BrowserRouter>);
   });
 
-  const email = screen.getByLabelText("Email");
+  const email = screen.getByLabelText("Email:");
   fireEvent.change(email, { target: { value: "foo@pdx.edu" } });
   // weird error with value, exists but doesn't think it does
   expect(email.value).toBe("foo@pdx.edu") 
 
-  const username = screen.getByLabelText("Username");
+  const username = screen.getByLabelText("Username:");
   fireEvent.change(username, { target: { value: "foo_bar" } });
   // weird error with value, exists but doesn't think it does
   expect(username.value).toBe("foo_bar") 
 
-  const password = screen.getByLabelText("Password");
+  const password = screen.getByLabelText("Password:");
   fireEvent.change(password, { target: { value: "Password123!@#" } });
   // weird error with value, exists but doesn't think it does
   expect(password.value).toBe("Password123!@#") 
 
-  const verify_password = screen.getByLabelText("Confirm Password");
+  const verify_password = screen.getByLabelText("Confirm Password:");
   fireEvent.change(verify_password, { target: { value: "Password123!@#" } });
   // weird error with value, exists but doesn't think it does
   expect(password.value).toBe("Password123!@#") 

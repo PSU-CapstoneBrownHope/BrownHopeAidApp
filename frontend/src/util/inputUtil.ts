@@ -8,3 +8,7 @@ export const updateField = (e: React.BaseSyntheticEvent, index: number, form: an
   formCopy[index].value = elementValue;
   return formCopy;
 }
+
+export const submitVerify = () => {
+
+} 

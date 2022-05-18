@@ -84,7 +84,7 @@ export const LoginForm = (): JSX.Element => {
     let items: any = [];
     form.forEach((item: any, index: any) => {
       items.push(
-        <label htmlFor={item.id} className={text["wrapper"]}>
+        <label htmlFor={item.id} key={index} className={text["wrapper"]}>
           {item.label}:
           <input
             role={item.type}
@@ -111,13 +111,14 @@ export const LoginForm = (): JSX.Element => {
             className={styles['fullscreenButton'] + " " + item.bootstrapClass}
             disabled={!validateForm()}
             type="submit"
+            key={index}
           >
             {item.text}
           </button>
         );
       } else if (item.to) {
         buttons.push(
-          <Link to={item.to}>
+          <Link to={item.to} key={index} >
             <button
               className={styles["fullscreenButton"] + " " + item.bootstrapClass}
             >
