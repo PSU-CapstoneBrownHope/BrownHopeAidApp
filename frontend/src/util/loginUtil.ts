@@ -46,7 +46,7 @@ export const buttons: IButtons[] = [
   {
     text: "Login",
     type: "submit",
-    bootstrapClass: "btn btn-secondary"
+    bootstrapClass: "btn btn-success"
   },
   {
     text: "Create An Account",

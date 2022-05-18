@@ -105,7 +105,7 @@ export const LoginForm = (): JSX.Element => {
     let buttons: any = [];
     btns.forEach((item: any, index: any) => {
       if (item.type === "submit") {
-        return (
+        buttons.push(
           <button
             className={styles['fullscreenButton'] + " " + item.bootstrapClass}
             disabled={!validateForm()}
@@ -115,7 +115,7 @@ export const LoginForm = (): JSX.Element => {
           </button>
         );
       } else if (item.to) {
-        return (
+        buttons.push(
           <Link to={item.to}>
             <button
               className={styles["fullscreenButton"] + " " + item.bootstrapClass}
@@ -135,14 +135,15 @@ export const LoginForm = (): JSX.Element => {
         >
           <div className="info">
             {items}
-            {buttons}
           </div>
+          {buttons}
         </form>
       </div>
     )
   }
+  return(<LoginForm/>)
 
-
+  /*
   return (
     <div className="currentPage">
       <h1>Login to your account</h1>
@@ -197,5 +198,6 @@ export const LoginForm = (): JSX.Element => {
     </div>
 
   );
+  */
 }
 
