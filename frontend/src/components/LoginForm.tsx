@@ -90,9 +90,10 @@ export const LoginForm = (): JSX.Element => {
             role={item.type}
             name={item.id}
             id={item.id}
+            type={item.type}
             placeholder={item.label}
             value={item.value}
-            onBlur={(e) => {
+            onChange={(e) => {
               setForm(updateField(e, index, form));
               //setCurrentId(item.id)
             }}
