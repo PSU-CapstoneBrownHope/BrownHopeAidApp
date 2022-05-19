@@ -4,7 +4,7 @@ import text from "../styles/Text.module.css"
 import axios from "axios";
 import { Link } from "react-router-dom"
 import { routes } from "../util/config";
-import { fields, buttons, values, FormToHttpBody } from "../util/appStatusConfig";
+import { fields, buttons, values, FormToHttpBody } from "../util/appStatusUtil";
 import { updateField, submitVerify } from "../util/inputUtil";
 
 
