@@ -337,30 +337,12 @@ airtableRouter.post('/signup', function(req, res, next) {
       });
     },
 
-    // Find Form Responses record if it exists
-    function(hashed_pw, done){
-      base('2021 Form Responses').select({filterByFormula: `{Applicant Email} = "${email}"`})
-      .firstPage((err, records) => {
-        if(err){
-          console.error(err);
-          done(err);
-        }
-        else if(records.length < 1){
-          done(null, hashed_pw, null);
-        }
-        else{
-          done(null, hashed_pw, records[0].fields["BRF 2021 Application Record ID"]);
-        }
-      });
-    },
-
     // create the record in the User Data table and associate it with the Auth table
-    function(hashed_pw, fr_record_id, done) {
+    function(hashed_pw, done) {
       base('User Data').create([
         {
           fields: {
-            "Email Address" : email,
-            "FR Record ID": fr_record_id
+            "Email Address" : email
           }
         }
       ], function(err, record_new) {
