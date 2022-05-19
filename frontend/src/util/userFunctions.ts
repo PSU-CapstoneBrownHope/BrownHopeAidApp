@@ -15,8 +15,10 @@ const LoginCheck = async () => {
   try {
     const resp = await axios.get(routes.isLoggedIn,
       { withCredentials: true })
-    if (resp.data === "False")
+    if (resp.data === "False") {
       removeCookie();
+      sessionStorage.removeItem("username")
+    }
     return resp.data;
   } catch (err) {
     return "False"

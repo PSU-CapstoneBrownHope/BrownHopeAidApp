@@ -6,14 +6,7 @@
  *    - Header text
  */
 
-import React from "react"
-
-export interface IFields {
-  label: string, 
-  id: string,
-  type?: string,
-  value: any,
-}
+import { IFields, IButtons } from "./inputUtil";
 
 export const fields: IFields[] = [
   {
@@ -35,12 +28,7 @@ export const fields: IFields[] = [
  * Please refer to https://getbootstrap.com/docs/4.0/components/buttons/
  * to change the bootstrapClass property correctly
  */
-export interface IButtons {
-  text: string, 
-  type?: string, 
-  to?: string,  // note: this will only redirect to home
-  bootstrapClass: string,
-}
+
 
 export const buttons: IButtons[] = [
   {
@@ -56,3 +44,12 @@ export const buttons: IButtons[] = [
 ]
 
 export const header = "Login to your account"
+
+// This function is used to format the request sent to the
+// back end
+export const LoginFormToHttpBody = (form:IFields[]) => {
+  return {
+    username: form[0].value,
+    password: form[1].value,
+  }
+}

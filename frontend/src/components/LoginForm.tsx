@@ -6,17 +6,15 @@ import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
 import text from "../styles/Text.module.css"
 import { LoginCheck } from "../util/userFunctions";
-import { fields, buttons, header, IButtons } from "../util/loginUtil";
-import { updateField } from "../util/inputUtil";
+import { fields, buttons, header, LoginFormToHttpBody } from "../util/loginUtil";
+import { submitVerify, updateField } from "../util/inputUtil";
 import { env } from "process";
 
 export const LoginForm = (): JSX.Element => {
   const [form, setForm] = useState(fields)
   const [btns] = useState(buttons)
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [validSubmit, setValidSubmit] = useState(false);
   const [currentId, setCurrentId] = useState("");
+  const [cursorPos, setCursorPos] = useState(0);
 
 
 
@@ -27,8 +25,10 @@ export const LoginForm = (): JSX.Element => {
 
   useEffect(() => {
     if (currentId) {
-      const inputElement = document.getElementById(currentId);
-      if (inputElement) inputElement.focus();
+      const inputElement = window.document.getElementById(currentId);
+      if (inputElement) {
+        inputElement.focus();
+      }
     }
   });
 
@@ -44,29 +44,15 @@ export const LoginForm = (): JSX.Element => {
   const navigate = useNavigate();
   const handleClick = () => navigate("/reset/verify-user");
 
-  function validateForm() {
-    return username.length > 0 && password.length > 0;
-  }
-
-  const updatePassword = (password: string) => {
-    setPassword(password);
-    setValidSubmit(validateForm())
-  }
-
   function handleLoginSubmit(event: SyntheticEvent) {
     event.preventDefault();
 
-    const newLoginRequest = {
-      username: username,
-      password: password,
-    };
-
     const sendLoginRequest = async () => {
       try {
-        const resp = await axios.post(routes.login, newLoginRequest, { withCredentials: true });
+        const resp = await axios.post(routes.login, LoginFormToHttpBody(form), { withCredentials: true });
         console.log(resp.data);
         if (resp.data === "Success") {
-          sessionStorage.setItem('username', newLoginRequest.username);
+          sessionStorage.setItem('username', form[0].value);
           window.location.reload()
         } else if (resp.data === "Failed") {
           alert("Sorry, wrong username or password. Please try again!")
@@ -94,8 +80,14 @@ export const LoginForm = (): JSX.Element => {
             placeholder={item.label}
             value={item.value}
             onChange={(e) => {
+              if (e.target.selectionStart !== null)
+                setCursorPos(e.target.selectionStart)
               setForm(updateField(e, index, form));
-              //setCurrentId(item.id)
+              setCurrentId(item.id)
+            }}
+            onFocus={(e) => {
+              e.target.selectionStart = cursorPos;
+              e.target.selectionEnd = cursorPos;
             }}
             className={text['textField']}
             required
@@ -109,7 +101,7 @@ export const LoginForm = (): JSX.Element => {
         buttons.push(
           <button
             className={styles['fullscreenButton'] + " " + item.bootstrapClass}
-            disabled={!validateForm()}
+            disabled={!submitVerify(form)}
             type="submit"
             key={index}
           >
