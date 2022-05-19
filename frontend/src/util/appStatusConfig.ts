@@ -52,11 +52,7 @@ export function isValidDate(datestring: string) {
   if (!datestring)
     return false;
   let regex = new RegExp('^([0]?[1-9]|[1][0-2])[./]([0]?[1-9]|[1|2][0-9]|[3][0|1])[./]([0-9]{4})$')
-  if (regex.test(datestring)) {
-    return true;
-  } else {
-    return false;
-  }
+  return regex.test(datestring)
 }
 
 export function stringToNum(value: string) {

@@ -4,16 +4,13 @@ import text from "../styles/Text.module.css"
 import axios from "axios";
 import { Link } from "react-router-dom"
 import { routes } from "../util/config";
-import { isValidDate, formatDate, fields, buttons, values } from "../util/appStatusConfig";
+import { fields, buttons, values, FormToHttpBody } from "../util/appStatusConfig";
 import { updateField, submitVerify } from "../util/inputUtil";
 
 
 export const ApplicationStatus = (): JSX.Element => {
   const [form, setForm] = useState(fields)
   const [btns] = useState(buttons)
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [DOB, setDOB] = useState("");
   const [HasApp, setHasApp] = useState(false);
   const [wait, setWait] = useState(false)
   const [status, setStatus] = useState("");
@@ -38,26 +35,14 @@ export const ApplicationStatus = (): JSX.Element => {
   });
 
 
-  const updateDOB = (dob: string) => {
-    setDOB(dob);
-    isValidDate(dob)
-  }
-
-
   function checkApplicationStatus(event?: SyntheticEvent) {
     if (event) {
       event.preventDefault();
     }
 
-    const newApplicationStatusRequest = {
-      firstName: firstName,
-      lastName: lastName,
-      DOB: DOB.replace(/(?=0)(\d)/g, '')
-    };
-
     const sendApplicationStatusRequest = async () => {
       try {
-        const resp = await axios.post(routes.application_status, newApplicationStatusRequest, { withCredentials: true });
+        const resp = await axios.post(routes.application_status, FormToHttpBody(form), { withCredentials: true });
         console.log(resp.data);
         setHasApp(true)
         setStatus(resp.data.status)

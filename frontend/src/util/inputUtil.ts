@@ -37,9 +37,8 @@ export const updateField = (e: React.BaseSyntheticEvent, index: number, form: an
 }
 
 export function submitVerify(form: IFields[]) {
-  return form.every((item: any) => {
-    (item.value.length > 0 && item.format !== "date") // not empty
-      || isValidDate(item.value) // valid date format 
-  }) 
+  return form.every((item: any) => 
+    (isValidDate(item.value)) || (item.value.length > 0 && item.format !== "date") 
+  ) 
 }
 
