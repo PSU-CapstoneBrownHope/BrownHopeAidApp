@@ -124,13 +124,15 @@ airtableRouter.post('/application_status', (req, res, next) => {
 
     // if not logged in
     else{
+      const dateSplit = req.body.DOB.split('/');
+      const dateAdjusted = new Date(dateSplit[2] + "/" + dateSplit[0] + "/" + dateSplit[1]).toISOString().split('T')[0];
       base('2021 Form Responses').select({
-        fields: ["Applicant First Name", "Applicant Last Name", "PWA Status", "PWA Status Description"],
-        // Birthdate is expecting mm/dd/yyyy with leading zeros stripped
+        fields: ["PWA Status", "PWA Status Description"],
+        // Birthdate is expecting yyyy-mm-dd
         filterByFormula: `AND(
           {Applicant First Name} = '${req.body.firstName}', 
           {Applicant Last Name} = '${req.body.lastName}',
-          {Birthdate} = '${req.body.DOB}'
+          DATESTR({Birthdate}) = '${dateAdjusted}'
         )`
       }).firstPage(function(err, records) {
         if(err) { console.error(err); return; }
