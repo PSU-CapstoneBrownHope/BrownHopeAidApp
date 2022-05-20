@@ -23,12 +23,6 @@ export const fields: IFields[] = [
   },
 ]
  
-/**
- * Interface for buttons on page
- * Please refer to https://getbootstrap.com/docs/4.0/components/buttons/
- * to change the bootstrapClass property correctly
- */
-
 
 export const buttons: IButtons[] = [
   {
