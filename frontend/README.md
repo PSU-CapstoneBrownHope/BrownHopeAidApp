@@ -2,7 +2,13 @@
 
 This version of the frontend was created for Brown Hope. This document will cover how to get it working, and what to change to make it work for your organization. 
 
-# How to run locally
+1. [How to run locally](#How-to-run-locally)
+2. [Common issues](#Common-Issues)
+    1. [Packages](#Packages)
+3. [Another paragraph](#paragraph2)
+
+
+## How to run locally
 
 - Ensure you have [node.js](https://nodejs.org/en/download/) installed on your machine
 - Clone this repo to your local machine.
@@ -10,13 +16,13 @@ This version of the frontend was created for Brown Hope. This document will cove
 - run npm install 
   - fixing vulnerabilities is covered in packages under common issues
 - Change server in config.ts to localhost:5000
-  - ensure you do not merge to development with this change. It should be set to the ip address of your server. 
+  - ensure you do not merge to development with this change. It should be set to the ip address of your server.
 
-# Common Issues
+## Common Issues
 
 This section will cover some of the issues we ran into in development and how we fixed them
 
-## Packages
+### Packages
 
 With the number of dependencies on the frontend, there are commonly vulnerabilities created by outdated ones. Below are some of the ways for how to indetify the problem package and fix it. If you run into any more issues consult the FAQ section, or create an issue on the [github](https://github.com/PSU-CapstoneBrownHope/BrownHopeAidApp/).
 
@@ -44,4 +50,12 @@ now lets run npm install again
 
 For those of you wanting to update the packages as they advance in the future, this is a way to sort out any new vulnerabilities. 
 
+## How to make changes
 
+The pages on the site are constructed from elements present in a util file, allowing what the user interacts with on each page to be changed. The appearance is handled in a universal css file, allowing for fonts, colors, and sizes to be tweaked until you are satisfied with the output. When changing input fields, ensure the backend is changed in a way to accomodate the changes. 
+
+### Changing buttons and fields
+
+Most pages on this site consist of forms the user fills out. These forms are constructed from files in the frontend/util folder. 
+
+The input fields and buttons are both arrays of interfaces declared in frontend/util/inputUtil. 
