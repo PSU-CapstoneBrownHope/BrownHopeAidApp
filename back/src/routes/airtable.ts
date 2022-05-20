@@ -85,14 +85,13 @@ airtableRouter.post('/application_status', (req, res, next) => {
       status: "",
       description: "",
     };
-    let regex = new RegExp('^([0]?[1-9]|[1][0-2])[./]([0]?[1-9]|[1|2][0-9]|[3][0|1])[./]([0-9]{4})$')
-    if(req.body.DOB){
-      if(!regex.test(req.body.DOB)){
-        res.sendStatus(404).end();
-        return; 
-      }
-
-    }
+    // let regex = new RegExp('^([0]?[1-9]|[1][0-2])[./]([0]?[1-9]|[1|2][0-9]|[3][0|1])[./]([0-9]{4})$')
+    // if(req.body.DOB){
+    //   if(!regex.test(req.body.DOB)){
+    //     res.sendStatus(404).end();
+    //     return; 
+    //   }
+    // }
     // if logged in
     if(req.user){
       base('User Data').find(req.user[0].fields["User Data Record ID"], (err, record) => {
@@ -124,13 +123,16 @@ airtableRouter.post('/application_status', (req, res, next) => {
 
     // if not logged in
     else{
+      // const dateSplit = req.body.DOB.split('/');
+      // const dateAdjusted = new Date(dateSplit[2] + "/" + dateSplit[0] + "/" + dateSplit[1]).toISOString().split('T')[0];
+      const date1 = req.body.DOB.replace(/\//g, '-')
       base('2021 Form Responses').select({
-        fields: ["Applicant First Name", "Applicant Last Name", "PWA Status", "PWA Status Description"],
-        // Birthdate is expecting mm/dd/yyyy with leading zeros stripped
+        fields: ["PWA Status", "PWA Status Description"],
+        // Birthdate is expecting yyyy-mm-dd
         filterByFormula: `AND(
           {Applicant First Name} = '${req.body.firstName}', 
           {Applicant Last Name} = '${req.body.lastName}',
-          {Birthdate} = '${req.body.DOB}'
+          DATESTR({Birthdate}) = '${req.body.DOB.replace(/\//g, '-')}'
         )`
       }).firstPage(function(err, records) {
         if(err) { console.error(err); return; }
