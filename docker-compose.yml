@@ -24,10 +24,10 @@ services:
 
   # nginx
   nginx:
-    # build: 
-    #   context: nginx
-    #   target: dev
-    image: nginx:latest
+    build: 
+      context: nginx
+      target: dev
+    # image: nginx:latest
     ports:
       - "80:80"
       - "443:443"
