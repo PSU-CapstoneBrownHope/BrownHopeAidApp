@@ -5,7 +5,8 @@ This version of the frontend was created for Brown Hope. This document will cove
 1. [How to run locally](#How-to-run-locally)
 2. [Common issues](#Common-Issues)
     1. [Packages](#Packages)
-3. [Another paragraph](#paragraph2)
+3. [How to make changes](#How-to-make-changes)
+    1. [Changing buttons and fields](#Changing-buttons-and-fields)
 
 
 ## How to run locally
@@ -58,4 +59,5 @@ The pages on the site are constructed from elements present in a util file, allo
 
 Most pages on this site consist of forms the user fills out. These forms are constructed from files in the frontend/util folder. 
 
-The input fields and buttons are both arrays of interfaces declared in frontend/util/inputUtil. 
+The input fields and buttons are interfaces declared in frontend/util/inputUtil. Those interfaces are used in util files of the same name to create arrays that represent the elements on the screen. For example, here is the config file for login: 
+
