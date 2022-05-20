@@ -14,11 +14,9 @@ export const Footer = (): JSX.Element =>  {
   return (
     <div className="footer">
       <p>Contact us at: {infoEmail}</p>
-      <p>Or: <span></span>  
-        <a href={contactLink} className="noAlign">
+      <a href={contactLink} className="noAlign">
           {contactText}
-        </a>
-      </p>
+      </a>
     </div>
   )
 }

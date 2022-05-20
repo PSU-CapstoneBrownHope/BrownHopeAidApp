@@ -2,12 +2,12 @@
   display: flex;
   justify-content: center;
   align-self:flex-start;
-  font-weight: 200;
-  letter-spacing: 0.1em;
-  font-family: bebas-neue;
-  font-size: calc(9px + 2vmin);
-  width: 70vw;
-  max-width: 575px;
+  font-weight: var(--button-weight);
+  letter-spacing: var(--button-letter-spacing);
+  font-family: header-font;
+  font-size: var(--button);
+  width: 100%;
+  max-width: var(--current-page-max-width);
   border-radius: calc(5px + 1vmin);
   cursor: pointer;
   margin:auto;
@@ -24,14 +24,14 @@
 
 
 .transparentButton{
-  font-family: bebas-neue;
-  color: #146467;
+  font-family: header-font;
+  color: var(--theme-color);
   background-color: transparent;
 }
 
 .transparentButton:hover{
-  color: white;
-  background-color: #146467;
-  border-color: white
+  color: var(--button-text-color);
+  background-color: var(--theme-color);
+  border-color: var(--button-text-color)
 }
 

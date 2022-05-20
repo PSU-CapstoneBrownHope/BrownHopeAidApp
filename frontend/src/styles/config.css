@@ -1,0 +1,68 @@
+/* 
+  This file is used to set variables for display options like:
+    - font
+    - colors
+    - font size
+    - html item size
+
+    IF YOU CHANGE THIS FILE:
+    - Check that the display looks correct ON ALL PAGES at sizes:
+      - 768px (Tablet)
+      - 414px (Phone)
+      - 320px X 480px (Small phone, may be outdated) 
+*/
+
+
+* {
+
+  /* color gradient at the bottom of the page */
+  --gradient: #e6ac19da;
+  --background-color: white;
+  --gradient-height: 30vh;
+
+  /* Color for header text */
+  --theme-color: #146467;
+ 
+  /* Text color, for non-outline button */
+  --button-text-color: white;
+  
+  /* max width of app display */
+  --max-width: 1100px;
+ 
+  /* nav item size */
+  --nav-item-width: calc(10vw + 2vmin);
+  --logo-height: calc(30px + 5vmin);
+
+
+  /* max-width non-nav display */
+  --current-page-max-width: 575px;
+  /* normal page width */
+  --current-page-std-width: 70vw;
+
+  /* font sizes*/
+  --high: calc(10px + 2vmin);
+  --medium: calc(8px + 2vmin);
+  --low: calc(6px + 2vmin);
+  
+  --nav: calc(12px + 3vmin);
+  --nav-weight: 400;
+  
+  --footer: calc(14px + 1vmin);
+  --footer-weight: 400;
+
+  --header: calc(14px + 4vmin);
+  --header-weight: 200;
+  --header-letter-spacing: 0.2em;
+
+  --app-status-color: #0e7d99;
+  --status: calc(25px + 4vmin);
+  --app-status-weight: 400;
+
+  --text-field: calc(16px + 1vmin);  
+  --label: calc(12px + 1vmin);
+
+  --button: calc(9px + 2vmin);
+  --button-letter-spacing: 0.1em;
+  --button-weight: 200;
+
+}
