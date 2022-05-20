@@ -9,7 +9,8 @@ export interface IFields {
   value: any,
   placeholder?: string,
   type?: string,
-  format?: string
+  format?: string,
+  autoComplete?: string
 }
 
 /**

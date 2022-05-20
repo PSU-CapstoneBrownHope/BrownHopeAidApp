@@ -3,16 +3,14 @@ import axios from "axios";
 import { routes } from "../util/config";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
-import text from "../styles/Text.module.css"
+import text from "../styles/Text.module.css";
 import { LoginCheck } from "../util/userFunctions";
+import { fields, buttons, verificationButton, verificationFields } from "../util/signUpUtil";
 
 export const SignUp = (): JSX.Element => {
-  const [email, setEmail] = useState("");
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [verifyPassword, setVerifyPassword] = useState("");
+  const [form, setForm] = useState(fields);
+  const [btns] = useState(buttons);
   const [currentId, setCurrentId] = useState("");
-  const [pin, setPin] = useState("");
   const [verificationScreen, setVerificationScreen] = useState(false);
 
   const navigate = useNavigate();
@@ -112,6 +110,86 @@ export const SignUp = (): JSX.Element => {
     sendSignupRequest();
   }
 
+  const AppStatusForm = () => {
+    let items: any = [];
+    form.forEach((item: any, index: any) => {
+      items.push(
+        <label htmlFor={item.id} key={index} className={text["wrapper"]}>
+          {item.label}:
+          <input
+            role={item.type}
+            name={item.id}
+            id={item.id}
+            type={item.type}
+            placeholder={item.placeholder}
+            value={item.value}
+            onChange={(e) => {
+              if (e.target.selectionStart !== null)
+                setCursorPos(e.target.selectionStart)
+              setForm(updateField(e, index, form));
+              setCurrentId(item.id)
+            }}
+            onFocus={(e) => {
+              let reg = new RegExp("\/")
+              let addedSlashes = reg.exec(e.target.value);
+              let changePos = 0;
+              if (addedSlashes)
+                changePos = addedSlashes.length;
+              e.target.selectionStart = cursorPos + changePos;
+              e.target.selectionEnd = cursorPos + changePos;
+            }}
+            className={text['textField']}
+            required
+          />
+        </label>
+      )
+    })
+    let buttons: any = [];
+    btns.forEach((item: any, index: any) => {
+      if (item.type === "submit") {
+        buttons.push(
+          <button
+            className={styles['fullscreenButton'] + " " + item.bootstrapClass}
+            disabled={!submitVerify(form)}
+            type="submit"
+            key={index}
+          >
+            {item.text}
+          </button>
+        );
+      } else if (item.to) {
+        buttons.push(
+          <Link to={item.to} key={index} >
+            <button
+              className={styles["fullscreenButton"] + " " + item.bootstrapClass}
+            >
+              {item.text}
+            </button>
+          </Link>
+        )
+      }
+    })
+    return (
+      <form id="AppStatusForm"
+        className={styles["buttonGroup"]}
+        onSubmit={checkApplicationStatus}
+      >
+        <div className="info">
+          {items}
+        </div>
+        {buttons}
+      </form>
+    )
+  }
+
+  return (
+    <div className="currentPage">
+      <h1>{HasApp ? values.header2 : values.header1}</h1>
+      {wait ? <InfoMessage /> : <p hidden></p>}
+      {HasApp ? <AppStatus /> : <AppStatusForm />}
+    </div>
+  );
+  /*
   const VerificationForm = () => {
     return (
       <form id="signUp" onSubmit={handleSignupSubmit}>
@@ -242,4 +320,5 @@ export const SignUp = (): JSX.Element => {
       {verificationScreen ? <VerificationForm /> : <SignUpForm />}
     </div>
   );
+  */
 }
