@@ -36,9 +36,16 @@ export const updateField = (e: React.BaseSyntheticEvent, index: number, form: an
   return formCopy;
 }
 
+export function passwordVerify(form: IFields[]) {
+  console.log(form.find((item: any) => (item.id === "password")))
+  console.log(form.find((item: any) => (item.id === "verifyPassword")))
+  return form.find((item: any) => (item.id === "password"))?.value === form.find((item: any) => (item.id === "verifyPassword"))?.value
+}
+
 export function submitVerify(form: IFields[]) {
+  
   return form.every((item: any) => 
-    (isValidDate(item.value)) || (item.value.length > 0 && item.format !== "date") 
+    (isValidDate(item.value)) || (item.value.length > 0 && !item.format) 
   ) 
 }
 

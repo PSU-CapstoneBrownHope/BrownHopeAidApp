@@ -101,7 +101,14 @@ export const LoginInfoToHttpBody = (form:IFields[]) => {
 /* Verification code request */
 export const VerificationInfoToHttpBody = (form:IFields[]) => {
   return { 
-    username: form[1].value,
+    userEmail: form[0].value,
   }
 }
 
+/* Duplicate info request */
+export const DupeInfoToHttpBody = (form:IFields[]) => {
+  return {
+    email: form[0].value,
+    username: form[1].value,
+  }
+}
