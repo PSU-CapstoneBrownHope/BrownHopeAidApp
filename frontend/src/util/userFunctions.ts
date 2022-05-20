@@ -18,6 +18,8 @@ const LoginCheck = async () => {
     if (resp.data === "False") {
       removeCookie();
       sessionStorage.removeItem("username")
+    } else {
+      sessionStorage.setItem('username', resp.data)
     }
     return resp.data;
   } catch (err) {
