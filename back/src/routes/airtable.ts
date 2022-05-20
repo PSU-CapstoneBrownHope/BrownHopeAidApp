@@ -6,7 +6,7 @@ import * as local from 'passport-local';
 import bcrypt from 'bcrypt';
 import async from 'async';
 import nodemailer from 'nodemailer';
-import { isConstructorDeclaration, isExpressionStatement, isImportEqualsDeclaration } from 'typescript';
+import { isConstructorDeclaration, isExpressionStatement, isImportEqualsDeclaration, resolveModuleName } from 'typescript';
 
 
 const localStrategy = local.Strategy;
@@ -165,7 +165,7 @@ airtableRouter.get('/signout', function (req, res, next) {
 });
 
 // Checks for if an email or username is already in use, called during signup
-airtableRouter.get('/duplicateInfoCheck', function (req, res) {
+airtableRouter.post('/duplicateInfoCheck', async function (req, res) {
   base('Authentication').select({filterByFormula: `Username = "${req.body.username}"`}).firstPage((err, records) => {
     if (err){
       res.send(err);
@@ -174,21 +174,26 @@ airtableRouter.get('/duplicateInfoCheck', function (req, res) {
     else if (records.length > 0) {
       res.send("Username already in use").end();
       return;
-    }
+    } else {
+      emailCheck()
+    } 
   });
 
-  base('User Data').select({filterByFormula: `{Email Address} = "${req.body.email}"`}).firstPage((err, records) => {
-    if (err){
-      res.send(err);
-      return;
-    }
-    else if (records.length > 0) {
-      res.send("Email already in use").end();
-      return;
-    }
-  });
+  function emailCheck() {
+    base('User Data').select({ filterByFormula: `{Email Address} = "${req.body.email}"` }).firstPage((err, records) => {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      else if (records.length > 0) {
+        res.send("Email already in use").end();
+        return;
+      } else {
+        res.send("Info OK").end();
+      }
+    });
+  }
 
-  res.send("Info OK").end();
 });
 
 

@@ -1,4 +1,4 @@
-import { IFields, IButtons } from "./inputUtil"
+import { IFields, IButtons, dayMaxVal, stringToNum } from "./inputUtil"
 
 export const fields: IFields[] = [
   {
@@ -44,9 +44,45 @@ export const FormToHttpBody = (form: IFields[]) => {
   return {
     firstName: form[0].value,
     lastName: form[1].value,
-    DOB: form[2].value.replace(/(?=0)(\d)/g, '')
+    DOB: formatDOB(form[2].value)
   }
 }
 
+export function formatDOB(value: string) {
+  console.log(value)
+  if (!value)
+    return value;
+  let reg = new RegExp("[./]")
+  const splitDate = value.split(reg);
+  const date = value.replace(/[^\d]/g, '');
+  let dateLen = date.length;
+  let year = splitDate[2];
+  let month = splitDate[0];
+  let day = splitDate[1];
+  if (dateLen < 3) {
+    return date;
+  }
+  if (dateLen < 5) {
+    if (!day) {
+      month = date.slice(0, 2);
+      day = date.slice(2);
+    }
+    day = dayMaxVal(month, day);
+    if (stringToNum(month) > 12)
+      month = "12"
+    return `${month}/${day}`;
+  }
+
+  if (!year) {
+    year = date.slice(4, 8)
+    day = date.slice(2, 4)
+  }
+  day = dayMaxVal(month, day);
+  if (stringToNum(year) * (3.154 * 10 ^ 7) > Date.now() / (3.154 * 10 ^ 7))
+    year = (Date.now() / (3.154 * 10 ^ 7)).toString();
+  if (stringToNum(month) > 12)
+    month = "12"
+  return `${year.slice(0, 4)}/${month}/${day}`;
+}
 
 
