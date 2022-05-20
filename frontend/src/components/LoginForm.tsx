@@ -6,16 +6,31 @@ import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
 import text from "../styles/Text.module.css"
 import { LoginCheck } from "../util/userFunctions";
+import { fields, buttons, header, LoginFormToHttpBody } from "../util/loginUtil";
+import { submitVerify, updateField } from "../util/inputUtil";
 import { env } from "process";
 
 export const LoginForm = (): JSX.Element => {
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [validSubmit, setValidSubmit] = useState(false);
+  const [form, setForm] = useState(fields)
+  const [btns] = useState(buttons)
+  const [currentId, setCurrentId] = useState("");
+  const [cursorPos, setCursorPos] = useState(0);
+
+
+
 
   useEffect(() => {
     isLoggedIn()
   }, [])
+
+  useEffect(() => {
+    if (currentId) {
+      const inputElement = window.document.getElementById(currentId);
+      if (inputElement) {
+        inputElement.focus();
+      }
+    }
+  });
 
   const isLoggedIn = async () => {
     const username = await LoginCheck()
@@ -29,29 +44,15 @@ export const LoginForm = (): JSX.Element => {
   const navigate = useNavigate();
   const handleClick = () => navigate("/reset/verify-user");
 
-  function validateForm() {
-    return username.length > 0 && password.length > 0;
-  }
-
-  const updatePassword = (password: string) => {
-    setPassword(password);
-    setValidSubmit(validateForm())
-  }
-
   function handleLoginSubmit(event: SyntheticEvent) {
     event.preventDefault();
 
-    const newLoginRequest = {
-      username: username,
-      password: password,
-    };
-
     const sendLoginRequest = async () => {
       try {
-        const resp = await axios.post(routes.login, newLoginRequest, { withCredentials: true });
+        const resp = await axios.post(routes.login, LoginFormToHttpBody(form), { withCredentials: true });
         console.log(resp.data);
         if (resp.data === "Success") {
-          sessionStorage.setItem('username', newLoginRequest.username);
+          sessionStorage.setItem('username', form[0].value);
           window.location.reload()
         } else if (resp.data === "Failed") {
           alert("Sorry, wrong username or password. Please try again!")
@@ -65,63 +66,76 @@ export const LoginForm = (): JSX.Element => {
     sendLoginRequest();
   }
 
-
-
-  return (
-    <div className="currentPage">
-      <h1>Login to your account</h1>
-      <form id="loginForm" className={styles["buttonGroup"]} onSubmit={handleLoginSubmit}>
-        <div className="info">
-        <label htmlFor="username" className={text["wrapper"]}>
-          Username:
+  const LoginForm = () => {
+    let items: any = [];
+    form.forEach((item: any, index: any) => {
+      items.push(
+        <label htmlFor={item.id} key={index} className={text["wrapper"]}>
+          {item.label}:
           <input
-            role='textbox'
-            aria-label='username'
-            name="username"
-            id="username"
-            placeholder='Username'
-            value={username}
-            onChange={(e) => setUserName(e.target.value)}
+            role={item.type}
+            name={item.id}
+            id={item.id}
+            type={item.type}
+            placeholder={item.label}
+            value={item.value}
+            onChange={(e) => {
+              if (e.target.selectionStart !== null)
+                setCursorPos(e.target.selectionStart)
+              setForm(updateField(e, index, form));
+              setCurrentId(item.id)
+            }}
+            onFocus={(e) => {
+              e.target.selectionStart = cursorPos;
+              e.target.selectionEnd = cursorPos;
+            }}
             className={text['textField']}
             required
           />
         </label>
-        <label htmlFor="password" className={text["wrapper"]}>
-          Password:
-          <input
-            aria-label='password'
-            role='password'
-            type="password"
-            name="password"
-            autoComplete="currentPassword"
-            id="password"
-            value={password}
-            placeholder='Password'
-            onChange={(e) => updatePassword(e.target.value)}
-            className={text['textField']}
-            required
-          />
-          </label>
-        </div>
-        <button
-          className={styles['fullscreenButton'] + " btn btn-success"}
-          disabled={!validateForm()}
-          type="submit"
-        >
-          Login
-        </button>
-      </form>
-        <div>
-        <Link to="/sign-up">
-        <button
-          className={styles['fullscreenButton'] + " btn btn-secondary"}
-        >
-          Create An Account
+      )
+    })
+    let buttons: any = [];
+    btns.forEach((item: any, index: any) => {
+      if (item.type === "submit") {
+        buttons.push(
+          <button
+            className={styles['fullscreenButton'] + " " + item.bootstrapClass}
+            disabled={!submitVerify(form)}
+            type="submit"
+            key={index}
+          >
+            {item.text}
           </button>
-        </Link>
+        );
+      } else if (item.to) {
+        buttons.push(
+          <Link to={item.to} key={index} >
+            <button
+              className={styles["fullscreenButton"] + " " + item.bootstrapClass}
+            >
+              {item.text}
+            </button>
+          </Link>
+        )
+      }
+    })
+    return (
+      <div className="currentPage">
+        <h1>{header}</h1>
+        <form id="loginForm"
+          className={styles["buttonGroup"]}
+          onSubmit={handleLoginSubmit}
+        >
+          <div className="info">
+            {items}
+          </div>
+          {buttons}
+        </form>
       </div>
-    </div>
+    )
+  }
+  return(<LoginForm/>)
 
-  );
 }
 

@@ -6,7 +6,7 @@ import * as local from 'passport-local';
 import bcrypt from 'bcrypt';
 import async from 'async';
 import nodemailer from 'nodemailer';
-import { isConstructorDeclaration, isExpressionStatement, isImportEqualsDeclaration } from 'typescript';
+import { isConstructorDeclaration, isExpressionStatement, isImportEqualsDeclaration, resolveModuleName } from 'typescript';
 
 
 const localStrategy = local.Strategy;
@@ -85,14 +85,13 @@ airtableRouter.post('/application_status', (req, res, next) => {
       status: "",
       description: "",
     };
-    let regex = new RegExp('^([0]?[1-9]|[1][0-2])[./]([0]?[1-9]|[1|2][0-9]|[3][0|1])[./]([0-9]{4})$')
-    if(req.body.DOB){
-      if(!regex.test(req.body.DOB)){
-        res.sendStatus(404).end();
-        return; 
-      }
-
-    }
+    // let regex = new RegExp('^([0]?[1-9]|[1][0-2])[./]([0]?[1-9]|[1|2][0-9]|[3][0|1])[./]([0-9]{4})$')
+    // if(req.body.DOB){
+    //   if(!regex.test(req.body.DOB)){
+    //     res.sendStatus(404).end();
+    //     return; 
+    //   }
+    // }
     // if logged in
     if(req.user){
       base('User Data').find(req.user[0].fields["User Data Record ID"], (err, record) => {
@@ -124,13 +123,16 @@ airtableRouter.post('/application_status', (req, res, next) => {
 
     // if not logged in
     else{
+      // const dateSplit = req.body.DOB.split('/');
+      // const dateAdjusted = new Date(dateSplit[2] + "/" + dateSplit[0] + "/" + dateSplit[1]).toISOString().split('T')[0];
+      const date1 = req.body.DOB.replace(/\//g, '-')
       base('2021 Form Responses').select({
-        fields: ["Applicant First Name", "Applicant Last Name", "PWA Status", "PWA Status Description"],
-        // Birthdate is expecting mm/dd/yyyy with leading zeros stripped
+        fields: ["PWA Status", "PWA Status Description"],
+        // Birthdate is expecting yyyy-mm-dd
         filterByFormula: `AND(
           {Applicant First Name} = '${req.body.firstName}', 
           {Applicant Last Name} = '${req.body.lastName}',
-          {Birthdate} = '${req.body.DOB}'
+          DATESTR({Birthdate}) = '${req.body.DOB.replace(/\//g, '-')}'
         )`
       }).firstPage(function(err, records) {
         if(err) { console.error(err); return; }
@@ -165,7 +167,7 @@ airtableRouter.get('/signout', function (req, res, next) {
 });
 
 // Checks for if an email or username is already in use, called during signup
-airtableRouter.get('/duplicateInfoCheck', function (req, res) {
+airtableRouter.post('/duplicateInfoCheck', async function (req, res) {
   base('Authentication').select({filterByFormula: `Username = "${req.body.username}"`}).firstPage((err, records) => {
     if (err){
       res.send(err);
@@ -174,21 +176,26 @@ airtableRouter.get('/duplicateInfoCheck', function (req, res) {
     else if (records.length > 0) {
       res.send("Username already in use").end();
       return;
-    }
+    } else {
+      emailCheck()
+    } 
   });
 
-  base('User Data').select({filterByFormula: `{Email Address} = "${req.body.email}"`}).firstPage((err, records) => {
-    if (err){
-      res.send(err);
-      return;
-    }
-    else if (records.length > 0) {
-      res.send("Email already in use").end();
-      return;
-    }
-  });
+  function emailCheck() {
+    base('User Data').select({ filterByFormula: `{Email Address} = "${req.body.email}"` }).firstPage((err, records) => {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      else if (records.length > 0) {
+        res.send("Email already in use").end();
+        return;
+      } else {
+        res.send("Info OK").end();
+      }
+    });
+  }
 
-  res.send("Info OK").end();
 });
 
 
@@ -337,30 +344,12 @@ airtableRouter.post('/signup', function(req, res, next) {
       });
     },
 
-    // Find Form Responses record if it exists
-    function(hashed_pw, done){
-      base('2021 Form Responses').select({filterByFormula: `{Applicant Email} = "${email}"`})
-      .firstPage((err, records) => {
-        if(err){
-          console.error(err);
-          done(err);
-        }
-        else if(records.length < 1){
-          done(null, hashed_pw, null);
-        }
-        else{
-          done(null, hashed_pw, records[0].fields["BRF 2021 Application Record ID"]);
-        }
-      });
-    },
-
     // create the record in the User Data table and associate it with the Auth table
-    function(hashed_pw, fr_record_id, done) {
+    function(hashed_pw, done) {
       base('User Data').create([
         {
           fields: {
-            "Email Address" : email,
-            "FR Record ID": fr_record_id
+            "Email Address" : email
           }
         }
       ], function(err, record_new) {

@@ -1,5 +1,27 @@
-*{
-  box-sizing: border-box
+@import url(config.css);
+
+
+/* do not change*/
+@font-face {
+    font-family: header-font;
+    /* route to font for header in fonts */
+    src: url("./fonts/BebasNeue-Regular.ttf")format("woff2");
+}
+
+
+/**
+  Page sections 
+ */
+body{
+  background: linear-gradient(to top, var(--gradient), var(--background-color) var(--gradient-height));
+  text-align: center;
+  max-width: var(--max-width);
+  margin: auto;
+  height: 100vh;
+}
+
+#root{
+  height:100vh
 }
 
 .App{
@@ -9,109 +31,25 @@
   height:100%
 }
 
-h1{
-  margin-top: 20px;
-  text-align:center;
-  font-weight: 200;
-  font-size: calc(14px + 4vmin);
-  letter-spacing: 0.2em;
-  font-family: bebas-neue;
-  color: #146467;
-  margin-left: 1.5vmin;
-}
-
-
-@font-face {
-  font-family: bebas-neue;
-  src: url("./fonts/BebasNeue-Regular.ttf") format('woff2');
-}
-
-body{
-  background: linear-gradient(to top, #e6ac19da, white 30vh);
-  text-align: center;
-  max-width: 1100px;
-  margin: auto;
-  height: 100vh;
-}
-
-#root{
-  height:100%
-}
-
-/**
-  Page sections 
- */
 
 .appHeader {
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-size: calc(12px + 3vmin);
-  color: #146467;
-  font-family: bebas-neue;
-  font-weight: 400;
+  font-size: var(--nav);
+  color: var(--theme-color);
+  font-family: header-font;
+  font-weight: var(--nav-weight);
   font-style: normal;
   background-color: transparent;
-  height: 11%;
+  height: 11vh;
 }
 
-.currentPage{
-  display:flex;
-  flex-direction: column;
-  align-content: center;
-  width: fit-content;
-  max-width: 1100px;
-  height: 70%;
-  margin:auto;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding: 10px;
-  padding-bottom: 0px;
-  padding-top: 0px;
+.twoWordP {
+  padding: 0px;
+  height: 4.5vh;
 }
-
-.info{
-  display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  width: 100%;
-  margin: auto;
-  margin-bottom:0%;
-  margin-top:0%;
-  top: 0;
-  bottom: 0;
-  overflow-y: auto;
-  border:rgb(185, 185, 185) solid 2px;
-  border-radius: 3px;
-  padding: 1vmin;
-}
-
-@media only screen and (max-width: 414px){
-  .info{
-    width: 100%;
-  }
-}
-
-.buttons{
-  height:fit-content;
-  
-}
-
-
-.footer{
-  font-size: calc(10px + 2vmin);
-  color: #146467;
-  font-family: bebas-neue;
-  font-weight: 400;
-  font-style: normal;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-self:flex-end;
-  padding-bottom: 2vmin;
-}
-
 
 /* Nav */
 
@@ -135,7 +73,7 @@ ul{
 li{
   display: flex;
   height: 100%;
-  width: calc(10vw + 2vmin);
+  width: var(--nav-item-width);
   max-width: 150px;
   min-width: fit-content;
   align-items: center;
@@ -144,6 +82,7 @@ li{
 
 a.noAlign{
   vertical-align: bottom;
+  flex-direction: row;
 }
 
 a.logo{
@@ -153,8 +92,11 @@ a.logo{
 
 
 a{
-  vertical-align: middle;
-  color: #146467;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: var(--theme-color);
   text-decoration: none;
   width: 100%;
   cursor:pointer;
@@ -179,9 +121,83 @@ figure{
 }
 
 .navlogo{
-  height: calc(30px + 5vmin);
+  height: var(--logo-height);
 }
 
+
+.currentPage{
+  display:flex;
+  flex-direction: column;
+  align-content: center;
+  max-width: var(--max-width);
+  height: 75vh;
+  padding: 5px;
+  margin: auto;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+h1{
+  margin-top: 10px;
+  margin-bottom: 0px;
+  text-align:center;
+  font-weight: var(--header-weight);
+  font-size: var(--header);
+  letter-spacing: var(--header-letter-spacing);
+  font-family: header-font;
+  color: var(--theme-color);
+  margin-left: 1.5vmin;
+}
+
+.info{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  max-width: var(--current-page-max-width);
+  margin: auto;
+  margin-bottom:0%;
+  margin-top:0%;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  border:rgb(185, 185, 185) solid 2px;
+  border-radius: 3px;
+  padding: 1vmin;
+}
+
+@media only screen and (max-width: 414px){
+  .info{
+    width: 100%;
+  }
+}
+
+.buttons{
+  height:fit-content;
+  margin: auto;
+}
+
+
+.footer{
+  flex: 1;
+  font-size: var(--footer);
+  color: var(--theme-color);
+  font-family: header-font;
+  font-weight: var(--footer-weight);
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-bottom: 5px;
+}
+
+form{
+  max-height: 80%;
+  display: flex;
+  flex-direction: column;
+}
 
 
 

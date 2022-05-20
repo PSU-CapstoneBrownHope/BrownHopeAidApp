@@ -7,24 +7,23 @@
   font-family: bebas-neue;
   src: url("./fonts/BebasNeue-Regular.ttf") format('woff2');
 }
-
 .themeColor{
-  color: #0e7d99;
+  color: var(--app-status-color);
 }
 
 p{
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0px;
   width: 100%;
-  padding-top: 15px;
-  padding-left: 10px;
-  padding-right: 10px;
-  font-weight: 400;
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-weight: var(--footer-weight);
 }
 
 .textField{
-  font-size: calc(16px + 1vmin);
-  width: 70%;
-  max-width: 575px;
+  font-size: var(--text-field);
   width: 100%;
   border-radius: 3px;
   padding: 10px;
@@ -36,7 +35,7 @@ p{
 
 
 .wrapper{
-  font-size: calc(12px + 1vmin);
+  font-size: var(--label);
   display: flex;
   flex-flow:column;
   width:100%;
@@ -44,9 +43,10 @@ p{
 }
 
 .status{
-  font-family: bebas-neue;
-  font-size: calc(25px + 4vmin);
-  font-weight: 400;
+  font-family: header-font;
+  font-size: var(--status);
+  font-weight: var(--app-status-weight);
+  color: var(--app-status-color);
 }
 
 .gray{
@@ -54,13 +54,13 @@ p{
 }
 
 .high {
-  font-size: calc(10px + 2vmin);
+  font-size: var(--high);
 }
 
 .medium {
-  font-size: calc(8px + 2vmin);
+  font-size: var(--medium);
 }
 
 .low {
-  font-size: calc(6px + 2vmin);
+  font-size: var(--low);
 }
