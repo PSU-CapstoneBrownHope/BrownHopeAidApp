@@ -78,7 +78,7 @@ export const ApplicationStatus = (): JSX.Element => {
               setCurrentId(item.id)
             }}
             onFocus={(e) => {
-              let reg = new RegExp("\/")
+              let reg = new RegExp("/")
               let addedSlashes = reg.exec(e.target.value);
               let changePos = 0;
               if (addedSlashes)
