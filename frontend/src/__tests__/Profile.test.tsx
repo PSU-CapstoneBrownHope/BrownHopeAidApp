@@ -18,13 +18,12 @@ afterEach(() => {
   document.body.removeChild(container); 
 });
 
-//test('Editting elements present', async () => {
-  //window.sessionStorage.setItem("username", "mack")
-  //act(() => {
-    //ReactDOMClient.createRoot(container).render(<BrowserRouter><Profile /></BrowserRouter>);
-  //});
-    
-    //expect(screen.getByText("User Name:")).toBeInTheDocument
+test('Editting elements present', async () => {
+  window.sessionStorage.setItem("username", "mack")
+  act(() => {
+   ReactDOMClient.createRoot(container).render(<BrowserRouter><Profile /></BrowserRouter>);
+  });
+    expect(screen.getByText("Username:")).toBeInTheDocument
     //expect(screen.getByText("First Name:")).toBeInTheDocument
     //expect(screen.getByText("Last Name:")).toBeInTheDocument
     //expect(screen.getByText("Address:")).toBeInTheDocument
@@ -80,5 +79,5 @@ afterEach(() => {
   //expect(cancelBtn).toBeVisible
   //expect(editBtn).not.toBeVisible
 
-//});
+});
 
