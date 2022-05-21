@@ -1,7 +1,7 @@
 import React, { useEffect, useState, SyntheticEvent } from "react"
 import axios from "axios"
 import { routes } from "../util/config"
-import { useParams, useNavigate, Link } from "react-router-dom"
+import {useNavigate, Link } from "react-router-dom"
 import styles from "../styles/Buttons.module.css"
 import text from "../styles/Text.module.css"
 import { LoginCheck } from "../util/userFunctions"
@@ -51,7 +51,7 @@ export const SignUp = (): JSX.Element => {
       try {
         const dupeInfo = await axios.post(routes.duplicateInfoCheck, DupeInfoToHttpBody(form),{withCredentials: true})
         if (dupeInfo.data && dupeInfo.data === "Info OK") {
-          const resp = await axios.post(routes.email, VerificationInfoToHttpBody(form),{withCredentials: true});
+          await axios.post(routes.email, VerificationInfoToHttpBody(form),{withCredentials: true});
           setVerificationScreen(true)
         } else {
           alert (dupeInfo.data)
@@ -116,7 +116,7 @@ export const SignUp = (): JSX.Element => {
             onChange={(e) => {
               if (e.target.selectionStart !== null)
                 setCursorPos(e.target.selectionStart)
-              setForm(updateField(e, index, form));
+              setVerForm(updateField(e, index, verForm));
               setCurrentId(item.id)
             }}
             onFocus={(e) => {

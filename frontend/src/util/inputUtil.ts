@@ -5,12 +5,14 @@
 
 export interface IFields {
   label: string, 
-  id: string,
+  id: string, 
   value: any,
-  placeholder?: string,
+  name?: string,
+  placeholder?: string, 
   type?: string,
   format?: string,
   autoComplete?: string
+  options?: string[], 
 }
 
 /**
@@ -21,7 +23,7 @@ export interface IFields {
 export interface IButtons {
   text: string, 
   type?: string, 
-  to?: string,  // note: this will only redirect to home
+  to?: string,  // note: this will only redirect to pages on site
   bootstrapClass: string,
 }
 
@@ -31,6 +33,8 @@ export const updateField = (e: React.BaseSyntheticEvent, index: number, form: an
   // special date format
   if (form[index].format === "date")
     elementValue = formatDate(elementValue);
+  if (form[index].format === "phoneNumber")
+    elementValue = formatPhoneNumber(elementValue);
   const formCopy: any = [...form];
   formCopy[index].value = elementValue;
   return formCopy;
@@ -43,11 +47,14 @@ export function passwordVerify(form: IFields[]) {
 }
 
 export function submitVerify(form: IFields[]) {
-  
-  return form.every((item: any) => 
-    (isValidDate(item.value)) || (item.value.length > 0 && !item.format) 
+  form.forEach((item: any) => {
+    console.log(item.id, ":", (isValidDate(item.value)) || (item.value.length > 0 && !item.format))
+  })
+  return form.every((item: any) =>
+    (isValidDate(item.value)) || (item.format === "phoneNumber" && item.value.length >=10) || (item.value.length > 0 && !item.format) 
   ) 
 }
+
 
 export function isValidDate(datestring: string) {
   if (!datestring)
@@ -87,7 +94,7 @@ export function dayMaxVal(month: string, day: string) {
       break;
   }
   console.log(month, day);
-  if (ret < 10 && ret != 0 && day.length !== 1) {
+  if (ret < 10 && ret !== 0 && day.length !== 1) {
     console.log("zeroPad");
     return "0" + ret.toString()
   }
@@ -133,3 +140,15 @@ export function formatDate(value: string) {
     month = "12"
   return `${month}/${day}/${year.slice(0, 4)}`;
 }
+
+// https://tomduffytech.com/how-to-format-phone-number-in-javascript/
+  function formatPhoneNumber(value: String) {
+    if (!value) return value;
+    const phoneNumber = value.replace(/[^\d]/g, '');
+    const phoneNumberLength = phoneNumber.length;
+    if (phoneNumberLength < 4) return phoneNumber;
+    if (phoneNumberLength < 7) {
+      return `(${phoneNumber.slice(0, 3)})${phoneNumber.slice(3)}`;
+    }
+    return `(${phoneNumber.slice(0, 3)})${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  }

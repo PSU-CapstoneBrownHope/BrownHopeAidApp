@@ -8,7 +8,6 @@ import text from "../styles/Text.module.css"
 import { LoginCheck } from "../util/userFunctions";
 import { fields, buttons, header, LoginFormToHttpBody } from "../util/loginUtil";
 import { submitVerify, updateField } from "../util/inputUtil";
-import { env } from "process";
 
 export const LoginForm = (): JSX.Element => {
   const [form, setForm] = useState(fields)
@@ -42,7 +41,6 @@ export const LoginForm = (): JSX.Element => {
 
 
   const navigate = useNavigate();
-  const handleClick = () => navigate("/reset/verify-user");
 
   function handleLoginSubmit(event: SyntheticEvent) {
     event.preventDefault();
