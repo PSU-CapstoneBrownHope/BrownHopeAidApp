@@ -31,11 +31,11 @@
  
   /* nav item size */
   --nav-item-width: calc(10vw + 2vmin);
-  --logo-height: calc(30px + 5vmin);
+  --logo-height: calc(25px + 5vmin);
 
 
   /* max-width non-nav display */
-  --current-page-max-width: 575px;
+  --current-page-max-width: 650px;
   /* normal page width */
   --current-page-std-width: 70vw;
 
@@ -44,7 +44,7 @@
   --medium: calc(8px + 2vmin);
   --low: calc(6px + 2vmin);
   
-  --nav: calc(12px + 3vmin);
+  --nav: calc(10px + 3vmin);
   --nav-weight: 400;
   
   --footer: calc(14px + 1vmin);
