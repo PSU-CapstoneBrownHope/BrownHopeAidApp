@@ -45,9 +45,10 @@ export function passwordVerify(form: IFields[]) {
 }
 
 export function submitVerify(form: IFields[]) {
+  /* Helpful for debugging
   form.forEach((item: any) => {
     console.log(item.id, ":", (isValidDate(item.value)) || (item.value.length > 0 && !item.format))
-  })
+  }) */
   return form.every((item: any) =>
     (isValidDate(item.value)) || (item.format === "phoneNumber" && item.value.length >=10) || (item.value.length > 0 && !item.format) 
   ) 
@@ -75,35 +76,31 @@ export function dayMaxVal(month: string, day: string) {
   const ret = stringToNum(day);
   let maxVal = 31;
   switch (month) {
-    case "2":
+    case "02":
       maxVal = 29;
       break;
-    case "4":
+    case "04":
       maxVal = 30;
       break;
-    case "6":
+    case "06":
       maxVal = 30;
       break;
-    case "9":
+    case "09":
       maxVal = 30;
       break;
     case "11":
       maxVal = 30;
       break;
   }
-  console.log(month, day);
   if (ret < 10 && ret !== 0 && day.length !== 1) {
-    console.log("zeroPad");
     return "0" + ret.toString()
   }
   if (ret > maxVal)
     return maxVal.toString();
-  console.log(ret.toString())
   return ret.toString();
 }
 
 export function formatDate(value: string) {
-  console.log(value)
   if (!value)
     return value;
   let reg = new RegExp("[./]")
