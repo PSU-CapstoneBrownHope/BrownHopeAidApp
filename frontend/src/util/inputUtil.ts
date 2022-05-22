@@ -41,9 +41,7 @@ export const updateField = (e: React.BaseSyntheticEvent, index: number, form: an
 }
 
 export function passwordVerify(form: IFields[]) {
-  console.log(form.find((item: any) => (item.id === "password")))
-  console.log(form.find((item: any) => (item.id === "verifyPassword")))
-  return form.find((item: any) => (item.id === "password"))?.value === form.find((item: any) => (item.id === "verifyPassword"))?.value
+  return form.find((item: any) => (item.id === "newPassword"))?.value === form.find((item: any) => (item.id === "verifyPassword"))?.value 
 }
 
 export function submitVerify(form: IFields[]) {
@@ -148,7 +146,7 @@ export function formatDate(value: string) {
     const phoneNumberLength = phoneNumber.length;
     if (phoneNumberLength < 4) return phoneNumber;
     if (phoneNumberLength < 7) {
-      return `(${phoneNumber.slice(0, 3)})${phoneNumber.slice(3)}`;
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
     }
-    return `(${phoneNumber.slice(0, 3)})${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   }

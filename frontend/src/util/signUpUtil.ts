@@ -20,7 +20,7 @@ export const fields: IFields[] = [
   },
   {
     label: "Password:",
-    id: "password",
+    id: "newPassword",
     type: "password",
     value: "",
     autoComplete: "new-password",
