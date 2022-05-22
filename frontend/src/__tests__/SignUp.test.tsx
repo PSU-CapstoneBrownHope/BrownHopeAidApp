@@ -4,7 +4,7 @@ import * as ReactDOMClient from 'react-dom/client';
 import {act} from "react-dom/test-utils"
 import { BrowserRouter } from 'react-router-dom';
 import { SignUp } from '../components/SignUp';
-import { fields, buttons} from '../util/signUpUtil';
+import { fields, buttons } from '../util/signUpUtil';
 
 let container = document.createElement("div");
 
@@ -38,7 +38,6 @@ test('All signup elements render', async() => {
         const checkTextBox = screen.getByRole(item.type, { name: item.label + ":" });
         fireEvent.change(checkTextBox, { target: { value: "123" } });
         expect(checkTextBox.value).toBe("123")
-
     })
 
     expect(submitBtn).not.toBeDisabled

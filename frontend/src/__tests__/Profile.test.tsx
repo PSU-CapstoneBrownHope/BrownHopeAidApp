@@ -56,7 +56,7 @@ test('Editting elements present', async () => {
             expect(checkSelect .value).toBe("Email")
         }
         else if (index !== 0) {
-            const checkTextBox= screen.getByRole("text", { name: item.label });
+            const checkTextBox= screen.getByRole(item.type, { name: item.label });
             fireEvent.change(checkTextBox, { target: { value: "123" } });
             expect(checkTextBox.value).toBe("123")
         }

@@ -37,7 +37,7 @@ test('All signup elements render', async () => {
 
     //test all the text box
     fields.forEach((item: any, index: any) => {
-        const checkTextBox = screen.getByRole("password", { name: item.label + ":" });
+        const checkTextBox = screen.getByRole(item.type, { name: item.label + ":" });
         fireEvent.change(checkTextBox, { target: { value: "1234567890" } });
     })
 
