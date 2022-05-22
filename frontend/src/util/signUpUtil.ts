@@ -3,7 +3,7 @@ import { IFields, IButtons } from "./inputUtil"
 /* Main signup form fields and buttons */
 export const fields: IFields[] = [
   {
-    label: "Email:",
+    label: "Email",
     id: "email",
     placeholder: "Email",
     type: "text",
@@ -11,7 +11,7 @@ export const fields: IFields[] = [
     autoComplete: "email"
   },
   {
-    label: "Username:",
+    label: "Username",
     id: "username",
     placeholder: "Username",
     type: "text",
@@ -19,7 +19,7 @@ export const fields: IFields[] = [
     autoComplete: "username"
   },
   {
-    label: "Password:",
+    label: "Password",
     id: "newPassword",
     type: "password",
     value: "",
@@ -27,7 +27,7 @@ export const fields: IFields[] = [
     placeholder: "Password",
   },
   {
-    label: "Confirm Password:",
+    label: "Confirm Password",
     id: "verifyPassword",
     type: "password",
     value: "",
@@ -47,7 +47,7 @@ export const buttons: IButtons[] = [
 /* Input fields and buttons for verification code submission form */
 export const verificationFields: IFields[] = [
   {
-    label: "Verification code:",
+    label: "Verification code",
     id: "verificationCode", 
     placeholder: "verification code",
     value: "",

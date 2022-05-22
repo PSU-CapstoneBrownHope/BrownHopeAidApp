@@ -175,7 +175,7 @@ export const SignUp = (): JSX.Element => {
     form.forEach((item: any, index: any) => {
       items.push(
         <label htmlFor={item.id} key={index} className={text["wrapper"]}>
-          {item.label}
+          {item.label}:
           <input
             role={item.type}
             name={item.id}
