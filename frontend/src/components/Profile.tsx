@@ -189,7 +189,7 @@ export const Profile = (): JSX.Element => {
         items.push(
           <label htmlFor={item.id} key={index} className={style["userInfoLabel"]}>
             {item.label}
-            {item.label}
+        
             <select
               id={item.id}
               name={item.id}
