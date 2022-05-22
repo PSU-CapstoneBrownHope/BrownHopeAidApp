@@ -140,7 +140,7 @@ export function formatDate(value: string) {
 }
 
 // https://tomduffytech.com/how-to-format-phone-number-in-javascript/
-  function formatPhoneNumber(value: String) {
+  export function formatPhoneNumber(value: String) {
     if (!value) return value;
     const phoneNumber = value.replace(/[^\d]/g, '');
     const phoneNumberLength = phoneNumber.length;
