@@ -50,7 +50,7 @@ export function submitVerify(form: IFields[]) {
     console.log(item.id, ":", (isValidDate(item.value)) || (item.value.length > 0 && !item.format))
   }) */
   return form.every((item: any) =>
-    (isValidDate(item.value)) || (item.format === "phoneNumber" && item.value.length >=10) || (item.value.length > 0 && !item.format) 
+    (isValidDate(item.value)) || (item.value && item.format === "phoneNumber" && item.value?.length >=10) || (item.value?.length > 0 && !item.format) 
   ) 
 }
 
