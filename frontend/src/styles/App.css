@@ -35,31 +35,28 @@ body{
 .appHeader {
   text-align: center;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
+  align-content: center;
   font-size: var(--nav);
   color: var(--theme-color);
   font-family: header-font;
   font-weight: var(--nav-weight);
   font-style: normal;
   background-color: transparent;
+  padding-top: 10px;
+  padding-right: calc(5px + 2vmin);
+  padding-left: calc(5px + 2vmin);
   height: 11vh;
+  width: 100%;
+  max-width: var(--max-width);
 }
 
-.twoWordP {
-  padding: 0px;
-  height: 4.5vh;
+.twoWord {
+  padding-right:0.2em;
 }
 
 /* Nav */
-
-nav{
-  display: flex;
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
 
 ul{
   display: flex;
@@ -72,12 +69,11 @@ ul{
 
 li{
   display: flex;
-  height: 100%;
   width: var(--nav-item-width);
   max-width: 150px;
   min-width: fit-content;
   align-items: center;
-  padding-right: 4vmin
+  padding-right: 2px + 2vmin
 }
 
 a.noAlign{
@@ -95,11 +91,17 @@ a{
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   color: var(--theme-color);
   text-decoration: none;
   width: 100%;
   cursor:pointer;
+}
+
+@media only screen and (max-width: 768px){
+  a{
+    flex-direction: column;
+  }
 }
 
 a:hover{
@@ -117,7 +119,7 @@ figure{
   margin:auto;
   width: 100%;
   margin: 0%;
-  padding-left: 4vmin;
+  padding: 1vmin;
 }
 
 .navlogo{
@@ -192,12 +194,4 @@ h1{
   align-items: flex-end;
   padding-bottom: 5px;
 }
-
-form{
-  max-height: 80%;
-  display: flex;
-  flex-direction: column;
-}
-
-
 

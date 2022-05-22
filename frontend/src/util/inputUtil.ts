@@ -41,15 +41,14 @@ export const updateField = (e: React.BaseSyntheticEvent, index: number, form: an
 }
 
 export function passwordVerify(form: IFields[]) {
-  console.log(form.find((item: any) => (item.id === "password")))
-  console.log(form.find((item: any) => (item.id === "verifyPassword")))
-  return form.find((item: any) => (item.id === "password"))?.value === form.find((item: any) => (item.id === "verifyPassword"))?.value
+  return form.find((item: any) => (item.id === "newPassword"))?.value === form.find((item: any) => (item.id === "verifyPassword"))?.value 
 }
 
 export function submitVerify(form: IFields[]) {
+  /* Helpful for debugging
   form.forEach((item: any) => {
     console.log(item.id, ":", (isValidDate(item.value)) || (item.value.length > 0 && !item.format))
-  })
+  }) */
   return form.every((item: any) =>
     (isValidDate(item.value)) || (item.format === "phoneNumber" && item.value.length >=10) || (item.value.length > 0 && !item.format) 
   ) 
@@ -77,35 +76,31 @@ export function dayMaxVal(month: string, day: string) {
   const ret = stringToNum(day);
   let maxVal = 31;
   switch (month) {
-    case "2":
+    case "02":
       maxVal = 29;
       break;
-    case "4":
+    case "04":
       maxVal = 30;
       break;
-    case "6":
+    case "06":
       maxVal = 30;
       break;
-    case "9":
+    case "09":
       maxVal = 30;
       break;
     case "11":
       maxVal = 30;
       break;
   }
-  console.log(month, day);
   if (ret < 10 && ret !== 0 && day.length !== 1) {
-    console.log("zeroPad");
     return "0" + ret.toString()
   }
   if (ret > maxVal)
     return maxVal.toString();
-  console.log(ret.toString())
   return ret.toString();
 }
 
 export function formatDate(value: string) {
-  console.log(value)
   if (!value)
     return value;
   let reg = new RegExp("[./]")
@@ -142,13 +137,13 @@ export function formatDate(value: string) {
 }
 
 // https://tomduffytech.com/how-to-format-phone-number-in-javascript/
-  function formatPhoneNumber(value: String) {
+  export function formatPhoneNumber(value: String) {
     if (!value) return value;
     const phoneNumber = value.replace(/[^\d]/g, '');
     const phoneNumberLength = phoneNumber.length;
     if (phoneNumberLength < 4) return phoneNumber;
     if (phoneNumberLength < 7) {
-      return `(${phoneNumber.slice(0, 3)})${phoneNumber.slice(3)}`;
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
     }
-    return `(${phoneNumber.slice(0, 3)})${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   }

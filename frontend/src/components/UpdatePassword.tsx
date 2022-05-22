@@ -4,13 +4,16 @@ import { routes } from '../util/config';
 import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Buttons.module.css"
 import text from "../styles/Text.module.css"
-import { LoginCheck, Logout } from '../util/userFunctions';
+import { updateField, submitVerify, passwordVerify, } from "../util/inputUtil";
+import { LoginCheck } from '../util/userFunctions';
+import { fields, buttons, values, formToHttpBody } from "../util/updatePasswordUtil"
 
 export const UpdatePassword = (): JSX.Element => {
   //const [username, setUsername] = useState("");
-  const [old_password, setOldPassword] = useState("");
-  const [new_password, setNewPassword] = useState("");
-  const [new_password_verify, setVerifyNewPassword] = useState("");
+  const [form, setForm] = useState(fields)
+  const [btns] = useState(buttons);
+  const [currentId, setCurrentId] = useState("");
+  const [cursorPos, setCursorPos] = useState(0);
 
   const navigate = useNavigate()
 
@@ -26,38 +29,28 @@ export const UpdatePassword = (): JSX.Element => {
       isLoggedIn()
   }, [])
 
-  function validatePasswordChange() {
-    return (
-      /*username.length > 0 && */old_password.length > 0 && new_password.length > 0 && new_password === new_password_verify && new_password !== old_password
-    ); //makes sure the user enters something in each field and that the new password was typed correctly
-  }
-
-  function getUsername() {
-    if (sessionStorage.getItem('username') == null) {
-      alert('Not logged in. Redirecting to login page...')
-      navigate("/login")
+  useEffect(() => {
+    if (currentId) {
+      const inputElement = window.document.getElementById(currentId);
+      if (inputElement) {
+        inputElement.focus();
+      }
     }
-    return sessionStorage.getItem('username');
-  }
+  });
+
 
   function handleUpdatePassword(event: SyntheticEvent) {
     event.preventDefault();
 
-    const newUserPassword = {
-      //username: username,
-      new_password: new_password,
-      old_password: old_password,
-      new_password_verify: new_password_verify,
-    };
-
     const sendUpdateRequest = async () => {
       try {
-        const resp = await axios.post(routes.updatePassword, newUserPassword, { withCredentials: true });
+        const resp = await axios.post(routes.updatePassword, formToHttpBody(form), { withCredentials: true });
         console.log(resp.data);
         if (resp.data === "Success") {
           alert("Password Update Successful!");
+          navigate("/profile")
         } else if (resp.data === "Failed") {
-          alert("Sorry, wrong username or password. Please try again!")
+          alert("Failed to change password. Please try again!")
         }
       } catch (err) {
         alert("Password change failed");
@@ -68,65 +61,76 @@ export const UpdatePassword = (): JSX.Element => {
     sendUpdateRequest();
   }
 
-  return (
-    <div className="currentPage">
-      <h1>Change your Password</h1>
-      <form id="ChangePasswordForm" onSubmit={(e) => handleUpdatePassword}>
-        <div className="info">
-          <label htmlFor="oldPassword" className={text["wrapper"]}>
-            Old Password:
-            <input
-              id="oldPassword"
-              type="password"
-              value={old_password}
-              placeholder="Old Password"
-              onChange={(e) => setOldPassword(e.target.value)}
-              className={text["textField"]}
-            />
-          </label>
-          <label htmlFor="newPassword" className={text["wrapper"]}>
-            New Password:
-            <input
-              id="newPassword"
-              type="password"
-              value={new_password}
-              placeholder="New Password"
-              autoComplete="new-password"
-              onChange={(e) => setNewPassword(e.target.value)}
-              className={text["textField"]}
-            />
-          </label>
-          <label htmlFor="newPasswordVerify" className={text["wrapper"]}>
-            Confirm New Password:
-            <input
-              id="newPasswordVerify"
-              type="password"
-              value={new_password_verify}
-              placeholder="Confirm New Password"
-              autoComplete="new-password"
-              onChange={(e) => setVerifyNewPassword(e.target.value)}
-              className={text["textField"]}
-            />
-          </label>
-        </div>
-        <button
-          id="changePasswordBtn"
-          className={styles["fullscreenButton"] + " btn btn-success"}
-          disabled={!validatePasswordChange()}
-          type="submit"
-        >
-          Change password
-        </button>
-        <Link to="/profile">
+  const UpdatePassword = () => {
+    let items: any = [];
+    form.forEach((item: any, index: any) => {
+      items.push(
+        <label htmlFor={item.id} key={index} className={text["wrapper"]}>
+          {item.label}:
+          <input
+            role={item.type}
+            name={item.id}
+            id={item.id}
+            type={item.type}
+            placeholder={item.label}
+            autoComplete={item.autoComplete}
+            value={item.value}
+            onChange={(e) => {
+              if (e.target.selectionStart !== null)
+                setCursorPos(e.target.selectionStart)
+              setForm(updateField(e, index, form));
+              setCurrentId(item.id)
+            }}
+            onFocus={(e) => {
+              e.target.selectionStart = cursorPos;
+              e.target.selectionEnd = cursorPos;
+            }}
+            className={text['textField']}
+            required
+          />
+        </label>
+      )
+    })
+    let buttons: any = [];
+    btns.forEach((item: any, index: any) => {
+      if (item.type === "submit") {
+        buttons.push(
           <button
-            id="backToProfile"
-            className={styles["fullscreenButton"] + " btn btn-outline-danger"}
+            className={styles['fullscreenButton'] + " " + item.bootstrapClass}
+            disabled={!(submitVerify(form) && passwordVerify(form))}
+            type="submit"
+            key={index}
           >
-            Back to Profile
+            {item.text}
           </button>
-        </Link>
-      </form>
-    </div>
-  )
+        );
+      } else if (item.to) {
+        buttons.push(
+          <Link to={item.to} key={index} >
+            <button
+              className={styles["fullscreenButton"] + " " + item.bootstrapClass}
+            >
+              {item.text}
+            </button>
+          </Link>
+        )
+      }
+    })
+    return (
+      <div className="currentPage">
+        <h1>{values.header}</h1>
+        <form id="loginForm"
+          className={styles["buttonGroup"]}
+          onSubmit={handleUpdatePassword}
+        >
+          <div className="info">
+            {items}
+          </div>
+          {buttons}
+        </form>
+      </div>
+    )
+  }
+  return (<UpdatePassword />)
 
 }
