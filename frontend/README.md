@@ -57,7 +57,80 @@ The pages on the site are constructed from elements present in a util file, allo
 
 ### Changing buttons and fields
 
-Most pages on this site consist of forms the user fills out. These forms are constructed from files in the frontend/util folder. 
+Most pages on this site consist of forms the user fills out. These forms are constructed from files in the frontend/util folder. The interfaces for input fields and buttons are contained in the inputUtil.ts: 
 
-The input fields and buttons are interfaces declared in frontend/util/inputUtil. Those interfaces are used in util files of the same name to create arrays that represent the elements on the screen. For example, here is the config file for login: 
+```JavaScript
+export interface IFields {
+  label: string, 
+  id: string, 
+  value: any,
+  name?: string,
+  placeholder?: string, 
+  type?: string,
+  format?: string,
+  autoComplete?: string
+  options?: string[], 
+}
+export interface IButtons {
+  text: string, 
+  type?: string, 
+  to?: string,  // note: this will only redirect to pages on site
+  bootstrapClass: string,
+}
+```
 
+IFields items refer to HTML element attributes, and the formatting to use. 
+
+IButtons are of two types: Submit form or redirect.
+
+To see how they are used, lets check out the loginUtil file: 
+
+```JavaScript
+import { IFields, IButtons } from "./inputUtil";
+
+export const fields: IFields[] = [
+  {
+    label: "Username",
+    id: "username",
+    type: "textbox",
+    value: "",
+  },
+  {
+    label: "Password",
+    id: "password",
+    type: "password",
+    value: "",
+  },
+]
+ 
+
+export const buttons: IButtons[] = [
+  {
+    text: "Login",
+    type: "submit",
+    bootstrapClass: "btn btn-success"
+  },
+  {
+    text: "Create An Account",
+    to: "/sign-up",
+    bootstrapClass: "btn btn-secondary"
+  }
+]
+
+export const header = "Login to your account"
+
+// This function is used to format the request sent to the
+// back end
+export const LoginFormToHttpBody = (form:IFields[]) => {
+  return {
+    username: form[0].value,
+    password: form[1].value,
+  }
+}
+```
+What we do in loginUtil.ts:
+1. Import the interfaces
+2. Described input fields for username and password labeled "fields"
+3. Described buttons for creating an account and submitting the login form
+4. Declared header text
+5. Declared a function for creating POST request bodies
