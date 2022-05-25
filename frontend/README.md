@@ -226,6 +226,10 @@ Many css values are set in the file config.css in the styles folder. For those o
 | footer, footer-weight | Font size and weight for footer text items |
 | header, header-weight, header-letter-spacing | Font size, weight, and spacing for h1 elements |
 | app-status-color, status, app-status-weight | Font color |  
+| text-field | font size of input field | 
+| label | font size for label on input fields |
+| button, button-letter-spacing, button-weigt | Controls font size, spacing and weight for button elements |
+
 
 
 
