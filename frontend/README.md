@@ -311,6 +311,7 @@ Note that the structure of LoginFormToHttpBody has changed to reflect the change
 Now lets change the font:
 
 ```Css
+/* From app.css */
 @font-face {
     font-family: header-font;
     /* route to font for header in fonts */
