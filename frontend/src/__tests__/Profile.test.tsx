@@ -4,7 +4,8 @@ import * as ReactDOMClient from 'react-dom/client';
 import {act} from "react-dom/test-utils"
 import { BrowserRouter } from 'react-router-dom';
 import { Profile } from '../components/Profile';
-
+import { fields, infoButtons, editButtons} from '../util/AccountInfoUtil';
+import { isDisabled } from '@testing-library/user-event/dist/types/utils';
 
 
 let container = document.createElement("div");
@@ -21,64 +22,64 @@ afterEach(() => {
 test('Editting elements present', async () => {
   window.sessionStorage.setItem("username", "mack")
   act(() => {
-    ReactDOMClient.createRoot(container).render(<BrowserRouter><Profile /></BrowserRouter>);
+   ReactDOMClient.createRoot(container).render(<BrowserRouter><Profile /></BrowserRouter>);
   });
     
-    expect(screen.getByText("User Name:")).toBeInTheDocument
-    expect(screen.getByText("First Name:")).toBeInTheDocument
-    expect(screen.getByText("Last Name:")).toBeInTheDocument
-    expect(screen.getByText("Address:")).toBeInTheDocument
-    expect(screen.getByText("Phone Number:")).toBeInTheDocument
-    expect(screen.getByText("Email Address:")).toBeInTheDocument
-    expect(screen.getByText("Edit Account Information")).toBeInTheDocument
-    expect(screen.getByText("Save")).toBeInTheDocument
-    expect(screen.getByText("Cancel Changes")).toBeInTheDocument
-    expect(screen.getByText("Change Password")).toBeInTheDocument
+    fields.forEach((item: any, index: any) => {
+        expect(screen.getByText(item.label + ":")).toBeInTheDocument
+    })
+    infoButtons.forEach((item: any, index: any) => {
+        expect(screen.getByText(item.text)).toBeInTheDocument
+    })
+    
+   
 
     
-
-  /**
-   * To check a button has disappeared, get a variable pointing to it when 
-   * it is visible, then make it invisible. 
-   */
-  const changepwBtn = screen.getByRole("button", { name: "Change Password" });
-  expect(changepwBtn).toBeVisible
-
-
-  const editBtn = screen.getByRole("button", { name: "Edit Account Information" });
-  //test after press edit button
+  ///**
+   //* To check a button has disappeared, get a variable pointing to it when 
+   //* it is visible, then make it invisible. 
+   //*/
+ 
+   
+    const editBtn = screen.getByRole("button", { name: infoButtons[0].text });
+    
+    
+    //test after press edit button
     fireEvent.click(editBtn);
+    const submitBtn = screen.getByRole("button", { name: editButtons[0].text });
 
-    const first = screen.getByRole("textbox", { name: "First Name" });
-    fireEvent.change(first, { target: { value: "foo" } });
-    expect(first.value).toBe("foo")
+    //test the select and textbox
+    fields.forEach((item: any, index: any) => {
+        if (item.type === "select") {
+            const checkSelect = screen.getByRole("select", { name: item.label });
+            fireEvent.change(checkSelect , { target: { value: "Email" } });
+            expect(checkSelect .value).toBe("Email")
+        }
+        else if (index !== 0) {
+            const checkTextBox= screen.getByRole(item.type, { name: item.label });
+            fireEvent.change(checkTextBox, { target: { value: "123" } });
+            expect(checkTextBox.value).toBe("123")
+        }
+    })
 
-    const last = screen.getByRole("textbox", { name: "Last Name" });
-    fireEvent.change(last, { target: { value: "foo" } });
-    expect(last.value).toBe("foo")
+    //make sure the submit is disabled
+    expect(submitBtn).toBeDisabled
 
-    const phone = screen.getByRole("textbox", { name: "Phone Number" });
-    fireEvent.change(phone, { target: { value: "foo" } });
-    expect(phone.value).toBe("foo")
+    
+    fields.forEach((item: any, index: any) => {
+        if (item.type === "select") {
+            const checkSelect = screen.getByRole("select", { name: item.label });
+            fireEvent.change(checkSelect, { target: { value: "Email" } });   
+        }
+        else if (index !== 0) {
+            const checkTextBox = screen.getByRole("text", { name: item.label });
+            fireEvent.change(checkTextBox, { target: { value: "1234567890" } });
+            
+        }
+    })
+    
+    expect(submitBtn).not.toBeDisabled
 
-    const address = screen.getByRole("textbox", { name: "Address" });
-    fireEvent.change(address, { target: { value: "foo" } });
-    expect(address.value).toBe("foo")
-
-    const email = screen.getByRole("textbox", { name: "Email Address" });
-    fireEvent.change(email, { target: { value: "foo" } });
-    expect(email.value).toBe("foo")
-
-
-
-
-  const saveBtn = screen.getByRole("button", { name: "Save" })
-  expect(saveBtn).toBeVisible
-  expect(editBtn).not.toBeVisible
-
-  const cancelBtn = screen.getByRole("button", { name: "Cancel Changes" });
-  expect(cancelBtn).toBeVisible
-  expect(editBtn).not.toBeVisible
-
+   
 });
 

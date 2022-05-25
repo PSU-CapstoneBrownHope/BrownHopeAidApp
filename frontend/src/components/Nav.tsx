@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Logout } from '../util/userFunctions';
+import { items } from '../util/navUtil'
 export const Nav = (): JSX.Element => {
-
-
-  const [username, setUsername] = useState(sessionStorage.getItem('username'));
   const [link, setLink] = useState("login");
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(undefined!==sessionStorage.getItem('username'))
 
   function NavLogout() {
     return (
@@ -29,39 +27,63 @@ export const Nav = (): JSX.Element => {
   function getUsername() {
     const ssUsername = sessionStorage.getItem('username');
     if (ssUsername === "" || ssUsername === null) {
-      setUsername("LOGIN");
-      setLink("login")
       setLoggedIn(false)
     } else {
-      setUsername(ssUsername);
-      setLink("profile")
       setLoggedIn(true)
     }
   }
-
-  return (
-    <header className="appHeader">
-      <nav aria-label="nav">
-        <a href="https://www.brownhope.org/" className="logo">
-          <figure>
-            <img src="bh_full-color_stacked_black.png" className="navlogo" alt="Brown Hope Logo" />
-          </figure>
-        </a>
-        <ul>
-          <li>
-            <a href="/" className="navItem">
-              <p className='twoWordP'>App</p>
-              <p className='twoWordP'>Status</p>
-            </a> 
-          </li>
-          <li>
-            <a aria-label="Profile" href={link} className="navItem">
-              {username}
+  
+  const Nav = () => {
+    let logo: any;
+    let links: any = [];
+    items.forEach((item: any, index: any) => {
+      if (item.src) {
+        logo = (
+          <a href={item.href} className={item.logo} key={item.text}>
+            <figure>
+              <img
+                src={item.src}
+                className={item.imgClass}
+                alt={item.alt} />
+            </figure>
+          </a>
+        )
+      } else if (item.text === "App Status") {
+        links.push(
+          <li key={item.text}>
+            <a
+              href={item.href}
+              className={item.className}
+              onClick={item.onClick}
+            >
+              <span className="twoWord">{item.text.split(" ")[0]} </span>
+              <span className="twoWord">{item.text.split(" ")[1]}</span>
             </a>
           </li>
-          {loggedIn ? <NavLogout /> : <li hidden></li>}
-        </ul>
-      </nav>
-    </header>
-  )
+        )  
+      } else if (loggedIn === item.loggedIn) {
+        links.push(
+          <li key={item.text}>
+            <a
+              href={item.href}
+              className={item.className}
+              onClick={item.onClick}
+            >
+              {item.text}
+            </a>
+          </li>
+        )  
+      }
+    })
+    return (
+        <nav className="appHeader">
+          {logo}
+          <ul>
+            {links}
+          </ul>
+        </nav>
+    )
+  }
+
+  return (<Nav/>)
 }
