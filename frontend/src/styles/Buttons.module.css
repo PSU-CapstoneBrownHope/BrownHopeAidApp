@@ -6,7 +6,7 @@
   letter-spacing: var(--button-letter-spacing);
   font-family: header-font;
   font-size: var(--button);
-  width: 70vw;
+  width: 100%;
   max-width: var(--current-page-max-width);
   border-radius: calc(5px + 1vmin);
   cursor: pointer;
@@ -15,6 +15,7 @@
 }
 
 .buttonGroup{
+  max-height: 80%;
   display: flex;
   flex-direction: column;
   justify-self: center;
