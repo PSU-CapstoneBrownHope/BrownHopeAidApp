@@ -9,6 +9,7 @@ This version of the frontend was created for Brown Hope. This document will cove
 4. [How to make changes](#How-to-make-changes)
     1. [Util files](#How-util-files-work)
     2. [CSS](#Config.css)
+    3. [Tutorial](#Tutorial)
 
 ## Expected Prior knowledge
 
@@ -230,10 +231,93 @@ Many css values are set in the file config.css in the styles folder. For those o
 | label | font size for label on input fields |
 | button, button-letter-spacing, button-weigt | Controls font size, spacing and weight for button elements |
 
+### Tutorial 
 
+Lets do an example change to the frontend where we change:
+- colors
+- nav image
+- font
+- username to email on login page 
 
+The current page looks like: 
 
+![before](https://user-images.githubusercontent.com/77218586/170339508-b8f92c10-b912-4a69-8437-032a15984bcc.png)
 
+First lets change the color scheme. 
 
+```Css
+  // From config.css
+  /* color gradient at the bottom of the page */
+  --gradient:  white;
+  --background-color:rgb(80, 220, 100);
+  --gradient-height: 30vh;
+
+  /* Color for header text */
+  --theme-color: black;
+```
+![step1](https://user-images.githubusercontent.com/77218586/170343185-4aea1ebb-f7b3-41e8-a0ac-86363704eef9.png)
+
+Next lets get the right logo up there. 
+
+```JavaScript
+// From navUtil.ts
+export const items: navItem[] = [
+  {
+    href: "https://www.blackresiliencefund.com/",
+    className: "logo",
+    src: "brf.png",
+    alt: "BRF logo",
+    imgClass: "navlogo"
+  },
+``` 
+
+![step2](https://user-images.githubusercontent.com/77218586/170346139-fe4373c2-cfd9-4dc6-800b-b7fe4aa6d595.png)
+
+One other issue is that the submit button is disappearing into the background, lets fix that by changing the boostrap class. While we're in there we'll change the 
+username field: 
+
+```JavaScript
+// from loginUtil.ts
+export const fields: IFields[] = [
+  {
+    label: "Email",
+    id: "email",
+    type: "textbox",
+    value: "",
+  },
+
+// ...
+
+export const buttons: IButtons[] = [
+  {
+    text: "Login",
+    type: "submit",
+    bootstrapClass: "btn btn-primary"
+  },
+  
+// ... 
+
+export const LoginFormToHttpBody = (form: IFields[]) => {
+  return {
+    email: form[0].value,
+    password: form[1].value,
+  }
+}
+```
+![step3](https://user-images.githubusercontent.com/77218586/170347795-8563e89e-6db4-4b6f-b74c-854178e50d6d.png)
+
+Note that the structure of LoginFormToHttpBody has changed to reflect the changes in the form. This means that the backend call needs to be adjusted to reflect this change.
+
+Now lets change the font:
+
+```JavaScript
+@font-face {
+    font-family: header-font;
+    /* route to font for header in fonts */
+    src: url("../styles/fonts/RaleWay/static/Raleway-Bold.ttf")format("woff2");
+}
+```
+
+![step4](https://user-images.githubusercontent.com/77218586/170349317-bfb0122f-b0c9-423f-a5fc-47df02ebb531.png)
 
 
