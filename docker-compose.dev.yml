@@ -29,7 +29,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/:/etc/nginx/
+      - ./nginx_dev/:/etc/nginx/
       - ./certbot/www:/var/www/certbot/
       - ./certbot/conf/:/etc/nginx/ssl/
     depends_on:
