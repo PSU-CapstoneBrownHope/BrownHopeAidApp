@@ -55,7 +55,7 @@ For those of you wanting to update the packages as they advance in the future, t
 
 The pages on the site are constructed from elements present in a util file, allowing what the user interacts with on each page to be changed. The appearance is handled in a universal css file, allowing for fonts, colors, and sizes to be tweaked until you are satisfied with the output. When changing input fields, ensure the backend is changed in a way to accomodate the changes. 
 
-### Changing buttons and fields
+### How the util files work
 
 Most pages on this site consist of forms the user fills out. These forms are constructed from files in the frontend/util folder. The interfaces for input fields and buttons are contained in the inputUtil.ts: 
 
@@ -71,6 +71,10 @@ export interface IFields {
   autoComplete?: string
   options?: string[], 
 }
+```
+IFields interfaces refer to input fields. In the browser, the values are used for HTML element attributes, and occasionally formatting. 
+
+```JavaScript
 export interface IButtons {
   text: string, 
   type?: string, 
@@ -79,15 +83,24 @@ export interface IButtons {
 }
 ```
 
-IFields items refer to HTML element attributes, and the formatting to use. 
+IButtons are of two types: Submit form or redirect. 
 
-IButtons are of two types: Submit form or redirect.
+```JavaScript
+export interface IForm{
+  fields: IFields[],
+  buttons: IButtons[],
+  submit: Function,
+  onFocus?: Function,
+  submitVerify?: Function,
+}
+```
+
+Forms containt fields and buttons, along with a function to call the backend on submit. onfocus is used to change the on focus function which is called when the user focuses on an input fields. Finally submitVerify is used to add another boolean value to the input verification logic, i.e. ensuring a new password is correct in both fields it should be present. 
 
 To see how they are used, lets check out the loginUtil file: 
 
 ```JavaScript
-import { IFields, IButtons } from "./inputUtil";
-
+// from loginUtil.ts
 export const fields: IFields[] = [
   {
     label: "Username",
@@ -102,8 +115,12 @@ export const fields: IFields[] = [
     value: "",
   },
 ]
- 
+```
 
+Above we describe the input fields, one for username one for password
+ 
+```JavaScript
+// from loginUtil.ts
 export const buttons: IButtons[] = [
   {
     text: "Login",
@@ -116,7 +133,12 @@ export const buttons: IButtons[] = [
     bootstrapClass: "btn btn-secondary"
   }
 ]
+```
 
+Above code describes buttons that will appear on the page. 
+
+```JavaScript
+// from loginUtil.ts
 export const header = "Login to your account"
 
 // This function is used to format the request sent to the
@@ -128,9 +150,42 @@ export const LoginFormToHttpBody = (form:IFields[]) => {
   }
 }
 ```
-What we do in loginUtil.ts:
-1. Import the interfaces
-2. Described input fields for username and password labeled "fields"
-3. Described buttons for creating an account and submitting the login form
-4. Declared header text
-5. Declared a function for creating POST request bodies
+
+Header refers to text in h1 html element. LoginFormToHttpBody describes how the values will be passed to the backend in the request. 
+
+```JavaScript
+// from loginUtil.ts
+export const sendLoginRequest = async (form: IFields[], afterSubmit:Function) => {
+  try {
+    const resp = await axios.post(routes.login, LoginFormToHttpBody(form), { withCredentials: true });
+    console.log(resp.data);
+    if (resp.data === "Success") {
+      sessionStorage.setItem('username', form[0].value);
+      window.location.reload()
+    } else if (resp.data === "Failed") {
+      alert("Sorry, wrong username or password. Please try again!")
+    }
+  } catch (err) {
+    // Handle Error Here
+    console.error(err);
+    alert("Login Failed");
+  }
+};
+```
+
+Above is the function that will be used to send the request to the backend. 
+
+```JavaScript
+// from loginUtil.ts
+export const form: IForm =
+{
+  fields: fields,
+  buttons: buttons,
+  submit: sendLoginRequest,
+}
+```
+
+We tie all the bits of the file together here. This IForm will be used by formUtil.ts To create the html page
+
+### How css files work
+
