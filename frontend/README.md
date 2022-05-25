@@ -6,7 +6,8 @@ This version of the frontend was created for Brown Hope. This document will cove
 2. [Common issues](#Common-Issues)
     1. [Packages](#Packages)
 3. [How to make changes](#How-to-make-changes)
-    1. [Changing buttons and fields](#Changing-buttons-and-fields)
+    1. [Util files](#How-util-files-work)
+    2. [CSS files](#How-css-files-work)
 
 
 ## How to run locally
@@ -185,7 +186,8 @@ export const form: IForm =
 }
 ```
 
-We tie all the bits of the file together here. This IForm will be used by formUtil.ts To create the html page
+We tie all the bits of the file together here. This IForm will be used by formUtil.tsx To create the html page
 
 ### How css files work
+
 
