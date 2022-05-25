@@ -3,6 +3,14 @@
  * This file contains the utilities needed by forms
  */
 
+export interface IForm{
+  fields: IFields[],
+  buttons: IButtons[],
+  submit: Function,
+  onFocus?: Function,
+  submitVerify?: Function,
+}
+
 export interface IFields {
   label: string, 
   id: string, 
@@ -12,6 +20,7 @@ export interface IFields {
   type?: string,
   format?: string,
   autoComplete?: string
+  hidden?: boolean,
   options?: string[], 
 }
 
@@ -22,7 +31,8 @@ export interface IFields {
  */
 export interface IButtons {
   text: string, 
-  type?: string, 
+  type?: string,
+  hidden?: boolean,
   to?: string,  // note: this will only redirect to pages on site
   bootstrapClass: string,
 }
@@ -45,12 +55,12 @@ export function passwordVerify(form: IFields[]) {
 }
 
 export function submitVerify(form: IFields[]) {
-  /* Helpful for debugging
-  form.forEach((item: any) => {
+  //Helpful for debugging
+  /*form.forEach((item: any) => {
     console.log(item.id, ":", (isValidDate(item.value)) || (item.value.length > 0 && !item.format))
   }) */
   return form.every((item: any) =>
-    (isValidDate(item.value)) || (item.value && item.format === "phoneNumber" && item.value?.length >=10) || (item.value?.length > 0 && !item.format) 
+    !item.hidden && ((isValidDate(item.value)) || (item.value && item.format === "phoneNumber" && item.value?.length >=10) || (item.value?.length > 0 && !item.format)) || item.hidden
   ) 
 }
 

@@ -1,4 +1,6 @@
-import { IFields, IButtons, dayMaxVal, stringToNum } from "./inputUtil"
+import axios from "axios";
+import { routes } from "../util/config";
+import { IForm, IFields, IButtons, dayMaxVal, stringToNum } from "./inputUtil"
 
 export const fields: IFields[] = [
   {
@@ -46,6 +48,35 @@ export const FormToHttpBody = (form: IFields[]) => {
     lastName: form[1].value,
     DOB: formatDOB(form[2].value)
   }
+}
+
+export const sendApplicationStatusRequest = async (form: IFields[], afterSubmit: Function) => {
+  try {
+    const resp = await axios.post(routes.application_status, FormToHttpBody(form), { withCredentials: true });
+    afterSubmit(resp);
+  } catch (err) {
+    console.error(err)
+    alert("Failed to find application")
+    return {}
+  }
+};
+
+export const onFocus = (e: any, cursorPos: any) => {
+  let reg = new RegExp("/")
+  let addedSlashes = reg.exec(e.target.value);
+  let changePos = 0;
+  if (addedSlashes)
+    changePos = addedSlashes.length;
+  e.target.selectionStart = cursorPos + changePos;
+  e.target.selectionEnd = cursorPos + changePos;
+}
+
+
+export const form: IForm = {
+  fields: fields,
+  buttons: buttons,
+  submit: sendApplicationStatusRequest,
+  onFocus: onFocus
 }
 
 export function formatDOB(value: string) {
