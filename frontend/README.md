@@ -3,11 +3,28 @@
 This version of the frontend was created for Brown Hope. This document will cover how to get it working, and what to change to make it work for your organization. 
 
 1. [How to run locally](#How-to-run-locally)
-2. [Common issues](#Common-Issues)
+2. [Prior Knowledge](#Expected-prior-knowledge)
+3. [Common issues](#Common-Issues)
     1. [Packages](#Packages)
-3. [How to make changes](#How-to-make-changes)
+4. [How to make changes](#How-to-make-changes)
     1. [Util files](#How-util-files-work)
     2. [CSS](#Config.css)
+
+## Expected Prior knowledge
+
+A person implementing changes on the frontend should have some exprience with using css and JS, or a desire to learn.
+
+It is highly recommended that you use an IDE when making changes, and vscode was used on most of it. Installing vscode and extensions for code highlighting. 
+
+Here are some references that will prove useful:
+
+| Topic | Link |
+| -- | -- |
+| how to use css | https://www.w3schools.com/css/default.asp | 
+| bootstrap styling (buttons) | https://getbootstrap.com/docs/4.0/getting-started/introduction/ |
+| html attributes for buttons | https://www.w3schools.com/tags/tag_button.asp | 
+| html attributes for input | https://www.w3schools.com/html/html_form_attributes.asp |
+| axios http requests | https://axios-http.com/docs/post_example | 
 
 
 ## How to run locally
@@ -190,7 +207,28 @@ We tie all the bits of the file together here. This IForm will be used by formUt
 
 ### Config.css
 
-Many css values are set in the file config.css in the styles folder. 
+Many css values are set in the file config.css in the styles folder. For those of you more experienced with css, the files are also in the styles folder. These values control the size, color, and text appearance. To change the font used (currently bebas-neue) change the src value of @font-face in App.css. Below are the css values and how they are used. 
+
+| Variable | Description |
+| -------- | ----------- |
+| gradient | color used for gradient starting at bottom of screen|
+| background-color | color of page background |
+| gradient-height | How far the colored gradient goes on the page | 
+| theme-color | Color used for header text and some buttons | 
+| button-text-color | Color used for button text, usually overwritten by bootstrap elements |
+| max-width | maximum width of all elements not in a form | 
+| nav-item-width | used for width of list items in nav bar |
+| logo-height | height of logo in nav bar | 
+| current-page-max-width | max width the form will appear on the page |
+| current-page-std-width | Width form will aim for until it hits max-width | 
+| high, medium, low | Font size labeled by priority | 
+| Nav, nav-weight | Font size and weight for nav text items | 
+| footer, footer-weight | Font size and weight for footer text items |
+| header, header-weight, header-letter-spacing | Font size, weight, and spacing for h1 elements |
+| app-status-color, status, app-status-weight | Font color |  
+
+
+
 
 
 
