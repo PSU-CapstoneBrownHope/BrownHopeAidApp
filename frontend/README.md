@@ -246,7 +246,7 @@ The current page looks like:
 First lets change the color scheme. 
 
 ```Css
-  // From config.css
+  /* From config.css */
   /* color gradient at the bottom of the page */
   --gradient:  white;
   --background-color:rgb(80, 220, 100);
@@ -310,7 +310,7 @@ Note that the structure of LoginFormToHttpBody has changed to reflect the change
 
 Now lets change the font:
 
-```JavaScript
+```Css
 @font-face {
     font-family: header-font;
     /* route to font for header in fonts */
