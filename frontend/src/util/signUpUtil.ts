@@ -115,7 +115,7 @@ export const DupeInfoToHttpBody = (form: IFields[]) => {
   }
 }
 
-const sendVerificationRequest = async (form: IFields[], afterSubmit: Function) => {
+export const sendVerificationRequest = async (form: IFields[], afterSubmit: Function) => {
   try {
     const dupeInfo = await axios.post(routes.duplicateInfoCheck, DupeInfoToHttpBody(form), { withCredentials: true })
     if (dupeInfo.data && dupeInfo.data === "Info OK") {
