@@ -36,16 +36,12 @@ export const Profile = (): JSX.Element => {
     }
   });
 
-  useEffect(() => {
-    if (process.env.BROWSER)
-      isLoggedIn()
-  }, [])
 
   const isLoggedIn = async () => {
     const username = await LoginCheck()
     if (username === "False") {
       sessionStorage.removeItem("username")
-      navigate("/login")
+      navigate("/")
     } else {
       sessionStorage.setItem("username", username)
     }
@@ -81,11 +77,15 @@ export const Profile = (): JSX.Element => {
 
     const sendInfoRequest = async () => {
       try {
-        if (process.env.BROWSER && await LoginCheck() === "False")
+        const logCheck = await LoginCheck()
+        console.log(process.env.BROWSER)
+        if (logCheck === "False")
           navigate("/");
-        const resp = await axios.post(routes.getAccountInfo, getInfoRequest(form), { withCredentials: true });
-        setNoInfo(false)
-        setInfo(responseToForm(info, resp.data));
+        else {
+          const resp = await axios.post(routes.getAccountInfo, getInfoRequest(form), { withCredentials: true });
+          setNoInfo(false)
+          setInfo(responseToForm(info, resp.data));
+        }
       } catch (err) {
         setNoInfo(true)
         console.error(err);
