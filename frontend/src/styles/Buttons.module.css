@@ -23,6 +23,11 @@
   align-items: center;
 }
 
+.themeButton{
+  color: var(--button-text-color);
+  background-color: var(--theme-color);
+}
+
 
 .transparentButton{
   font-family: header-font;
