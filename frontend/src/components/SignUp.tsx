@@ -49,9 +49,12 @@ export const SignUp = (): JSX.Element => {
   }
 
 
+  const str = "Please enter the verification code sent to " +  form.fields[0].value ;
+
   return (
     <div className="currentPage">
       <h1>{verificationScreen ? values.header2 : values.header1}</h1>
+      {verificationScreen ? <p>{str}</p>: <span></span>}
       {verificationScreen ? <VerificationForm /> : <SignUpForm />}
     </div>
   );
