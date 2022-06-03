@@ -4,6 +4,7 @@ import * as ReactDOMClient from 'react-dom/client';
 import { act } from "react-dom/test-utils"
 import { BrowserRouter } from 'react-router-dom';
 import { UpdatePassword } from '../components/UpdatePassword';
+import { fields, buttons } from '../util/updatePasswordUtil';
 
 let container = document.createElement("div");
 
@@ -21,10 +22,25 @@ test('All signup elements render', async () => {
         ReactDOMClient.createRoot(container).render(<BrowserRouter><UpdatePassword /></BrowserRouter>);
     });
 
-    expect(screen.getAllByPlaceholderText("Old Password")).toBeInTheDocument
-    expect(screen.getAllByPlaceholderText("New Password")).toBeInTheDocument
-    expect(screen.getAllByPlaceholderText("Confirm New Password")).toBeInTheDocument
+    const submitBtn = screen.getByRole("button", { name: buttons[0].text });
 
+    //test if all elements are present
+    fields.forEach((item: any, index: any) => {
+        expect(screen.getByText(item.label + ":")).toBeInTheDocument
+    })
+    buttons.forEach((item: any, index: any) => {
+        expect(screen.getByText(item.text)).toBeInTheDocument
+    })
 
-    
+    //checking the submit is disabled unless there is valid input
+    expect(submitBtn).toBeDisabled
+
+    //test all the text box
+    fields.forEach((item: any, index: any) => {
+        const checkTextBox = screen.getByRole(item.type, { name: item.label + ":" });
+        fireEvent.change(checkTextBox, { target: { value: "1234567890" } });
+    })
+
+    expect(submitBtn).not.toBeDisabled
+
 });

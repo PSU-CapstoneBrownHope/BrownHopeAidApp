@@ -1,21 +1,31 @@
 import axios from 'axios';
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { routes } from '../util/config';
-import { accountFields } from "../util/util";
+import {
+  fields,
+  editButtons,
+  infoButtons,
+  values,
+  getInfoRequest,
+  responseToForm,
+} from "../util/AccountInfoUtil";
 import style from "../styles/AccountInfo.module.css"
 import text from "../styles/Text.module.css"
-import buttons from "../styles/Buttons.module.css"
-import { LoginCheck, Logout } from '../util/userFunctions';
+import buttonStyle from "../styles/Buttons.module.css"
+import { LoginCheck} from '../util/userFunctions';
+import { updateField, submitVerify } from '../util/inputUtil';
 
 
 export const Profile = (): JSX.Element => {
   const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState(accountFields);
-  const [info, setInfo] = useState(accountFields);
-  const [contactMethod, setContact] = useState('');
+  const [form, setForm] = useState(fields);
+  const [info, setInfo] = useState(fields);
+  const [editBtns] = useState(editButtons);
+  const [infoBtns] = useState(infoButtons);
   const [noInfo, setNoInfo] = useState(false);
   const [currentId, setCurrentId] = useState("");
+  const [cursorPos, setCursorPos] = useState(0)
   const navigate = useNavigate();
 
   // constantly runs
@@ -26,76 +36,36 @@ export const Profile = (): JSX.Element => {
     }
   });
 
-  useEffect(() => {
-    if (process.env.BROWSER)
-      isLoggedIn()
-  }, [])
 
   const isLoggedIn = async () => {
     const username = await LoginCheck()
     if (username === "False") {
       sessionStorage.removeItem("username")
-      navigate("/login")
+      navigate("/")
     } else {
       sessionStorage.setItem("username", username)
     }
   }
 
 
-  const editCheck = async (cancelChanges: boolean) => {
+  const editCheck = async () => {
     // reload window to throw out changes made
-    if (cancelChanges === true)
-      window.location.reload();
     if (process.env.BROWSER) {
       if (await LoginCheck() === "False") {
-        navigate("Profile")
+        navigate("/login")
       }
-    } else {
-      setEditing(!editing)
     }
+    setEditing(!editing)
   }
 
-
-
-  // https://tomduffytech.com/how-to-format-phone-number-in-javascript/
-  function formatPhoneNumber(value: String) {
-    if (!value) return value;
-    const phoneNumber = value.replace(/[^\d]/g, '');
-    const phoneNumberLength = phoneNumber.length;
-    if (phoneNumberLength < 4) return phoneNumber;
-    if (phoneNumberLength < 7) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
-    }
-    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
-  }
-
-
-  //
-  const updateField = (e: React.BaseSyntheticEvent, index: number): void => {
-    let elementValue = (e.target as HTMLInputElement).value;
-    if (index === 3)
-      elementValue = formatPhoneNumber(elementValue)
-    const elementId = (e.target as HTMLInputElement).id;
-    const formCopy: any = [...form];
-    formCopy[index].value = elementValue;
-    setForm(formCopy);
-    setCurrentId(elementId);
-  };
-
-  const handleContactChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setContact(event.target.value as string)
-    const contactMethod = event.target.value as string;
-    const formCopy: any = [...form];
-    formCopy[6].value = contactMethod;
-    setForm(formCopy);
-  };
 
   function postAccountUpdate() {
     const sendUpdateRequest = async () => {
       try {
-        const resp = await axios.post(routes.updateAccount, form, { withCredentials: true });
+        await axios.post(routes.updateAccount, form, { withCredentials: true });
       } catch (err) {
         // Handle Error Here
+        alert("FAILED: Information is not updated")
         console.error(err);
       }
     };
@@ -104,26 +74,18 @@ export const Profile = (): JSX.Element => {
   }
 
   function getExistingAccountInfo() {
-    accountFields[0].value = sessionStorage.getItem("username")
-    const newLoginRequest = {
-      userName: accountFields[0].value,
-    };
 
     const sendInfoRequest = async () => {
       try {
-        if (process.env.BROWSER && await LoginCheck() === "False")
+        const logCheck = await LoginCheck()
+        console.log(process.env.BROWSER)
+        if (logCheck === "False")
           navigate("/");
-        const resp = await axios.post(routes.getAccountInfo, newLoginRequest, { withCredentials: true });
-        setNoInfo(false)
-        const formCopy: any = [...form];
-        formCopy[1].value = resp.data.firstName;
-        formCopy[2].value = resp.data.lastName;
-        formCopy[3].value = resp.data.phoneNumber;
-        formCopy[4].value = resp.data.address;
-        formCopy[5].value = resp.data.emailAddress;
-        formCopy[6].value = resp.data.contactMethod;
-        setContact(resp.data.contactMethod);
-        setInfo(formCopy);
+        else {
+          const resp = await axios.post(routes.getAccountInfo, getInfoRequest(form), { withCredentials: true });
+          setNoInfo(false)
+          setInfo(responseToForm(info, resp.data));
+        }
       } catch (err) {
         setNoInfo(true)
         console.error(err);
@@ -131,27 +93,6 @@ export const Profile = (): JSX.Element => {
     };
     sendInfoRequest();
 
-  }
-
-  const AccountFieldsInfo = () => {
-    let items: any = [];
-    if (info[1].value === "") {
-      getExistingAccountInfo()
-    }
-    info.forEach((item: any, index: any) => {
-      items.push(
-        <div key={index}
-          className={style['userInfo']}
-          id={item.name}
-        >
-          <span className={text['gray']}>{item.label}:</span>
-          <div className={style["fieldData"] + " " + text["high"]}>
-            {item.value}
-          </div>
-        </div>
-      )
-    });
-    return <>{items}</>
   }
 
   const createOptions = (options: any) => {
@@ -171,107 +112,185 @@ export const Profile = (): JSX.Element => {
 
   const InfoMessage = () => {
     return (
-      <p className={text["high"]}>If you have just created an account please allow up to 5 minutes for your info to show up in the system</p>
+      <p className={text["high"]}>{values.infoMessage}</p>
     )
   }
 
-  const AccountFieldsInputs = () => {
-    let items: any = [];
-    form.forEach((item: any, index: any) => {
-      if (index !== 0) {
-        if (form[index].value === undefined || form[index].value === null)
-          form[index].value = "";
-        if (item.type === 'select') {
-          items.push(
-            <label
-              key={index}
-              htmlFor={item.name}
-              className={style['userInfoLabel']}
+  const AccountInfo = () => {
+    let items: any = []
+
+    if (info[1].value === "") {
+      getExistingAccountInfo()
+    }
+    info.forEach((item: any, index: any) => {
+      items.push(
+        <div key={item.id}
+          className={style['userInfo']}
+          id={item.id}
+        >
+          <span className={text['gray']}>{item.label}:</span>
+          <div className={style["fieldData"] + " " + text["high"]}>
+            {item.value}
+          </div>
+        </div>
+      )
+    });
+    let buttons: any = [];
+    infoBtns.forEach((item: any, index: any) => {
+      if (item.type === "submit") {
+        buttons.push(
+          <button
+            className={buttonStyle['fullscreenButton'] + " " + item.bootstrapClass}
+            disabled={!(submitVerify(form))}
+            type="submit"
+            key={index}
+          >
+            {item.text}
+          </button>
+        );
+      } else if (item.to) {
+        buttons.push(
+          <Link to={item.to} key={index} >
+            <button
+              className={buttonStyle["fullscreenButton"] + " " + item.bootstrapClass}
             >
-              {item.label}
-              <select
-                id={item.name}
-                value={contactMethod}
-                className={style['userInfo'] + " " + style['textField']}
-                name={item.name}
-                onChange={handleContactChange}
-              >
-                {createOptions(item.options)}
-              </select>
-            </label>
-          )
-        } else {
-          items.push(
-            <label
-              key={index}
-              htmlFor={item.name}
-              className={style['userInfoLabel']}
-            >
-              {item.label}
-              <input
-                type={item.type}
-                id={item.name}
-                className={style['userInfo'] + " " + style['textField']}
-                value={form[index].value}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  updateField(e, index);
-                }}
-              >
-              </input>
-            </label>
-          )
-        }
+              {item.text}
+            </button>
+          </Link>
+        )
+      } else if (item.type === "edit") {
+        buttons.push(
+        <button
+          className={buttonStyle['fullscreenButton'] + " " + item.bootstrapClass}
+          onClick={() => editCheck()}
+          key={index}
+        >
+          {item.text}
+          </button>
+        )
       }
     })
-    return <>{items}</>
+    return (
+      <div id="Account Information Page"
+        className={buttonStyle["buttonGroup"]}
+      >
+        <div className="info">
+          {items}
+        </div>
+        {buttons}
+      </div>
+    )
   }
 
+  const AccountFieldsForm = () => {
+    let items: any = [];
+    form.forEach((item: any, index: any) => {
+      if (item.type === "select") {
+        items.push(
+          <label htmlFor={item.id} key={index} className={style["userInfoLabel"]}>
+            {item.label}
+        
+            <select
+              id={item.id}
+              name={item.id}
+              value={item.value}
+              className={style['userInfo'] + " " + text['textField']}
+              onChange={(e) => {
+                setForm(updateField(e, index, form));
+              }}
+              role={item.type}
+              required
+            >
+              {createOptions(item.options)}
+            </select>
+          </label>
+        )
+      } else if (index !== 0) {
+        items.push(
+          <label htmlFor={item.id} key={index} className={style["userInfoLabel"]}>
+            {item.label}
+            <input
+              role={item.type}
+              name={item.id}
+              id={item.id}
+              type={item.type}
+              placeholder={item.placeholder}
+              value={item.value}
+              autoComplete={item.autoComplete}
+              onChange={(e) => {
+                if (e.target.selectionStart !== null)
+                  setCursorPos(e.target.selectionStart)
+                setForm(updateField(e, index, form));
+                setCurrentId(item.id)
+              }}
+              onFocus={(e) => {
+                // phone number doesn't work well with this
+                // fix should be possible 
+                if (e.target.id !== "phoneNumber" && e.target.id !=="email") {
+                  e.target.selectionStart = cursorPos
+                  e.target.selectionEnd = cursorPos
+                }
+              }}
+              className={text['textField']}
+              required
+            />
+          </label>
+        )
+      }
+    })
+    let buttons: any = [];
+    editBtns.forEach((item: any, index: any) => {
+      if (item.type === "submit") {
+        buttons.push(
+          <button
+            className={buttonStyle['fullscreenButton'] + " " + item.bootstrapClass}
+            disabled={!(submitVerify(form))}
+            type="submit"
+            key={index}
+          >
+            {item.text}
+          </button>
+        );
+      } else if (item.to) {
+        buttons.push(
+          <Link to={item.to} key={index} >
+            <button
+              className={buttonStyle["fullscreenButton"] + " " + item.bootstrapClass}
+            >
+              {item.text}
+            </button>
+          </Link>
+        )
+      } else if (item.type === "edit") {
+        buttons.push(
+          <button
+          className={buttonStyle['fullscreenButton'] + " " + item.bootstrapClass}
+          onClick={() => editCheck()}
+          key={index}
+        >
+          {item.text}
+          </button>
+        )
+      }
+    })
+    return (
+      <form id="Account Information Page"
+        className={buttonStyle["buttonGroup"]}
+        onSubmit={postAccountUpdate}
+      >
+        <div className="info">
+          {items}
+        </div>
+        {buttons}
+      </form>
+    )
+  }
   return (
     <div className="currentPage">
-      <h1>Account Information</h1>
+      <h1>{editing? values.header2 : values.header1}</h1>
       {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
-      {editing ? <form className='info'><AccountFieldsInputs/></form> : <div className="info"><AccountFieldsInfo/></div>}
-      <div className="buttons">
-        <div className={buttons['buttonWrapper']}>
-          <button
-            className={buttons['fullscreenButton'] + " btn btn-outline-success"}
-            onClick={() => editCheck(false)}
-            hidden={editing ? true : false}
-          >
-            Edit Account Information
-          </button>
-        </div>
-        <div className={buttons['buttonWrapper']}>
-          <button
-            className={buttons['fullscreenButton'] + " btn btn-success"}
-            hidden={editing ? false : true}
-            onClick={postAccountUpdate}
-          >
-            Save
-          </button>
-        </div>
-
-        <div>
-        <div className={buttons['buttonWrapper']}>
-          <button
-            className={buttons['fullscreenButton'] + " btn btn-danger"}
-            hidden={editing ? false : true}
-            onClick={() => editCheck(true)}
-          >
-            Cancel Changes
-          </button>
-        </div>
-
-        <Link to="/update-password" className={buttons['buttonWrapper']}>
-          <button
-            className={buttons['fullscreenButton'] + " btn btn-secondary"}
-            hidden={editing ? true : false}
-          >
-            Change Password
-          </button>
-          </Link>
-        </div>
-      </div>
+      {editing ? <AccountFieldsForm /> : <AccountInfo />}
     </div>
-  );
+  )
+
 }

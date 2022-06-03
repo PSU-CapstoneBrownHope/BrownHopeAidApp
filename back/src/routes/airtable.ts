@@ -200,7 +200,7 @@ airtableRouter.post('/duplicateInfoCheck', async function (req, res) {
 
 
 airtableRouter.post("/getInfo", function (req, res) {
-  if(req.body.userName == undefined){
+  if(req.body.userName === undefined){
     res.sendStatus(404).end();
     return;
   }
