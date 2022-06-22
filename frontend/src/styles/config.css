@@ -22,9 +22,12 @@
 
   /* Color for header text */
   --theme-color: #146467;
+  /* link hover color */
+  --link-hover: #062224;
 
   /* border around forms */
   --border: rgb(185, 185, 185) solid 2px;
+
  
   /* button colors */
   --btn-text-color: white;
