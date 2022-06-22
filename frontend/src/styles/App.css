@@ -165,7 +165,7 @@ h1{
   top: 0;
   bottom: 0;
   overflow-y: auto;
-  border:rgb(185, 185, 185) solid 2px;
+  border: var(--border);
   border-radius: 3px;
   padding: 1vmin;
 }
@@ -193,5 +193,71 @@ h1{
   flex-direction: column;
   align-items: flex-end;
   padding-bottom: 5px;
+}
+
+/* Below section changes color for the buttons */
+
+.btn-success, .btn-success.disabled, .btn-success:disabled{
+    color: var(--btn-text-color);
+    background-color: var(--btn-success-color);
+    border-color: var(--btn-success-color);
+}
+
+.btn-success:hover, .btn-success.hover {
+  background-color: var(--btn-success-color-hover);
+}
+
+.btn-outline-success{
+  color: var(--btn-success-color);
+  background-color: var(--btn-text-color);
+  border-color: var(--btn-text-color);
+}
+
+.btn-outline-success:hover, .btn-outline-success.hover {
+  color: var(--btn-success-color-hover);
+}
+
+.btn-secondary{
+    color: var(--btn-text-color);
+    background-color: var(--btn-secondary-color);
+    border-color: var(--btn-secondary-color);
+}
+
+.btn-secondary:hover, .btn-secondary.hover {
+  background-color: var(--btn-secondary-color-hover);
+}
+
+.btn-outline-secondary{
+    color: var(--btn-secondary-color);
+    background-color: var(--btn-text-color);
+    border-color: var(--btn-text-color);
+}
+
+.btn-outline-secondary:hover, .btn-outline-secondary.hover {
+  color: var(--btn-secondary-color-hover);
+}
+
+.btn-danger{
+    color: var(--btn-text-color);
+    background-color: var(--btn-danger-color);
+    border-color: var(--btn-danger-color);
+}
+
+.btn-danger:hover, .btn-danger.hover {
+  background-color: var(--btn-danger-color-hover);
+}
+
+.btn-outline-danger{
+    color: var(--btn-danger-color);
+    background-color: var(--btn-text-color);
+    border-color: var(--btn-text-color);
+}
+
+.btn-outline-danger:hover, .btn-outline-danger.hover {
+  color: var(--btn-danger-color-hover);
+}
+
+.btn.disabled, .btn:disabled{
+  opacity: .65;
 }
 
