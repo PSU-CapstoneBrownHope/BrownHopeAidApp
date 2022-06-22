@@ -195,7 +195,7 @@ h1{
   padding-bottom: 5px;
 }
 
-/* Below section changes color for the buttons */
+/* Below section changes color for bootstrap buttons */
 
 .btn-success, .btn-success.disabled, .btn-success:disabled{
     color: var(--btn-text-color);
