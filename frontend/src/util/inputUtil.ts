@@ -3,6 +3,8 @@
  * This file contains the utilities needed by forms
  */
 
+import { input } from "@testing-library/user-event/dist/types/utils";
+
 export interface IForm{
   fields: IFields[],
   buttons: IButtons[],
@@ -59,9 +61,30 @@ export function submitVerify(form: IFields[]) {
   /*form.forEach((item: any) => {
     console.log(item.id, ":", (isValidDate(item.value)) || (item.value.length > 0 && !item.format))
   }) */
-  return form.every((item: any) =>
-    !item.hidden && ((isValidDate(item.value)) || (item.value && item.format === "phoneNumber" && item.value?.length >=10) || (item.value?.length > 0 && !item.format)) || item.hidden
-  ) 
+
+  // This will run the checks for submit verify
+  const checks = (item: IFields) => {
+    if (!item.hidden && item.value) {
+      let reg = new RegExp('[^\d\)\(-\s]')
+      switch (item.id) {
+        case 'phoneNumber':
+          return item.value.length >= 10 && !reg.test(item.value)
+        case 'email':
+          // sourced regex from https://www.regexlib.com/REDetails.aspx?regexp_id=26
+          reg = new RegExp('^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$')
+          return reg.test(item.value)
+        case 'DOB':
+          return isValidDate(item.value)
+      }
+    } else if (item.hidden) {
+      return true;
+    } else if (item.value.length > 0) {
+      return true
+    }
+    return false
+  }
+
+  return form.every((item: any) => checks(item)) 
 }
 
 
@@ -147,7 +170,7 @@ export function formatDate(value: string) {
 }
 
 // https://tomduffytech.com/how-to-format-phone-number-in-javascript/
-  export function formatPhoneNumber(value: String) {
+export function formatPhoneNumber(value: String) {
     if (!value) return value;
     const phoneNumber = value.replace(/[^\d]/g, '');
     const phoneNumberLength = phoneNumber.length;
@@ -156,4 +179,11 @@ export function formatDate(value: string) {
       return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
     }
     return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
-  }
+}
+
+// from tutorial https://www.geoapify.com/tutorial/address-input-for-address-validation-and-address-verification-forms-tutorial
+export function addressAutoComplete(item: IFields) {
+  const minLen = 3;
+  const delay = 300;
+
+}

@@ -115,3 +115,4 @@ export const responseToForm = (form: IFields[], data:any) => {
     formCopy[6].value = data.contactMethod;
   return formCopy;
 }
+
