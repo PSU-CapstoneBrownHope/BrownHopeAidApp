@@ -13,7 +13,6 @@
     "axios": "^0.26.1",
     "dotenv": "^16.0.0",
     "dotenv-webpack": "^7.1.0",
-    "npm-check-updates": "^12.5.8",
     "react": "18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.2.2",
