@@ -4,28 +4,41 @@ This version of the frontend was created for Brown Hope. This document will cove
 
 1. [How to run locally](#How-to-run-locally)
 2. [Prior Knowledge](#Expected-prior-knowledge)
-3. [Common issues](#Common-Issues)
-    1. [Packages](#Packages)
-4. [How to make changes](#How-to-make-changes)
+3. [How to make changes](#How-to-make-changes)
     1. [Util files](#How-util-files-work)
     2. [CSS](#Config.css)
     3. [Tutorial](#Tutorial)
+4. [Common issues](#Common-Issues)
+    1. [Packages](#Packages)
 
 ## Expected Prior knowledge
 
-A person implementing changes on the frontend should have some exprience with using css and JS, or a desire to learn.
+Someone familiar with:
+- Github
+- An IDE
+- CSS
+- Node.js
+- Javascript
+- Google Cloud Platform
 
-It is highly recommended that you use an IDE when making changes, and vscode was used on most of it. Installing vscode and extensions for code highlighting. 
+Branding choices:
+- Downloaded image for customizing logo.
+- Colors for customizing page
+- Font choice
+
+
+It is highly recommended that you use an IDE when making changes, and vscode was used on most of it. Installing vscode and extensions for code highlighting is highly recommended. 
 
 Here are some references that will prove useful:
 
 | Topic | Link |
 | -- | -- |
 | how to use css | https://www.w3schools.com/css/default.asp | 
-| bootstrap styling (buttons) | https://getbootstrap.com/docs/4.0/getting-started/introduction/ |
+| bootstrap styling (buttons) | https://getbootstrap.com/docs/4.0/components/buttons/ |
 | html attributes for buttons | https://www.w3schools.com/tags/tag_button.asp | 
 | html attributes for input | https://www.w3schools.com/html/html_form_attributes.asp |
 | axios http requests | https://axios-http.com/docs/post_example | 
+| vscode | https://code.visualstudio.com/ |
 
 
 ## How to run locally
@@ -37,38 +50,8 @@ Here are some references that will prove useful:
   - fixing vulnerabilities is covered in packages under common issues
 - Change server in config.ts to localhost:5000
   - ensure you do not merge to development with this change. It should be set to the ip address of your server.
-
-## Common Issues
-
-This section will cover some of the issues we ran into in development and how we fixed them
-
-### Packages
-
-With the number of dependencies on the frontend, there are commonly vulnerabilities created by outdated ones. Below are some of the ways for how to indetify the problem package and fix it. If you run into any more issues consult the FAQ section, or create an issue on the [github](https://github.com/PSU-CapstoneBrownHope/BrownHopeAidApp/).
-
-If you run npm install and see vulnerabilities:
-
-![vulnerabilitiesOnInstall](https://user-images.githubusercontent.com/77218586/167921834-0f0b846f-3d84-450e-8394-e660f32d12be.png)
-
-1. run npm audit
-
-![npmAudit](https://user-images.githubusercontent.com/77218586/167924046-8c50d3d7-1eba-43bd-af7e-4b8534d2731a.png)
-
-This shows an audit report. The first box is surrounding the offending package nth-check. In this example there is a single dependency issue, but you might see more. The next red highlight shows something you should NOT do, as it will cause more vulnerabilities. In gray is the list of packages affected by this dependency issue. 
-
-2. Search for package name in package-lock.json (I used vim). Using the information from the audit report we know that "css-select" is the package dependent on this vulnerable version of nth-check. 
-
-![badPackage](https://user-images.githubusercontent.com/77218586/167924665-9194e87b-00c5-41cc-aed9-3c2b2aeb15b5.png)
-
-In the audit report the system told us the issue was that the nth-check package was below version 2.0.1. We change that value to be "^2.0.1":
-
-![goodPackage](https://user-images.githubusercontent.com/77218586/167924983-0f61531e-2dbd-4ccf-bdf6-c44644f47f9f.png)
-
-now lets run npm install again
-
-![goodInstall](https://user-images.githubusercontent.com/77218586/167925988-343f611e-e45d-489f-ae0a-5408a9aab196.png)
-
-For those of you wanting to update the packages as they advance in the future, this is a way to sort out any new vulnerabilities. 
+- run npm start 
+- start up the backend (optional)
 
 ## How to make changes
 
@@ -241,22 +224,22 @@ Lets do an example change to the frontend where we change:
 
 The current page looks like: 
 
-![before](https://user-images.githubusercontent.com/77218586/170339508-b8f92c10-b912-4a69-8437-032a15984bcc.png)
+![before](../../example%20pics/tutorial/before.png)
 
 First lets change the color scheme. 
 
 ```Css
   /* From config.css */
   /* color gradient at the bottom of the page */
-  --gradient:  white;
-  --background-color:rgb(80, 220, 100);
+  --gradient: #50dc64;
+  --background-color: black;
   --gradient-height: 30vh;
 
   /* Color for header text */
-  --theme-color: black;
+  --theme-color: white;
 ```
-![step1](https://user-images.githubusercontent.com/77218586/170343185-4aea1ebb-f7b3-41e8-a0ac-86363704eef9.png)
 
+![step1](../../example%20pics/tutorial/step1.png)
 Next lets get the right logo up there. 
 
 ```JavaScript
@@ -265,16 +248,16 @@ export const items: navItem[] = [
   {
     href: "https://www.blackresiliencefund.com/",
     className: "logo",
-    src: "brf.png",
+    src: "BRFlogoCOLOR650px060420.png",
     alt: "BRF logo",
     imgClass: "navlogo"
   },
 ``` 
+![step2](../../example%20pics/tutorial/step2.png)
 
-![step2](https://user-images.githubusercontent.com/77218586/170346139-fe4373c2-cfd9-4dc6-800b-b7fe4aa6d595.png)
 
-One other issue is that the submit button is disappearing into the background, lets fix that by changing the boostrap class. While we're in there we'll change the 
-username field: 
+Next lets change the username field:
+
 
 ```JavaScript
 // from loginUtil.ts
@@ -288,15 +271,6 @@ export const fields: IFields[] = [
 
 // ...
 
-export const buttons: IButtons[] = [
-  {
-    text: "Login",
-    type: "submit",
-    bootstrapClass: "btn btn-primary"
-  },
-  
-// ... 
-
 export const LoginFormToHttpBody = (form: IFields[]) => {
   return {
     email: form[0].value,
@@ -304,11 +278,12 @@ export const LoginFormToHttpBody = (form: IFields[]) => {
   }
 }
 ```
-![step3](https://user-images.githubusercontent.com/77218586/170347795-8563e89e-6db4-4b6f-b74c-854178e50d6d.png)
+
 
 Note that the structure of LoginFormToHttpBody has changed to reflect the changes in the form. This means that the backend call needs to be adjusted to reflect this change.
 
 Now lets change the font:
+![step3](../../example%20pics/tutorial/step3.png)
 
 ```Css
 /* From app.css */
@@ -319,6 +294,43 @@ Now lets change the font:
 }
 ```
 
-![step4](https://user-images.githubusercontent.com/77218586/170349317-bfb0122f-b0c9-423f-a5fc-47df02ebb531.png)
+![step4](../../example%20pics/tutorial/step4.png)
 
+Congratulations! you have completed the tutorial, the site is set up for a new organization! These changes will only be present on your machine, to get them into the main or development branch, you will need to follow this [wiki editing tutorial](https://github.com/PSU-CapstoneBrownHope/BrownHopeAidApp/wiki). The tutorial explains how to edit the github wiki, however the steps are the same for creating a branch in repository, until the merging step. 
+
+Your organization's main branch should be protected, so you cannot push changes directly to it. You will have to create a pull request for your branch instead which can be done by following this [tutorial](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
+
+## Common Issues
+
+This section will cover some of the issues we ran into in development and how we fixed them
+
+### Packages
+
+With the number of dependencies on the frontend, there are commonly vulnerabilities created by outdated ones. Below are some of the ways for how to indetify the problem package and fix it. If you run into any more issues consult the FAQ section, or create an issue on the [github](https://github.com/PSU-CapstoneBrownHope/BrownHopeAidApp/).
+
+If you run npm install and see vulnerabilities:
+
+![vulnerabilitiesOnInstall](https://user-images.githubusercontent.com/77218586/167921834-0f0b846f-3d84-450e-8394-e660f32d12be.png)
+
+1. run npm audit
+
+![npmAudit](https://user-images.githubusercontent.com/77218586/167924046-8c50d3d7-1eba-43bd-af7e-4b8534d2731a.png)
+
+This shows an audit report. The first box is surrounding the offending package nth-check. In this example there is a single dependency issue, but you might see more. The next red highlight shows something you should NOT do, as it will cause more vulnerabilities. In gray is the list of packages affected by this dependency issue. 
+
+  1. Check if the package is in use, some packages may be in but never used. For this step you should check with your supervisor before removing a problem package. Once the package is removed run npm install again to ensure there are no other vulnerabilities. If not, you're done and can continue working. 
+
+2. Search for package name in package-lock.json (I used vim). Using the information from the audit report we know that "css-select" is the package dependent on this vulnerable version of nth-check. 
+
+![badPackage](https://user-images.githubusercontent.com/77218586/167924665-9194e87b-00c5-41cc-aed9-3c2b2aeb15b5.png)
+
+In the audit report the system told us the issue was that the nth-check package was below version 2.0.1. We change that value to be "^2.0.1":
+
+![goodPackage](https://user-images.githubusercontent.com/77218586/167924983-0f61531e-2dbd-4ccf-bdf6-c44644f47f9f.png)
+
+now lets run npm install again
+
+![goodInstall](https://user-images.githubusercontent.com/77218586/167925988-343f611e-e45d-489f-ae0a-5408a9aab196.png)
+
+For those of you wanting to update the packages as they advance in the future, this is a way to sort out any new vulnerabilities. 
 
