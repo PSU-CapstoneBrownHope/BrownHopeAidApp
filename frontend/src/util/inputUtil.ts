@@ -76,12 +76,12 @@ export function submitVerify(form: IFields[]) {
         case 'DOB':
           return isValidDate(item.value)
       }
-    } else if (item.hidden) {
-      return true;
-    } else if (item.value.length > 0) {
-      return true
+      if (item.hidden)
+        return true;
+      if (item.value.length > 0)
+        return true
+      return false
     }
-    return false
   }
 
   return form.every((item: any) => checks(item)) 
