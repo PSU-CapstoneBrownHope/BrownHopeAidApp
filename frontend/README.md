@@ -224,7 +224,7 @@ Lets do an example change to the frontend where we change:
 
 The current page looks like: 
 
-![before](../../example%20pics/tutorial/before.png)
+![before](https://user-images.githubusercontent.com/77218586/175397528-34e179d3-005f-47ed-88cb-87855c954e63.png)
 
 First lets change the color scheme. 
 
@@ -238,8 +238,8 @@ First lets change the color scheme.
   /* Color for header text */
   --theme-color: white;
 ```
+![step1](https://user-images.githubusercontent.com/77218586/175397595-7baa24ab-d28d-4c22-973c-51e63b9ee956.png)
 
-![step1](../../example%20pics/tutorial/step1.png)
 Next lets get the right logo up there. 
 
 ```JavaScript
@@ -253,7 +253,8 @@ export const items: navItem[] = [
     imgClass: "navlogo"
   },
 ``` 
-![step2](../../example%20pics/tutorial/step2.png)
+![step2](https://user-images.githubusercontent.com/77218586/175397613-cec4679e-fa6b-4372-8be7-cf77922649f2.png)
+
 
 
 Next lets change the username field:
@@ -283,7 +284,8 @@ export const LoginFormToHttpBody = (form: IFields[]) => {
 Note that the structure of LoginFormToHttpBody has changed to reflect the changes in the form. This means that the backend call needs to be adjusted to reflect this change.
 
 Now lets change the font:
-![step3](../../example%20pics/tutorial/step3.png)
+![step3](https://user-images.githubusercontent.com/77218586/175397628-413ea49c-2a3f-4b68-9ba1-752ae7c56c4b.png)
+
 
 ```Css
 /* From app.css */
@@ -293,8 +295,9 @@ Now lets change the font:
     src: url("../styles/fonts/RaleWay/static/Raleway-Bold.ttf")format("woff2");
 }
 ```
+![step4](https://user-images.githubusercontent.com/77218586/175397646-1409d70c-5ab9-4192-b555-9a7c00a6f41a.png)
 
-![step4](../../example%20pics/tutorial/step4.png)
+
 
 Congratulations! you have completed the tutorial, the site is set up for a new organization! These changes will only be present on your machine, to get them into the main or development branch, you will need to follow this [wiki editing tutorial](https://github.com/PSU-CapstoneBrownHope/BrownHopeAidApp/wiki). The tutorial explains how to edit the github wiki, however the steps are the same for creating a branch in repository, until the merging step. 
 
