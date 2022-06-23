@@ -22,9 +22,24 @@
 
   /* Color for header text */
   --theme-color: #146467;
+  /* link hover color */
+  --link-hover: #062224;
+  --label-text-color: black
+
+  /* border around forms */
+  --border: rgb(185, 185, 185) solid 2px;
+
  
-  /* Text color, for non-outline button */
-  --button-text-color: white;
+  /* button colors */
+  --btn-text-color: white;
+  --btn-success-color: #28a745;
+  --btn-secondary-color: #6c757d;
+  --btn-danger-color: #dc3545;
+  /* use darker colors for when user hovers over button */
+  --btn-success-color-hover: #1e8636;
+  --btn-secondary-color-hover: #5c636a;
+  --btn-danger-color-hover: #a32431; 
+
   
   /* max width of app display */
   --max-width: 1100px;
