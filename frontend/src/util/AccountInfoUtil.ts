@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { info } from "console";
 import { IFields, IButtons } from "./inputUtil";
 
@@ -42,6 +41,7 @@ export const fields: IFields[] = [
     name: "address",
     label: "Address",
     type: "text",
+    format: "address",
     value: ""
   },
   {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {useEffect, useState } from "react";
+import React, {useEffect, useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { routes } from '../util/config';
 import {
@@ -14,10 +14,13 @@ import style from "../styles/AccountInfo.module.css"
 import text from "../styles/Text.module.css"
 import buttonStyle from "../styles/Buttons.module.css"
 import { LoginCheck} from '../util/userFunctions';
-import { updateField, submitVerify } from '../util/inputUtil';
+import { updateField, submitVerify, addressAutoComplete } from '../util/inputUtil';
 
 
 export const Profile = (): JSX.Element => {
+  const minLen = 3;
+  const delay = 500;
+  const timeout = useRef(setTimeout(()=>{}, 1))
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState(fields);
   const [info, setInfo] = useState(fields);
@@ -35,8 +38,7 @@ export const Profile = (): JSX.Element => {
       if (inputElement) inputElement.focus();
     }
   });
-
-
+  
   const isLoggedIn = async () => {
     const username = await LoginCheck()
     if (username === "False") {
@@ -47,6 +49,23 @@ export const Profile = (): JSX.Element => {
     }
   }
 
+  // delays calls to autocomplete API
+  // https://www.geoapify.com/tutorial/address-input-for-address-validation-and-address-verification-forms-tutorial
+  function addressChange(e: React.BaseSyntheticEvent, index: number, form: any) {
+    console.log('in ' + timeout.current);
+    const curr = e.target.value;
+    if (timeout.current)
+      clearTimeout(timeout.current);
+
+    if (!curr || curr.length < minLen) {
+      return false;
+    }
+
+    timeout.current = setTimeout(() => {
+      console.log('out ' + timeout.current);
+    }, delay)
+
+  }
 
   const editCheck = async () => {
     // reload window to throw out changes made
@@ -220,6 +239,9 @@ export const Profile = (): JSX.Element => {
               onChange={(e) => {
                 if (e.target.selectionStart !== null)
                   setCursorPos(e.target.selectionStart)
+                if (e.target.id === 'address') {
+                  addressChange(e, index, form)
+                }
                 setForm(updateField(e, index, form));
                 setCurrentId(item.id)
               }}
@@ -285,7 +307,18 @@ export const Profile = (): JSX.Element => {
       </form>
     )
   }
+
+  const AccountFieldsForm2 = () => {
+    
+  }
+
   return (
+ /*   <div className="currentPage">
+      <h1>{editing? values.header2 : values.header1}</h1>
+      {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
+      {editing ? <AccountFieldsForm /> : <AccountInfo />}
+    </div>
+  */
     <div className="currentPage">
       <h1>{editing? values.header2 : values.header1}</h1>
       {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}

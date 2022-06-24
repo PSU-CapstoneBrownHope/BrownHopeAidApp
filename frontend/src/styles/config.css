@@ -24,7 +24,7 @@
   --theme-color: #146467;
   /* link hover color */
   --link-hover: #062224;
-  --label-text-color: black
+  --label-text-color: black;
 
   /* border around forms */
   --border: rgb(185, 185, 185) solid 2px;

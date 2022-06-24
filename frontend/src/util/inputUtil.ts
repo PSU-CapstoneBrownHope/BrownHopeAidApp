@@ -1,9 +1,9 @@
+import axios from "axios";
 
 /**
  * This file contains the utilities needed by forms
  */
 
-import { input } from "@testing-library/user-event/dist/types/utils";
 
 export interface IForm{
   fields: IFields[],
@@ -41,6 +41,8 @@ export interface IButtons {
 
 
 export const updateField = (e: React.BaseSyntheticEvent, index: number, form: any) => {
+  const minLen = 3;
+  const delay = 300;
   let elementValue = (e.target as HTMLInputElement).value;
   // special date format
   if (form[index].format === "date")
@@ -71,8 +73,8 @@ export function submitVerify(form: IFields[]) {
           return item.value.length >= 10 && !reg.test(item.value)
         case 'email':
           // sourced regex from https://www.regexlib.com/REDetails.aspx?regexp_id=26
-          reg = new RegExp('^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$')
-          return reg.test(item.value)
+          let emailReg = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/)
+          return emailReg.test(item.value)
         case 'DOB':
           return isValidDate(item.value)
       }
@@ -181,9 +183,15 @@ export function formatPhoneNumber(value: String) {
     return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
 }
 
-// from tutorial https://www.geoapify.com/tutorial/address-input-for-address-validation-and-address-verification-forms-tutorial
-export function addressAutoComplete(item: IFields) {
-  const minLen = 3;
-  const delay = 300;
-
+// calls autocomplete API
+export const addressAutoComplete = async (item: IFields) => {
+  const apiKey = 'b9851b9e99fa4fe4b92779b0b09ca5b6'
+  let url = 'https://api.geoapify.com/v1/geocode/autocomplete?text=' + encodeURIComponent(item.value) + '&apiKey=' + apiKey//process.env.API_KEY;
+  try {
+    const resp = await axios.get(url)
+    return resp;            
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 }
