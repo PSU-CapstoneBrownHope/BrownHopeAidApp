@@ -4,7 +4,7 @@ import * as ReactDOMClient from 'react-dom/client';
 import {act} from "react-dom/test-utils"
 import { BrowserRouter } from 'react-router-dom';
 import { Profile } from '../components/Profile';
-import { fields, infoButtons, editButtons} from '../util/AccountInfoUtil';
+import { fields, infoButtons, editButtons} from '../util/profileUtil';
 import { isDisabled } from '@testing-library/user-event/dist/types/utils';
 
 

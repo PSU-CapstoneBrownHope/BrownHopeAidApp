@@ -9,8 +9,8 @@ export interface IForm{
   fields: IFields[],
   buttons: IButtons[],
   submit: Function,
-  onFocus?: Function,
-  submitVerify?: Function,
+  onFocus?: Function,   // unique on focus functions for fields
+  submitVerify?: Function, // set unique input verification to use
 }
 
 export interface IFields {
@@ -24,6 +24,7 @@ export interface IFields {
   autoComplete?: string
   hidden?: boolean,
   options?: string[], 
+  list?: string,
 }
 
 /**
@@ -41,8 +42,6 @@ export interface IButtons {
 
 
 export const updateField = (e: React.BaseSyntheticEvent, index: number, form: any) => {
-  const minLen = 3;
-  const delay = 300;
   let elementValue = (e.target as HTMLInputElement).value;
   // special date format
   if (form[index].format === "date")
@@ -54,20 +53,17 @@ export const updateField = (e: React.BaseSyntheticEvent, index: number, form: an
   return formCopy;
 }
 
+
 export function passwordVerify(form: IFields[]) {
   return form.find((item: any) => (item.id === "newPassword"))?.value === form.find((item: any) => (item.id === "verifyPassword"))?.value 
 }
 
 export function submitVerify(form: IFields[]) {
-  //Helpful for debugging
-  /*form.forEach((item: any) => {
-    console.log(item.id, ":", (isValidDate(item.value)) || (item.value.length > 0 && !item.format))
-  }) */
 
   // This will run the checks for submit verify
   const checks = (item: IFields) => {
     if (!item.hidden && item.value) {
-      let reg = new RegExp('[^\d\)\(-\s]')
+      let reg = new RegExp(/[^\d\)\(-\s]/)
       switch (item.id) {
         case 'phoneNumber':
           return item.value.length >= 10 && !reg.test(item.value)
@@ -86,6 +82,8 @@ export function submitVerify(form: IFields[]) {
     }
   }
 
+  //Helpful for debugging
+  //form.forEach((item: any) => { console.log(item.id, ":", checks(item)) }) 
   return form.every((item: any) => checks(item)) 
 }
 
@@ -189,9 +187,9 @@ export const addressAutoComplete = async (item: IFields) => {
   let url = 'https://api.geoapify.com/v1/geocode/autocomplete?text=' + encodeURIComponent(item.value) + '&apiKey=' + apiKey//process.env.API_KEY;
   try {
     const resp = await axios.get(url)
-    return resp;            
+    return resp.data;            
   } catch (err) {
     console.error(err);
-    return false;
+    return 'False';
   }
 }

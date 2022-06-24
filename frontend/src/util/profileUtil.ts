@@ -1,5 +1,8 @@
 import { info } from "console";
-import { IFields, IButtons } from "./inputUtil";
+import { IFields, IButtons, IForm } from "./inputUtil";
+import axios from "axios";
+import { routes } from "./config";
+import { off } from "process";
 
 function getUsername() {
   return sessionStorage.getItem('username');
@@ -42,7 +45,9 @@ export const fields: IFields[] = [
     label: "Address",
     type: "text",
     format: "address",
-    value: ""
+    value: "",
+    list: "addressList",
+    options: []
   },
   {
     id: "emailAddress",
@@ -57,7 +62,8 @@ export const fields: IFields[] = [
     label: "Contact Method",
     type: "select",
     options: ["Email", "Text", "Phone call"],
-    value: "Email"
+    placeholder: 'Select an option',
+    value: ""
   },
 ]
 
@@ -67,7 +73,7 @@ export const editButtons: IButtons[] = [
     type: "submit",
     bootstrapClass: "btn btn-success"
   },
- {
+  {
     text: "Cancel Changes",
     type: "edit",
     bootstrapClass: "btn btn-danger"
@@ -75,7 +81,7 @@ export const editButtons: IButtons[] = [
 
 ]
 export const infoButtons: IButtons[] = [
-   {
+  {
     text: "Update Account Information",
     type: "edit",
     bootstrapClass: "btn btn-outline-success"
@@ -86,6 +92,7 @@ export const infoButtons: IButtons[] = [
     bootstrapClass: "btn btn-secondary"
   }
 ]
+
 
 export const values = {
   header1: "Account Information",
@@ -99,7 +106,7 @@ export const getInfoRequest = (form: IFields[]) => {
   }
 }
 
-export const responseToForm = (form: IFields[], data:any) => {
+export const responseToForm = (form: IFields[], data: any) => {
   const formCopy: any = [...form];
   if (data.firstName)
     formCopy[1].value = data.firstName;
@@ -116,3 +123,21 @@ export const responseToForm = (form: IFields[], data:any) => {
   return formCopy;
 }
 
+
+
+const sendUpdateRequest = async () => {
+  try {
+    await axios.post(routes.updateAccount, form, { withCredentials: true });
+  } catch (err) {
+    // Handle Error Here
+    alert("FAILED: Information is not updated")
+    console.error(err);
+  }
+};
+
+
+export const form: IForm = {
+  fields: fields,
+  buttons: editButtons,
+  submit: sendUpdateRequest,
+}
