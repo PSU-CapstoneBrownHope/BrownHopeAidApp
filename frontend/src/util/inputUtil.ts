@@ -183,8 +183,7 @@ export function formatPhoneNumber(value: String) {
 
 // calls autocomplete API
 export const addressAutoComplete = async (item: IFields) => {
-  const apiKey = 'b9851b9e99fa4fe4b92779b0b09ca5b6'
-  let url = 'https://api.geoapify.com/v1/geocode/autocomplete?text=' + encodeURIComponent(item.value) + '&apiKey=' + apiKey//process.env.API_KEY;
+  let url = 'https://api.geoapify.com/v1/geocode/autocomplete?text=' + encodeURIComponent(item.value) + '&apiKey=' + process.env.REACT_APP_API_KEY;
   try {
     const resp = await axios.get(url)
     return resp.data;            

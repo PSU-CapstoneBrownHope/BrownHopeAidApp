@@ -512,6 +512,7 @@ airtableRouter.post("/update", function (req, res) {
         console.error(err);
         return;
       }
+      res.end()
     });
   } catch (err) {
     console.log(err);

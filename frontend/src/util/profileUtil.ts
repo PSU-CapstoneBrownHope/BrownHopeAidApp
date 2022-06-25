@@ -125,7 +125,7 @@ export const responseToForm = (form: IFields[], data: any) => {
 
 
 
-const sendUpdateRequest = async () => {
+const sendUpdateRequest = async (form:IFields[], afterSubmit:Function) => {
   try {
     await axios.post(routes.updateAccount, form, { withCredentials: true });
   } catch (err) {
@@ -133,6 +133,7 @@ const sendUpdateRequest = async () => {
     alert("FAILED: Information is not updated")
     console.error(err);
   }
+  afterSubmit()
 };
 
 
