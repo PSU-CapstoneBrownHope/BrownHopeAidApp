@@ -208,16 +208,6 @@ h1{
   background-color: var(--btn-success-color-hover);
 }
 
-.btn-outline-success{
-  color: var(--btn-success-color);
-  background-color: var(--btn-text-color);
-  border-color: var(--btn-text-color);
-}
-
-.btn-outline-success:hover, .btn-outline-success.hover {
-  color: var(--btn-success-color-hover);
-}
-
 .btn-secondary{
     color: var(--btn-text-color);
     background-color: var(--btn-secondary-color);
@@ -226,16 +216,6 @@ h1{
 
 .btn-secondary:hover, .btn-secondary.hover {
   background-color: var(--btn-secondary-color-hover);
-}
-
-.btn-outline-secondary{
-    color: var(--btn-secondary-color);
-    background-color: var(--btn-text-color);
-    border-color: var(--btn-text-color);
-}
-
-.btn-outline-secondary:hover, .btn-outline-secondary.hover {
-  color: var(--btn-secondary-color-hover);
 }
 
 .btn-danger{
@@ -248,15 +228,6 @@ h1{
   background-color: var(--btn-danger-color-hover);
 }
 
-.btn-outline-danger{
-    color: var(--btn-danger-color);
-    background-color: var(--btn-text-color);
-    border-color: var(--btn-text-color);
-}
-
-.btn-outline-danger:hover, .btn-outline-danger.hover {
-  color: var(--btn-danger-color-hover);
-}
 
 .btn.disabled, .btn:disabled{
   opacity: .65;
