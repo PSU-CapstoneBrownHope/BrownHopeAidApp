@@ -4,7 +4,7 @@ import * as ReactDOMClient from 'react-dom/client';
 import {act} from "react-dom/test-utils"
 import { BrowserRouter } from 'react-router-dom';
 import { Profile } from '../components/Profile';
-import { fields, infoButtons, editButtons} from '../util/AccountInfoUtil';
+import { fields, infoButtons, editButtons} from '../util/profileUtil';
 import { isDisabled } from '@testing-library/user-event/dist/types/utils';
 
 
@@ -51,12 +51,12 @@ test('Editting elements present', async () => {
     //test the select and textbox
     fields.forEach((item: any, index: any) => {
         if (item.type === "select") {
-            const checkSelect = screen.getByRole("select", { name: item.label });
+            const checkSelect = screen.getByRole("select", { name: item.label});
             fireEvent.change(checkSelect , { target: { value: "Email" } });
             expect(checkSelect .value).toBe("Email")
         }
         else if (index !== 0) {
-            const checkTextBox= screen.getByRole(item.type, { name: item.label });
+            const checkTextBox= screen.getByRole(item.type, { name: item.label +':' });
             fireEvent.change(checkTextBox, { target: { value: "123" } });
             expect(checkTextBox.value).toBe("123")
         }
@@ -72,7 +72,7 @@ test('Editting elements present', async () => {
             fireEvent.change(checkSelect, { target: { value: "Email" } });   
         }
         else if (index !== 0) {
-            const checkTextBox = screen.getByRole("text", { name: item.label });
+            const checkTextBox = screen.getByRole("text", { name: item.label + ':' });
             fireEvent.change(checkTextBox, { target: { value: "1234567890" } });
             
         }

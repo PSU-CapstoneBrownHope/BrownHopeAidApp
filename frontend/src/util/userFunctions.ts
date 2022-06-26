@@ -1,6 +1,7 @@
 import axios from "axios";
 import { routes } from "../util/config";
 
+
 // adapted from https://www.jsdiaries.com/how-to-remove-all-cookies-in-react-js/
 function removeCookie() {
   window.document.cookie.split(";").forEach((c) => {

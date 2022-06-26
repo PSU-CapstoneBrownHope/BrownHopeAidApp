@@ -1,23 +1,31 @@
 import axios from 'axios';
-import React, {useEffect, useState } from "react";
+import React, {useEffect, useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { routes } from '../util/config';
 import {
+  form as myform,
   fields,
   editButtons,
   infoButtons,
   values,
   getInfoRequest,
   responseToForm,
-} from "../util/AccountInfoUtil";
+} from "../util/profileUtil";
+import { Form } from "../util/formUtil";
 import style from "../styles/AccountInfo.module.css"
 import text from "../styles/Text.module.css"
 import buttonStyle from "../styles/Buttons.module.css"
 import { LoginCheck} from '../util/userFunctions';
-import { updateField, submitVerify } from '../util/inputUtil';
+import { submitVerify, addressAutoComplete, updateField } from '../util/inputUtil';
 
-
+/**
+ * Creates profile page 
+ * @returns either form or page containing user info
+ */
 export const Profile = (): JSX.Element => {
+  const minLen = 3;
+  const delay = 500;
+  const timeout = useRef(setTimeout(()=>{}, 1))
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState(fields);
   const [info, setInfo] = useState(fields);
@@ -25,7 +33,6 @@ export const Profile = (): JSX.Element => {
   const [infoBtns] = useState(infoButtons);
   const [noInfo, setNoInfo] = useState(false);
   const [currentId, setCurrentId] = useState("");
-  const [cursorPos, setCursorPos] = useState(0)
   const navigate = useNavigate();
 
   // constantly runs
@@ -35,19 +42,40 @@ export const Profile = (): JSX.Element => {
       if (inputElement) inputElement.focus();
     }
   });
+  
+  
 
+  /**
+   * Delays calls to address autocomplete API 
+   * @param e change event 
+   * @param index index of address in form
+   * @returns false if input is too short, nothing otherwise 
+   */
+  function addressChange(e: React.BaseSyntheticEvent, index:number) {
+    const curr = e.target.value;
+    if (timeout.current)
+      clearTimeout(timeout.current);
 
-  const isLoggedIn = async () => {
-    const username = await LoginCheck()
-    if (username === "False") {
-      sessionStorage.removeItem("username")
-      navigate("/")
-    } else {
-      sessionStorage.setItem("username", username)
+    if (!curr || curr.length < minLen) {
+      return false;
     }
+
+    timeout.current = setTimeout(async () => {
+      let resp = await addressAutoComplete(e.target) 
+      let vals = ['', '', '', '', '']
+      resp.features.forEach((element: any, index:any) => {
+        vals[index] = element.properties.formatted.replace(', United States of America', '')
+      });
+      const formCopy: any = [...form]
+      formCopy[index].options = vals
+      setForm(formCopy)
+    }, delay)
+
   }
 
-
+  /**
+   * Checks if user is signed in and turns off editting if not
+   */
   const editCheck = async () => {
     // reload window to throw out changes made
     if (process.env.BROWSER) {
@@ -58,21 +86,16 @@ export const Profile = (): JSX.Element => {
     setEditing(!editing)
   }
 
-
-  function postAccountUpdate() {
-    const sendUpdateRequest = async () => {
-      try {
-        await axios.post(routes.updateAccount, form, { withCredentials: true });
-      } catch (err) {
-        // Handle Error Here
-        alert("FAILED: Information is not updated")
-        console.error(err);
-      }
-    };
-    sendUpdateRequest();
-    setEditing(false);
+  /**
+   * Switches out of editting mode
+   */
+  function afterSubmit() {
+    setEditing(false)
   }
 
+  /**
+   * Calls backend for users account info
+   */
   function getExistingAccountInfo() {
 
     const sendInfoRequest = async () => {
@@ -95,27 +118,16 @@ export const Profile = (): JSX.Element => {
 
   }
 
-  const createOptions = (options: any) => {
-    let items: any = []
-    options.forEach((item: any, index: any) => {
-      items.push(
-        <option
-          key={item}
-          value={item}
-        >
-          {item}
-        </option>
-      )
-    });
-    return <>{items}</>
-  }
-
   const InfoMessage = () => {
     return (
       <p className={text["high"]}>{values.infoMessage}</p>
     )
   }
 
+  /**
+   * Creates display of user info 
+   * @returns JSX element containing user info from backend 
+   */
   const AccountInfo = () => {
     let items: any = []
 
@@ -172,7 +184,7 @@ export const Profile = (): JSX.Element => {
     })
     return (
       <div id="Account Information Page"
-        className={buttonStyle["buttonGroup"]}
+        className={text["formWrapper"]}
       >
         <div className="info">
           {items}
@@ -182,114 +194,14 @@ export const Profile = (): JSX.Element => {
     )
   }
 
-  const AccountFieldsForm = () => {
-    let items: any = [];
-    form.forEach((item: any, index: any) => {
-      if (item.type === "select") {
-        items.push(
-          <label htmlFor={item.id} key={index} className={style["userInfoLabel"]}>
-            {item.label}
-        
-            <select
-              id={item.id}
-              name={item.id}
-              value={item.value}
-              className={style['userInfo'] + " " + text['textField']}
-              onChange={(e) => {
-                setForm(updateField(e, index, form));
-              }}
-              role={item.type}
-              required
-            >
-              {createOptions(item.options)}
-            </select>
-          </label>
-        )
-      } else if (index !== 0) {
-        items.push(
-          <label htmlFor={item.id} key={index} className={style["userInfoLabel"]}>
-            {item.label}
-            <input
-              role={item.type}
-              name={item.id}
-              id={item.id}
-              type={item.type}
-              placeholder={item.placeholder}
-              value={item.value}
-              autoComplete={item.autoComplete}
-              onChange={(e) => {
-                if (e.target.selectionStart !== null)
-                  setCursorPos(e.target.selectionStart)
-                setForm(updateField(e, index, form));
-                setCurrentId(item.id)
-              }}
-              onFocus={(e) => {
-                // phone number doesn't work well with this
-                // fix should be possible 
-                if (e.target.id !== "phoneNumber" && e.target.id !=="email") {
-                  e.target.selectionStart = cursorPos
-                  e.target.selectionEnd = cursorPos
-                }
-              }}
-              className={text['textField']}
-              required
-            />
-          </label>
-        )
-      }
-    })
-    let buttons: any = [];
-    editBtns.forEach((item: any, index: any) => {
-      if (item.type === "submit") {
-        buttons.push(
-          <button
-            className={buttonStyle['fullscreenButton'] + " " + item.bootstrapClass}
-            disabled={!(submitVerify(form))}
-            type="submit"
-            key={index}
-          >
-            {item.text}
-          </button>
-        );
-      } else if (item.to) {
-        buttons.push(
-          <Link to={item.to} key={index} >
-            <button
-              className={buttonStyle["fullscreenButton"] + " " + item.bootstrapClass}
-            >
-              {item.text}
-            </button>
-          </Link>
-        )
-      } else if (item.type === "edit") {
-        buttons.push(
-          <button
-          className={buttonStyle['fullscreenButton'] + " " + item.bootstrapClass}
-          onClick={() => editCheck()}
-          key={index}
-        >
-          {item.text}
-          </button>
-        )
-      }
-    })
-    return (
-      <form id="Account Information Page"
-        className={buttonStyle["buttonGroup"]}
-        onSubmit={postAccountUpdate}
-      >
-        <div className="info">
-          {items}
-        </div>
-        {buttons}
-      </form>
-    )
-  }
+  const AccountFieldsForm2 = Form(myform, afterSubmit, editCheck, addressChange)
+
+
   return (
     <div className="currentPage">
       <h1>{editing? values.header2 : values.header1}</h1>
       {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
-      {editing ? <AccountFieldsForm /> : <AccountInfo />}
+      {editing ? AccountFieldsForm2 : <AccountInfo />}
     </div>
   )
 

@@ -9,18 +9,11 @@
   width: 100%;
   max-width: var(--current-page-max-width);
   border-radius: calc(5px + 1vmin);
+  height: min-content;
   cursor: pointer;
   margin:auto;
   margin-top: 1vmin;
-}
-
-.buttonGroup{
-  max-height: 80%;
-  display: flex;
-  flex-direction: column;
-  justify-self: center;
-  justify-items: baseline;
-  align-items: center;
+  margin-bottom: 0%;
 }
 
 .themeButton{

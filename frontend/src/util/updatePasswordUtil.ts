@@ -45,7 +45,11 @@ export const values = {
   header: "Change your Password"
 }
 
-
+/**
+ * Sends password update request  
+ * @param form form containing old and new password 
+ * @param afterSubmit run after server response
+ */
 const sendUpdateRequest = async (form:IFields[], afterSubmit:Function) => {
   try {
     const resp = await axios.post(routes.updatePassword, formToHttpBody(form), { withCredentials: true });

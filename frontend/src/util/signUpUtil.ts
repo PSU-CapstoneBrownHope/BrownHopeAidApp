@@ -115,6 +115,11 @@ export const DupeInfoToHttpBody = (form: IFields[]) => {
   }
 }
 
+/**
+ * Requests email verification from backend 
+ * @param form form containing email and username 
+ * @param afterSubmit run after response from server
+ */
 export const sendVerificationRequest = async (form: IFields[], afterSubmit: Function) => {
   try {
     const dupeInfo = await axios.post(routes.duplicateInfoCheck, DupeInfoToHttpBody(form), { withCredentials: true })
@@ -129,6 +134,11 @@ export const sendVerificationRequest = async (form: IFields[], afterSubmit: Func
   }
 }
 
+/**
+ * Sends signup request including verification code 
+ * @param form form containing email, username, password, and token
+ * @param afterSubmit run after backend response 
+ */
 export const sendSignupRequest = async (form: IFields[], afterSubmit: Function) => {
   try {
     const resp = await axios.post(routes.signup, SignUpInfoToHttpBody(form));

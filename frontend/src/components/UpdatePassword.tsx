@@ -4,10 +4,15 @@ import { LoginCheck } from '../util/userFunctions';
 import { Form } from "../util/formUtil";
 import { values, form } from "../util/updatePasswordUtil"
 
+/**
+ *  
+ * @returns Update password JSX.Element
+ */
 export const UpdatePassword = (): JSX.Element => {
 
   const navigate = useNavigate()
 
+  /** redirect to login page if not logged in */
   const isLoggedIn = async () => {
     const username = await LoginCheck()
     if (username === "False") {
@@ -21,6 +26,10 @@ export const UpdatePassword = (): JSX.Element => {
   }, [])
 
 
+  /**
+   * navigates to profile  
+   * @param resp axios response
+   */
   function afterSubmit(resp:any) {
     if (resp) {
       navigate("/profile")
@@ -28,6 +37,7 @@ export const UpdatePassword = (): JSX.Element => {
   }
 
   const updateForm = Form(form, afterSubmit)
+
 
   const UpdatePassword = () => {
 

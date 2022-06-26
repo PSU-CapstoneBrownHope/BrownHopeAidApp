@@ -50,6 +50,11 @@ export const FormToHttpBody = (form: IFields[]) => {
   }
 }
 
+/**
+ * Sends app status request, for auto and non auto check
+ * @param form form containing first, last and DOB 
+ * @param afterSubmit function to run after in original file for state variables
+ */
 export const sendApplicationStatusRequest = async (form: IFields[], afterSubmit: Function) => {
   try {
     const resp = await axios.post(routes.application_status, FormToHttpBody(form), { withCredentials: true });
@@ -57,10 +62,14 @@ export const sendApplicationStatusRequest = async (form: IFields[], afterSubmit:
   } catch (err) {
     console.error(err)
     alert("Failed to find application")
-    return {}
   }
 };
 
+/**
+ * Fixes cursor position when using date field 
+ * @param e 
+ * @param cursorPos 
+ */
 export const onFocus = (e: any, cursorPos: any) => {
   let reg = new RegExp("/")
   let addedSlashes = reg.exec(e.target.value);
@@ -79,6 +88,11 @@ export const form: IForm = {
   onFocus: onFocus
 }
 
+/**
+ * formats DOB into form needed by backend 
+ * @param value Date to format
+ * @returns yyyy/mm/dd
+ */
 export function formatDOB(value: string) {
   console.log(value)
   if (!value)
