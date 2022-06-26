@@ -1,8 +1,6 @@
-import { info } from "console";
 import { IFields, IButtons, IForm } from "./inputUtil";
 import axios from "axios";
 import { routes } from "./config";
-import { off } from "process";
 
 function getUsername() {
   return sessionStorage.getItem('username');
@@ -14,7 +12,8 @@ export const fields: IFields[] = [
     name: "userName",
     label: "Username",
     type: "text",
-    value: getUsername()
+    value: getUsername(),
+    noEdit: true
   },
   {
     id: "firstName",
@@ -106,6 +105,12 @@ export const getInfoRequest = (form: IFields[]) => {
   }
 }
 
+/**
+ *  
+ * @param form original form
+ * @param data response data from get account info request
+ * @returns Form with values of info request copied in
+ */
 export const responseToForm = (form: IFields[], data: any) => {
   const formCopy: any = [...form];
   if (data.firstName)
@@ -124,7 +129,11 @@ export const responseToForm = (form: IFields[], data: any) => {
 }
 
 
-
+/**
+ * Sends updated user information to the backend 
+ * @param form form to populate the request with
+ * @param afterSubmit function to run after in original file for state variables
+ */
 const sendUpdateRequest = async (form:IFields[], afterSubmit:Function) => {
   try {
     await axios.post(routes.updateAccount, form, { withCredentials: true });

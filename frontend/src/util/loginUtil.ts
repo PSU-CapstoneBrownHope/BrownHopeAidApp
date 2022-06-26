@@ -40,6 +40,11 @@ export const buttons: IButtons[] = [
   }
 ]
 
+/**
+ * Sends login request  
+ * @param form must contain username and password
+ * @param afterSubmit not used here but needed for consistency
+ */
 export const sendLoginRequest = async (form: IFields[], afterSubmit:Function) => {
   try {
     const resp = await axios.post(routes.login, LoginFormToHttpBody(form), { withCredentials: true });

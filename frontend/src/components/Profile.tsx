@@ -16,9 +16,12 @@ import style from "../styles/AccountInfo.module.css"
 import text from "../styles/Text.module.css"
 import buttonStyle from "../styles/Buttons.module.css"
 import { LoginCheck} from '../util/userFunctions';
-import {  submitVerify, addressAutoComplete, updateField } from '../util/inputUtil';
+import { submitVerify, addressAutoComplete, updateField } from '../util/inputUtil';
 
-
+/**
+ * Creates profile page 
+ * @returns either form or page containing user info
+ */
 export const Profile = (): JSX.Element => {
   const minLen = 3;
   const delay = 500;
@@ -42,8 +45,12 @@ export const Profile = (): JSX.Element => {
   
   
 
-  // delays calls to autocomplete API
-  // https://www.geoapify.com/tutorial/address-input-for-address-validation-and-address-verification-forms-tutorial
+  /**
+   * Delays calls to address autocomplete API 
+   * @param e change event 
+   * @param index index of address in form
+   * @returns false if input is too short, nothing otherwise 
+   */
   function addressChange(e: React.BaseSyntheticEvent, index:number) {
     const curr = e.target.value;
     if (timeout.current)
@@ -66,6 +73,9 @@ export const Profile = (): JSX.Element => {
 
   }
 
+  /**
+   * Checks if user is signed in and turns off editting if not
+   */
   const editCheck = async () => {
     // reload window to throw out changes made
     if (process.env.BROWSER) {
@@ -76,10 +86,16 @@ export const Profile = (): JSX.Element => {
     setEditing(!editing)
   }
 
+  /**
+   * Switches out of editting mode
+   */
   function afterSubmit() {
     setEditing(false)
   }
 
+  /**
+   * Calls backend for users account info
+   */
   function getExistingAccountInfo() {
 
     const sendInfoRequest = async () => {
@@ -108,6 +124,10 @@ export const Profile = (): JSX.Element => {
     )
   }
 
+  /**
+   * Creates display of user info 
+   * @returns JSX element containing user info from backend 
+   */
   const AccountInfo = () => {
     let items: any = []
 
@@ -164,7 +184,7 @@ export const Profile = (): JSX.Element => {
     })
     return (
       <div id="Account Information Page"
-        className={buttonStyle["buttonGroup"]}
+        className={text["formWrapper"]}
       >
         <div className="info">
           {items}
@@ -178,16 +198,10 @@ export const Profile = (): JSX.Element => {
 
 
   return (
- /*   <div className="currentPage">
-      <h1>{editing? values.header2 : values.header1}</h1>
-      {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
-      {editing ? <AccountFieldsForm /> : <AccountInfo />}
-    </div>
-  */
     <div className="currentPage">
       <h1>{editing? values.header2 : values.header1}</h1>
       {noInfo ? <InfoMessage></InfoMessage> : <p hidden></p>}
-      {editing ? AccountFieldsForm2  : <AccountInfo />}
+      {editing ? AccountFieldsForm2 : <AccountInfo />}
     </div>
   )
 

@@ -3,7 +3,10 @@ import text from "../styles/Text.module.css"
 import { form, values} from "../util/appStatusUtil";
 import { Form } from "../util/formUtil";
 
-
+/**
+ * Creates Application status page  
+ * @returns 
+ */
 export const ApplicationStatus = (): JSX.Element => {
   const [HasApp, setHasApp] = useState(false);
   const [wait, setWait] = useState(false)
@@ -16,6 +19,10 @@ export const ApplicationStatus = (): JSX.Element => {
   }, []);
 
 
+  /**
+   * Submits application status request 
+   * @param event submit event
+   */
   const checkApplicationStatus = async (event?: SyntheticEvent) => {
     if (event) {
       event.preventDefault();
@@ -23,6 +30,10 @@ export const ApplicationStatus = (): JSX.Element => {
     form.submit(form.fields, afterSubmit)
   }
 
+  /**
+   * Display response or warning message 
+   * @param resp response to application status request
+   */
   function afterSubmit(resp: any) {
     if (resp.data !== "") {
       setHasApp(true)
@@ -39,12 +50,20 @@ export const ApplicationStatus = (): JSX.Element => {
 
 
 
+  /**
+   *  
+   * @returns Warning message described by appStatusUtil.ts values.infoMessage
+   */
   function InfoMessage() {
     return (
       <p className={text["high"]}>{values.infoMessage}</p>
     )
   }
 
+  /**
+   * 
+   * @returns Application status to display
+   */
   function AppStatus() {
     return (
       <div>

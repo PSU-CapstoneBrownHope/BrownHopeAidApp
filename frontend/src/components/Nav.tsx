@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Logout } from '../util/userFunctions';
 import { items } from '../util/navUtil'
+
+/**
+ * 
+ * @returns Nav bar
+ */
 export const Nav = (): JSX.Element => {
-  const [link, setLink] = useState("login");
   const [loggedIn, setLoggedIn] = useState(undefined!==sessionStorage.getItem('username'))
 
   function NavLogout() {
@@ -32,7 +36,11 @@ export const Nav = (): JSX.Element => {
       setLoggedIn(true)
     }
   }
-  
+ 
+  /**
+   * Creates nav 
+   * @returns nav JSX element 
+   */
   const Nav = () => {
     let logo: any;
     let links: any = [];

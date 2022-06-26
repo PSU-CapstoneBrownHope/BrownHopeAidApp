@@ -4,7 +4,10 @@ import { LoginCheck } from "../util/userFunctions"
 import { values, form, sendSignupRequest, sendVerificationRequest} from "../util/signUpUtil"
 import { Form } from "../util/formUtil"
 import text from "../styles/Text.module.css"
-
+/**
+ * Creates signup page 
+ * @returns JSX element of signup page or verification page
+ */
 export const SignUp = (): JSX.Element => {
   const [verificationScreen, setVerificationScreen] = useState(false)
 
@@ -14,6 +17,9 @@ export const SignUp = (): JSX.Element => {
     isLoggedIn()
   }, [])
 
+  /**
+   * redirects user to profile if they are logged in
+   */ 
   const isLoggedIn = async () => {
     const username = await LoginCheck()
     if (username !== "False") {
@@ -22,10 +28,17 @@ export const SignUp = (): JSX.Element => {
     }
   }
 
+  /**
+   * changes to verification code screen
+   */
   function afterVerSubmit(resp:any) {
     setVerificationScreen(true);
   }
 
+  /**
+   * Navigates to either login page or profile 
+   * @param resp axios response  
+   */
   function afterSubmit(resp:any) {
     if (resp.data !== "Success") 
       navigate("/login") 
@@ -34,7 +47,10 @@ export const SignUp = (): JSX.Element => {
   }
 
 
-
+  /**
+   * Form to submit verification code  
+   * @returns 
+   */
   const VerificationForm = () => {
     form.fields.forEach((item: any, index: any) => {
       if (item.id !== "verificationCode")
@@ -52,6 +68,10 @@ export const SignUp = (): JSX.Element => {
     return Form(form, afterSubmit)
   }
 
+  /**
+   * 
+   * @returns form to enter user information
+   */
   const SignUpForm = () => { 
     const FlipField = 4
     const FlipButton = 1

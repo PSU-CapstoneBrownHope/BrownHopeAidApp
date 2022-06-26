@@ -1,6 +1,10 @@
 import React from 'react';
 import {infoEmail, contactLink} from "../util/footerUtil"
 
+/**
+ * 
+ * @returns Footer
+ */
 export const Footer = (): JSX.Element =>  {
   let contactText;
   const reg = new RegExp(/(?<=https:\/\/www.)(\w.+)/)
