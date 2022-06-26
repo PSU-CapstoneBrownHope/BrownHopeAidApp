@@ -164,14 +164,6 @@ export const Form = (inForm:IForm, afterSubmit?:Function, stateSwap?:Function, a
                   //e.target.selectionEnd = cursorPos;
                 //}
               }}
-              onBlur={(e) => {
-                if (form[index].options) {
-                  let vals = ['', '', '', '', '']
-                  const formCopy: any = [...form]
-                  formCopy[index].options = vals
-                  setForm(formCopy)
-                }
-              }}
               className={text['textField']}
             />
             {item.list && !emptyList(item.options) && item.value.length >= 3 ? <div className={text['autoComplete-items']}>
