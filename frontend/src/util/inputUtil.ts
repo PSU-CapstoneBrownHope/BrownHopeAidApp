@@ -117,13 +117,13 @@ export function submitVerify(form: IField[]) {
     }
     if (item.hidden)
       return true;
-    if (item.value.length > 0)
+    if (item.value && item.value.length > 0)
       return true
     return false
   }
 
   //Helpful for debugging
-  form.forEach((item: any) => { console.log(item.id, ":", checks(item)) })
+  //form.forEach((item: any) => { console.log(item.id, ":", checks(item)) })
   return form.every((item: any) => checks(item))
 }
 

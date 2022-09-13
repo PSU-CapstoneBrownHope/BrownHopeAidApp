@@ -90,7 +90,7 @@ export class Form extends React.Component<any, IForm>{
         key={field.id}
         label={field.label}
         id={field.id}
-        value={field.value}
+        value={field.value ? field.value : ""}
         name={field.name}
         placeholder={field.placeholder}
         type={field.type}
