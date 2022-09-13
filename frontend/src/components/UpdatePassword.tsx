@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { LoginCheck } from '../util/userFunctions';
-import { Form } from "../util/formUtil";
+import { Form } from "./Partials/Form";
 import { values, form } from "../util/updatePasswordUtil"
 
 /**
@@ -36,18 +36,11 @@ export const UpdatePassword = (): JSX.Element => {
     }
   }
 
-  const updateForm = Form(form, afterSubmit)
-
-
-  const UpdatePassword = () => {
-
     return (
       <div className="currentPage">
         <h1>{values.header}</h1>
-        {updateForm}
+        <Form form="updatePasswordForm" afterSubmit={afterSubmit}></Form>
       </div>
     )
-  }
-  return (<UpdatePassword />)
 
 }

@@ -1,4 +1,4 @@
-import { IFields, IButtons, IForm } from "./inputUtil";
+import { IField, IButton, IForm } from "./inputUtil";
 import axios from "axios";
 import { routes } from "./config";
 
@@ -6,7 +6,7 @@ function getUsername() {
   return sessionStorage.getItem('username');
 }
 
-export const fields: IFields[] = [
+export const fields: IField[] = [
   {
     id: "userName",
     name: "userName",
@@ -66,7 +66,7 @@ export const fields: IFields[] = [
   },
 ]
 
-export const editButtons: IButtons[] = [
+export const editButtons: IButton[] = [
   {
     text: "Save",
     type: "submit",
@@ -79,7 +79,7 @@ export const editButtons: IButtons[] = [
   },
 
 ]
-export const infoButtons: IButtons[] = [
+export const infoButtons: IButton[] = [
   {
     text: "Update Account Information",
     type: "edit",
@@ -99,7 +99,7 @@ export const values = {
   infoMessage: "If you have just created an account please allow up to 5 minutes for your info to show up in the system",
 }
 
-export const getInfoRequest = (form: IFields[]) => {
+export const getInfoRequest = (form: IField[]) => {
   return {
     userName: form[0].value,
   }
@@ -111,7 +111,7 @@ export const getInfoRequest = (form: IFields[]) => {
  * @param data response data from get account info request
  * @returns Form with values of info request copied in
  */
-export const responseToForm = (form: IFields[], data: any) => {
+export const responseToForm = (form: IField[], data: any) => {
   const formCopy: any = [...form];
   if (data.firstName)
     formCopy[1].value = data.firstName;
@@ -134,7 +134,7 @@ export const responseToForm = (form: IFields[], data: any) => {
  * @param form form to populate the request with
  * @param afterSubmit function to run after in original file for state variables
  */
-const sendUpdateRequest = async (form:IFields[], afterSubmit:Function) => {
+const sendUpdateRequest = async (form:IField[], afterSubmit:Function) => {
   try {
     await axios.post(routes.updateAccount, form, { withCredentials: true });
   } catch (err) {

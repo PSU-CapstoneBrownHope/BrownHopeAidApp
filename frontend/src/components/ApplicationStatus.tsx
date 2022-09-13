@@ -1,90 +1,121 @@
 import React, { useEffect, useState, SyntheticEvent } from "react";
 import text from "../styles/Text.module.css"
-import { form, values} from "../util/appStatusUtil";
-import { Form } from "../util/formUtil";
+import { form, values, sendApplicationStatusRequest} from "../util/appStatusUtil";
+import { Form } from "./Partials/Form";
+
+/**
+ * Describes state of application status field
+ */
+interface IAppStatusState {
+  hasApp: boolean, 
+  wait: boolean, 
+  status: string, 
+  description: string, 
+}
 
 /**
  * Creates Application status page  
  * @returns 
  */
-export const ApplicationStatus = (): JSX.Element => {
-  const [HasApp, setHasApp] = useState(false);
-  const [wait, setWait] = useState(false)
-  const [status, setStatus] = useState("");
-  const [description, setDescription] = useState("");
+export class ApplicationStatus extends React.Component<any, IAppStatusState>{
 
-  useEffect(() => {
+
+  constructor(props:any) {
+    super(props)
+    this.state = {
+      hasApp: false,
+      wait: false,
+      status: "",
+      description: "",
+    }
+    this.InfoMessage = this.InfoMessage.bind(this); 
+    this.AppStatus = this.AppStatus.bind(this); 
+  }
+
+  componentDidMount(): void {
     if (sessionStorage.getItem("username"))
-      checkApplicationStatus()
-  }, []);
-
+      this.checkApplicationStatus()
+  }
 
   /**
    * Submits application status request 
    * @param event submit event
    */
-  const checkApplicationStatus = async (event?: SyntheticEvent) => {
+  checkApplicationStatus = async (event?: SyntheticEvent) => {
     if (event) {
       event.preventDefault();
     }
-    form.submit(form.fields, afterSubmit)
+    sendApplicationStatusRequest(form.fields, this.afterSubmit)
   }
 
   /**
-   * Display response or warning message 
-   * @param resp response to application status request
+   * 
+   * @returns info message defined in appStatusUtil
    */
-  function afterSubmit(resp: any) {
-    if (resp.data !== "") {
-      setHasApp(true)
-      setStatus(resp.data.status)
-      setDescription(resp.data.description)
-      setWait(false);
-    } else {
-      setHasApp(false)
-      setStatus("")
-      setDescription("")
-      setWait(true);
-    }
-  }
-
-
-
-  /**
-   *  
-   * @returns Warning message described by appStatusUtil.ts values.infoMessage
-   */
-  function InfoMessage() {
+  InfoMessage() {
     return (
-      <p className={text["high"]}>{values.infoMessage}</p>
+      <p key="infoMessage"className={text["high"]}>{values.infoMessage}</p>
     )
   }
 
   /**
    * 
-   * @returns Application status to display
+   * @returns page showing users app status and a description of that status
    */
-  function AppStatus() {
+  AppStatus() {
     return (
-      <div>
-        <p className={text["status"] + " " + text["themeColor"]}>
-          {status}
+      <div key="appStatus">
+        <p key="status" className={text["status"] + " " + text["themeColor"]}>
+          {this.state.status}
         </p>
-        <p className={text["medium"] + " " + text["themeColor"]}>
-          {description}
+        <p key="description" className={text["medium"] + " " + text["themeColor"]}>
+          {this.state.description}
         </p>
       </div>
     )
   }
 
-  const AppStatusForm = Form(form, afterSubmit)
+  /**
+   * Shows app status or error message from info message
+   * @param resp http response from application status request
+   */
+  afterSubmit = (resp: any) => {
+    if (resp.data !== "") {
+      this.setState({
+        hasApp: true, 
+        wait: false,
+        status: resp.data.status,
+        description: resp.data.description,
+      })
+    } else {
+      this.setState({
+        hasApp: false, 
+        wait: true,
+        status: "",
+        description: "",
+      })
+    }
+  }
 
-
-  return (
-    <div className="currentPage">
-      <h1>{HasApp ? values.header2 : values.header1}</h1>
-      {wait ? <InfoMessage /> : <p hidden></p>}
-      {HasApp ? <AppStatus /> : AppStatusForm}
-    </div>
-  );
+  render(): React.ReactNode{
+    let page = [];
+    if (this.state.hasApp) {
+      page.push(<h1 key="h2">{values.header2}</h1>) 
+      if (this.state.wait)
+        page.push(this.InfoMessage())
+      page.push(this.AppStatus()) 
+    }
+    else {
+      page.push(<h1 key="h1">{values.header1}</h1>) 
+      if (this.state.wait)
+        page.push(this.InfoMessage())
+      page.push(<Form key="appStatusForm" form="appStatusForm" afterSubmit={this.afterSubmit}></Form>) 
+    }
+ 
+    return (
+      <div className="currentPage">
+        {page}
+      </div>
+    )
+  }
 }

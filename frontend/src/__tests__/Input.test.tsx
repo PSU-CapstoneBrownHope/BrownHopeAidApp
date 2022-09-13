@@ -1,5 +1,5 @@
 import {
-  IFields,
+  IField,
   passwordVerify,
   isValidDate,
   formatDate,
@@ -18,7 +18,7 @@ afterEach(() => {
 });
 
 test("Password Verify", async () => {
-  let testForm: IFields[] = [
+  let testForm: IField[] = [
     {
       label: "New Password",
       id: "newPassword",

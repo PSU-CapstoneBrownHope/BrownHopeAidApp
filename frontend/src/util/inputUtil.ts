@@ -1,28 +1,32 @@
 import axios from "axios";
+import { ChangeEventHandler, FormEventHandler, MouseEventHandler } from "react";
 
 /**
  * This file contains the utilities needed by forms
  */
 
-export interface IForm{
-  fields: IFields[],
-  buttons: IButtons[],
+export interface IForm {
+  fields: IField[],
+  buttons: IButton[],
   submit: Function,
+  twoStageSubmit?: Function,
   onFocus?: Function,   // unique on focus functions for fields
   submitVerify?: Function, // set unique input verification to use
 }
 
-export interface IFields {
-  label: string, 
-  id: string, 
+export interface IField {
+  label: string,
+  id: string,
   value: any,
+  onChange?: ChangeEventHandler,
+  readonly?: string,
   name?: string,
-  placeholder?: string, 
+  placeholder?: string,
   type?: string,
   format?: string,
   autoComplete?: string
   hidden?: boolean,
-  options?: string[], 
+  options?: string[],
   list?: string,
   disabled?: boolean,
   noEdit?: boolean,     // hide during editting
@@ -33,12 +37,14 @@ export interface IFields {
  * Please refer to https://getbootstrap.com/docs/4.0/components/buttons/
  * to change the bootstrapClass property correctly
  */
-export interface IButtons {
-  text: string, 
+export interface IButton {
+  text: string,
+  bootstrapClass: string,
+  disabled?: boolean,
+  onClick?: MouseEventHandler,
   type?: string,
   hidden?: boolean,
   to?: string,  // note: this will only redirect to pages on site
-  bootstrapClass: string,
 }
 
 /**
@@ -67,7 +73,7 @@ export const updateField = (e: React.BaseSyntheticEvent, index: number, form: an
  * @param form   form to edit
  * @returns form with item at index = elementValue
  */
-export const updateFieldValue = (elementValue:string, index: number, form: any) => {
+export const updateFieldValue = (elementValue: string, index: number, form: any) => {
   // special date format
   if (form[index].format === "date")
     elementValue = formatDate(elementValue);
@@ -83,8 +89,8 @@ export const updateFieldValue = (elementValue:string, index: number, form: any) 
  * @param form form with newPassword and verifyPassword fields
  * @returns true if newPassword === verifyPassword, false otherwise
  */
-export function passwordVerify(form: IFields[]) {
-  return form.find((item: any) => (item.id === "newPassword"))?.value === form.find((item: any) => (item.id === "verifyPassword"))?.value 
+export function passwordVerify(form: IField[]) {
+  return form.find((item: any) => (item.id === "newPassword"))?.value === form.find((item: any) => (item.id === "verifyPassword"))?.value
 }
 
 /**
@@ -92,10 +98,10 @@ export function passwordVerify(form: IFields[]) {
  * @param form form to check
  * @returns true if form passes all tests, false otherwise
  */
-export function submitVerify(form: IFields[]) {
+export function submitVerify(form: IField[]) {
 
   // This will run the checks for submit verify
-  const checks = (item: IFields) => {
+  const checks = (item: IField) => {
     if (!item.hidden && item.value) {
       let reg = new RegExp(/[^\d\)\(-\s]/)
       switch (item.id) {
@@ -108,17 +114,17 @@ export function submitVerify(form: IFields[]) {
         case 'DOB':
           return isValidDate(item.value)
       }
-      if (item.hidden)
-        return true;
-      if (item.value.length > 0)
-        return true
-      return false
     }
+    if (item.hidden)
+      return true;
+    if (item.value && item.value.length > 0)
+      return true
+    return false
   }
 
   //Helpful for debugging
-  //form.forEach((item: any) => { console.log(item.id, ":", checks(item)) }) 
-  return form.every((item: any) => checks(item)) 
+  //form.forEach((item: any) => { console.log(item.id, ":", checks(item)) })
+  return form.every((item: any) => checks(item))
 }
 
 /**
@@ -230,14 +236,14 @@ export function formatDate(value: string) {
  * @returns phone number in format (555) 111-4444 
  */
 export function formatPhoneNumber(value: String) {
-    if (!value) return value;
-    const phoneNumber = value.replace(/[^\d]/g, '');
-    const phoneNumberLength = phoneNumber.length;
-    if (phoneNumberLength < 4) return phoneNumber;
-    if (phoneNumberLength < 7) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
-    }
-    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  if (!value) return value;
+  const phoneNumber = value.replace(/[^\d]/g, '');
+  const phoneNumberLength = phoneNumber.length;
+  if (phoneNumberLength < 4) return phoneNumber;
+  if (phoneNumberLength < 7) {
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+  }
+  return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
 }
 
 /**
@@ -245,11 +251,11 @@ export function formatPhoneNumber(value: String) {
  * @param item address field
  * @returns JSON response on success or 'False'
  */
-export const addressAutoComplete = async (item: IFields) => {
+export const addressAutoComplete = async (item: IField) => {
   let url = 'https://api.geoapify.com/v1/geocode/autocomplete?text=' + encodeURIComponent(item.value) + '&apiKey=' + process.env.REACT_APP_API_KEY;
   try {
     const resp = await axios.get(url)
-    return resp.data;            
+    return resp.data;
   } catch (err) {
     console.error(err);
     return 'False';

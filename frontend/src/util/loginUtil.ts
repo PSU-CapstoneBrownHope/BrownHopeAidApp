@@ -8,10 +8,10 @@
 
 import axios from "axios";
 import { routes } from "../util/config";
-import { IForm, IFields, IButtons } from "./inputUtil";
+import { IForm, IField, IButton } from "./inputUtil";
 
 
-export const fields: IFields[] = [
+export const fields: IField[] = [
   {
     label: "Username",
     id: "username",
@@ -27,7 +27,7 @@ export const fields: IFields[] = [
 ]
 
 
-export const buttons: IButtons[] = [
+export const buttons: IButton[] = [
   {
     text: "Login",
     type: "submit",
@@ -45,7 +45,7 @@ export const buttons: IButtons[] = [
  * @param form must contain username and password
  * @param afterSubmit not used here but needed for consistency
  */
-export const sendLoginRequest = async (form: IFields[], afterSubmit:Function) => {
+export const sendLoginRequest = async (form: IField[], afterSubmit:Function) => {
   try {
     const resp = await axios.post(routes.login, LoginFormToHttpBody(form), { withCredentials: true });
     console.log(resp.data);
@@ -69,7 +69,7 @@ export const header = "Login to your account"
 
 // This function is used to format the request sent to the
 // back end
-export const LoginFormToHttpBody = (form: IFields[]) => {
+export const LoginFormToHttpBody = (form: IField[]) => {
   return {
     username: form[0].value,
     password: form[1].value,
