@@ -1,9 +1,9 @@
 import axios from "axios";
 import { routes } from "../util/config";
-import { IForm, IFields, IButtons, passwordVerify } from "./inputUtil"
+import { IForm, IField, IButton, passwordVerify } from "./inputUtil"
 
 /* Main signup form fields and buttons */
-export const fields: IFields[] = [
+export const fields: IField[] = [
   {
     label: "Email",
     id: "email",
@@ -49,7 +49,7 @@ export const fields: IFields[] = [
   }
 ]
 
-export const buttons: IButtons[] = [
+export const buttons: IButton[] = [
   {
     text: "Create Account",
     type: "submit",
@@ -83,7 +83,7 @@ export const values = {
 
   Sign up request:
 */
-export const SignUpInfoToHttpBody = (form: IFields[]) => {
+export const SignUpInfoToHttpBody = (form: IField[]) => {
   return {
     email: form[0].value,
     username: form[1].value,
@@ -93,7 +93,7 @@ export const SignUpInfoToHttpBody = (form: IFields[]) => {
 }
 
 /* Login request */
-export const LoginInfoToHttpBody = (form: IFields[]) => {
+export const LoginInfoToHttpBody = (form: IField[]) => {
   return {
     username: form[1].value,
     password: form[2].value,
@@ -101,14 +101,14 @@ export const LoginInfoToHttpBody = (form: IFields[]) => {
 }
 
 /* Verification code request */
-export const VerificationInfoToHttpBody = (form: IFields[]) => {
+export const VerificationInfoToHttpBody = (form: IField[]) => {
   return {
     userEmail: form[0].value,
   }
 }
 
 /* Duplicate info request */
-export const DupeInfoToHttpBody = (form: IFields[]) => {
+export const DupeInfoToHttpBody = (form: IField[]) => {
   return {
     email: form[0].value,
     username: form[1].value,
@@ -120,17 +120,20 @@ export const DupeInfoToHttpBody = (form: IFields[]) => {
  * @param form form containing email and username 
  * @param afterSubmit run after response from server
  */
-export const sendVerificationRequest = async (form: IFields[], afterSubmit: Function) => {
+export const sendVerificationRequest = async (form: IField[], afterSubmit: Function) => {
   try {
     const dupeInfo = await axios.post(routes.duplicateInfoCheck, DupeInfoToHttpBody(form), { withCredentials: true })
     if (dupeInfo.data && dupeInfo.data === "Info OK") {
       const resp = await axios.post(routes.email, VerificationInfoToHttpBody(form), { withCredentials: true });
       afterSubmit(resp)
+      return true;
     } else {
       alert(dupeInfo.data)
+      return false;
     }
   } catch (err) {
     console.error(err)
+    return false;
   }
 }
 
@@ -139,7 +142,7 @@ export const sendVerificationRequest = async (form: IFields[], afterSubmit: Func
  * @param form form containing email, username, password, and token
  * @param afterSubmit run after backend response 
  */
-export const sendSignupRequest = async (form: IFields[], afterSubmit: Function) => {
+export const sendSignupRequest = async (form: IField[], afterSubmit: Function) => {
   try {
     const resp = await axios.post(routes.signup, SignUpInfoToHttpBody(form));
     switch (resp.data) {
@@ -151,22 +154,24 @@ export const sendSignupRequest = async (form: IFields[], afterSubmit: Function) 
         if (loginResp.data === "Success") {
           sessionStorage.setItem("username", form[0].value)
           window.location.reload()
+          return true;
         } else {
           afterSubmit(resp)
         }
         break;
       case "Email Already Exists":
         alert("Sorry, user already exists")
-        break;
+        return false;
       case "Emailed":
         alert("This email already exists in our system. To claim your account, please follow the link emailed to you.")
         window.location.reload()
-        break;
+        return false;
     }
   } catch (err) {
     alert("Sign up failed");
     afterSubmit({})
     console.error(err);
+    return false;
   }
 }
 
@@ -176,6 +181,7 @@ export const form: IForm = {
   fields: fields,
   buttons: buttons,
   submit: sendVerificationRequest,
-  submitVerify: passwordVerify
+  submitVerify: passwordVerify,
+  twoStageSubmit: sendSignupRequest
 }
 

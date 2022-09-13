@@ -53,7 +53,7 @@ test('Editting elements present', async () => {
         if (item.type === "select") {
             const checkSelect = screen.getByRole("select", { name: item.label});
             fireEvent.change(checkSelect , { target: { value: "Email" } });
-            expect(checkSelect .value).toBe("Email")
+            expect(checkSelect.value).toBe("Email")
         }
         else if (index !== 0) {
             const checkTextBox= screen.getByRole(item.type, { name: item.label +':' });

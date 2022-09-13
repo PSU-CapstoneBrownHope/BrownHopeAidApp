@@ -1,8 +1,8 @@
 import axios from "axios";
 import { routes } from "../util/config";
-import { IForm, IFields, IButtons, passwordVerify } from "./inputUtil"
+import { IForm, IField, IButton, passwordVerify } from "./inputUtil"
 
-export const fields: IFields[] = [
+export const fields: IField[] = [
   {
     label: "Old Password",
     placeholder: "Old Password",
@@ -28,7 +28,7 @@ export const fields: IFields[] = [
   },
 ]
 
-export const buttons: IButtons[] = [
+export const buttons: IButton[] = [
   {
     text: "Change password",
     type: "submit",
@@ -50,7 +50,7 @@ export const values = {
  * @param form form containing old and new password 
  * @param afterSubmit run after server response
  */
-const sendUpdateRequest = async (form:IFields[], afterSubmit:Function) => {
+const sendUpdateRequest = async (form:IField[], afterSubmit:Function) => {
   try {
     const resp = await axios.post(routes.updatePassword, formToHttpBody(form), { withCredentials: true });
     console.log(resp.data);
@@ -68,7 +68,7 @@ const sendUpdateRequest = async (form:IFields[], afterSubmit:Function) => {
   }
 };
 
-export const formToHttpBody = (form: IFields[]) => {
+export const formToHttpBody = (form: IField[]) => {
   return {
     old_password: form[0].value,
     new_password: form[1].value,

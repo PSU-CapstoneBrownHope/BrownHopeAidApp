@@ -1,8 +1,8 @@
 import axios from "axios";
 import { routes } from "../util/config";
-import { IForm, IFields, IButtons, dayMaxVal, stringToNum } from "./inputUtil"
+import { IForm, IField, IButton, dayMaxVal, stringToNum } from "./inputUtil"
 
-export const fields: IFields[] = [
+export const fields: IField[] = [
   {
     id: "first name",
     label: "First name",
@@ -27,7 +27,7 @@ export const fields: IFields[] = [
   }
 ]
 
-export const buttons: IButtons[] = [
+export const buttons: IButton[] = [
   {
     text: "Check Application Status",
     type: "submit",
@@ -42,7 +42,7 @@ export const values = {
 }
 
 
-export const FormToHttpBody = (form: IFields[]) => {
+export const FormToHttpBody = (form: IField[]) => {
   return {
     firstName: form[0].value,
     lastName: form[1].value,
@@ -55,7 +55,7 @@ export const FormToHttpBody = (form: IFields[]) => {
  * @param form form containing first, last and DOB 
  * @param afterSubmit function to run after in original file for state variables
  */
-export const sendApplicationStatusRequest = async (form: IFields[], afterSubmit: Function) => {
+export const sendApplicationStatusRequest = async (form: IField[], afterSubmit: Function) => {
   try {
     const resp = await axios.post(routes.application_status, FormToHttpBody(form), { withCredentials: true });
     afterSubmit(resp);
